@@ -7,24 +7,19 @@
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+:root {
+  font-size: calc(1vw + 1rem);
+  box-sizing: content-box;
 }
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+*,
+::before,
+::after {
+  padding: 0;
+  border: none;
+  margin: 0;
+  background: none;
+  user-select: none;
+  box-sizing: inherit;
 }
 </style>
