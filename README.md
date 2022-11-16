@@ -1,19 +1,6 @@
 # psyreply_admin
 
-## Project setup
-```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Соглашения по дизайну
+- Мы используем БЭМ
+- В файле App.vue в теге style в селекторе :root все переменные
+- все изображения в /assets/img
