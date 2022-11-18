@@ -1,6 +1,9 @@
 <template>
   <div class="wrapper">
     <y-left-side-bar />
+    <main class="main">
+
+    </main>
   </div>
 </template>
 
@@ -11,5 +14,8 @@ export default {
 </script>
 
 <style scoped>
-
+.wrapper {
+  display: grid;
+  grid-template-columns: min-content max-content;
+}
 </style>

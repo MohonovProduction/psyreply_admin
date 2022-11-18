@@ -31,15 +31,31 @@ export default {
 .side_bar__header {
   display: grid;
   grid-template-columns: min-content max-content;
-  grid-gap: 2rem 1rem;
+  grid-gap: 1.5rem 1rem;
   align-items: center;
 }
 .header__heading {
+  margin-right: 1rem;
   font-size: 1.25rem;
+  font-weight: 400;
+  color: var(--light-opacity);
+}
+.header__img {
+  margin-left: 1rem;
+}
+.heading__name {
+  font-weight: 600;
+}
+.heading__product {
+  font-weight: 400;
+}
+.heading__product,
+.heading__name {
+  color: var(--light);
 }
 .header__line {
   grid-column: span 2;
-  border: 1px solid hsla(0, 0%, 100%, 0.27);
+  border-bottom: 3px solid hsla(0, 0%, 100%, 0.27);
 }
 
 .side_bar__nav {

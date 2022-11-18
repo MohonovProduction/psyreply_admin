@@ -9,6 +9,8 @@
   --font-rubik: 'Rubik', sans-serif;
 
   --light: hsl(0, 0%, 100%);
+  --light-opacity: hsla(0, 0%, 100%, 0.27);
+
   font-family: var(--font-rubik);
   font-size: calc(1vw + .2rem);
   color: var(--light);
