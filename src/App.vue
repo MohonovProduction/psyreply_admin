@@ -11,12 +11,17 @@
 
 :root {
   --font-rubik: 'Rubik', sans-serif;
-  font-family: var(--font-rubik);
-  font-size: calc(1vw + 1rem);
 
   --light: hsl(0, 0%, 100%);
+  font-family: var(--font-rubik);
+  font-size: calc(1vw + 1rem);
+  color: var(--light);
 
   box-sizing: content-box;
+
+  background-image: url('@/assets/img/bg.png');
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 *,
