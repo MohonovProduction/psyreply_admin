@@ -1,5 +1,7 @@
 <template>
-
+  <div class="wrapper">
+    <y-left-side-bar />
+  </div>
 </template>
 
 <script>

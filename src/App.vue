@@ -1,8 +1,4 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
   <router-view/>
 </template>
 
@@ -14,10 +10,10 @@
 
   --light: hsl(0, 0%, 100%);
   font-family: var(--font-rubik);
-  font-size: calc(1vw + 1rem);
+  font-size: calc(1vw + .2rem);
   color: var(--light);
 
-  box-sizing: content-box;
+  box-sizing: border-box;
 
   background-image: url('@/assets/img/bg.png');
   background-size: cover;
@@ -33,5 +29,13 @@
   background: none;
   user-select: none;
   box-sizing: inherit;
+  text-decoration: none;
+}
+
+.link:link,
+.link:visited,
+.link:hover,
+.link:active {
+  color: var(--light);
 }
 </style>
