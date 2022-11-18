@@ -7,8 +7,15 @@
 </template>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik&display=swap');
+
 :root {
+  --font-rubik: 'Rubik', sans-serif;
+  font-family: var(--font-rubik);
   font-size: calc(1vw + 1rem);
+
+  --light: hsl(0, 0%, 100%);
+
   box-sizing: content-box;
 }
 
