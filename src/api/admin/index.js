@@ -24,7 +24,7 @@ Admin.auth = async function(email, password) {
   })
 }
 
-Admin.verify = async function(code) {
+Admin.authCode = async function(code) {
   return new Promise((resolve, reject) => {
     fetch(`${config.host}/auth/code`, {
       method: 'POST',
