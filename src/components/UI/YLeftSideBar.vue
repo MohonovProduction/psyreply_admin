@@ -41,6 +41,8 @@ export default {
   color: var(--light-opacity);
 }
 .header__img {
+  width: 3.1875rem;
+  height: auto;
   margin-left: 1rem;
 }
 .heading__name {
