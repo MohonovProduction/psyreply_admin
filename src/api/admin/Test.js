@@ -1,17 +1,21 @@
 import config from '@/api';
+import Admin from '@/api/admin/index';
 
 const Test = {}
 
 Test.getAll = async function() {
   return new Promise((resolve, reject) => {
+    const token = Admin.getToken()
+
     fetch(`${config.host}/test`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${token}`
       },
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }
@@ -28,7 +32,7 @@ Test.get = async function(id) {
         id
       }
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }
@@ -52,7 +56,7 @@ Test.creat = async function(type, title, formula, block_id, questions) {
         questions
       }
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }
@@ -72,7 +76,7 @@ Test.patch = async function(test) {
       },
       body: test
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }
@@ -92,7 +96,7 @@ Test.moveToBlock = async function(test, block) {
         'Connection': 'keep-alive'
       },
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }
@@ -109,7 +113,7 @@ Test.removeFromBlock = async function(test, block, removeIfNoBlocks) {
         removeIfNoBlocks
       }
     })
-      .then(async res => resolve(await res.json()))
+      .then(async res => { resolve(res) })
       .catch(err => reject(err))
   })
 }

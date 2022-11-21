@@ -51,14 +51,8 @@ Admin.checkAuth = function() {
   return token !== null
 }
 
-Admin.getToken = async function() {
-  return new Promise((resolve, reject) => {
-    if (!Admin.checkAuth()) {
-      resolve(undefined)
-    } else {
-      resolve(localStorage.getItem('token'))
-    }
-  })
+Admin.getToken = function() {
+  return localStorage.getItem('token')
 }
 
 export default Admin
