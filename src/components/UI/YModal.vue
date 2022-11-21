@@ -9,8 +9,8 @@
       </div>
       <hr />
       <div class="modal__main">
-<!--        <YFormContent></YFormContent>-->
-        <YForm></YForm>
+        <YFormContent></YFormContent>
+<!--        -->
 
       </div>
 
