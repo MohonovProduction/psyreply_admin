@@ -4,12 +4,14 @@
     <div class="container modal_content">
       <div class="modal_header">
         <img class="logo reply__logo" src="@/assets/img/logo.png">
-        <h4>Reply 2.0</h4>
+        <h3>Reply 2.0</h3>
         <span class="logo__subtext">| Admin</span>
       </div>
       <hr />
       <div class="modal__main">
+<!--        <YFormContent></YFormContent>-->
         <YForm></YForm>
+
       </div>
 
     </div>
@@ -18,11 +20,13 @@
 </template>
 
 <script>
-import YForm from "@/components/UI/YForm";
+import YFormContent from "@/components/UI/YFormContent";
+import YForm from "@/components/UI/YForm"
+
 
 export default {
   name: "YModal",
-  components: "YForm",
+  components: {YFormContent,YForm}
 
 }
 
@@ -96,6 +100,8 @@ hr {
 .reply__logo {
   width: 40px;
   margin-right: 5px;
+  width: 2.5em;
+
 }
 .logo__subtext {
   margin-left: 5px;

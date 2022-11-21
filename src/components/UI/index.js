@@ -4,6 +4,8 @@ import YLeftSideBar from '@/components/UI/YLeftSideBar';
 import YModal from '@/components/UI/YModal';
 import YTestCard from '@/components/UI/YTestCard';
 import YForm from "@/components/UI/YForm";
+import YFormContent from "@/components/UI/YFormContent";
+
 
 
 export default [
@@ -13,5 +15,5 @@ export default [
   YModal,
   YTestCard,
   YForm,
-
+  YFormContent,
 ]
