@@ -25,8 +25,8 @@ export default {
   min-height: 100vh;
   padding: .875rem;
   background: linear-gradient(140.62deg, rgba(255, 255, 255, 0.25) 2.81%, rgba(255, 255, 255, 0.1) 100.82%);
-  box-shadow: 0px 4px 52px rgba(143, 0, 255, 0.11);
-  border-radius: 0 16px 16px 0;
+  box-shadow: 0 4px 52px rgba(143, 0, 255, 0.11);
+  border-radius: 0 1rem 1rem 0;
 }
 .side_bar__header {
   display: grid;
@@ -41,6 +41,8 @@ export default {
   color: var(--light-opacity);
 }
 .header__img {
+  width: 3.1875rem;
+  height: auto;
   margin-left: 1rem;
 }
 .heading__name {
