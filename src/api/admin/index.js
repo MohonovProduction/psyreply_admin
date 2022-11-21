@@ -37,11 +37,27 @@ Admin.authCode = async function(code) {
       }
     })
       .then(async res => {
-        resolve(await res.json())
+        const token = await res.json()
+        localStorage.setItem('token', token.token)
       })
       .catch(err => {
         reject(err)
       })
+  })
+}
+
+Admin.checkAuth = function() {
+  const token = localStorage.getItem('token')
+  return token !== null
+}
+
+Admin.getToken = async function() {
+  return new Promise((resolve, reject) => {
+    if (!Admin.checkAuth()) {
+      return undefined
+    } else {
+      return localStorage.getItem('token')
+    }
   })
 }
 
