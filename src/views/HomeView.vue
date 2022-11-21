@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <y-modal>
+    <y-modal header="true">
       <y-form
         @submit="firstStep"
         v-if="step === 0"
