@@ -3,14 +3,14 @@
   <form>
     <div class="form__box">
       <label class="box__lable">Логин</label>
-      <input class="box__input">
+      <input class="box__input" v-model="formData.email">
     </div>
     <div class="form__box">
       <label class="box__lable">Пароль</label>
-      <input class="box__input">
+      <input class="box__input" v-model="formData.password">
     </div>
     <div class="form__button">
-      <button type="submit" class="btn btn__login">Войти</button>
+      <button @click.prevent="submit" class="btn btn__login">Войти</button>
     </div>
 
   </form>
@@ -19,7 +19,20 @@
 
 <script>
 export default {
-  name: "YForm"
+  name: "YForm",
+  data() {
+    return {
+      formData: {
+        email: null,
+        password: null
+      }
+    }
+  },
+  methods: {
+    submit() {
+      this.$emit('submit', this.formData)
+    }
+  }
 }
 </script>
 

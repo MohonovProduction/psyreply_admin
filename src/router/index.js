@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Admin from '@/api/admin/index';
 
 const routes = [
   {
@@ -26,6 +27,15 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from) => {
+  if (!Admin.checkAuth() && to.meta.requiresAuth) {
+    return {
+      path: '/',
+      query: { redirect: to.fullPath }
+    }
+  }
 })
 
 export default router
