@@ -4,9 +4,9 @@
   <p class="description__aprove">На Ваш аккаунт было отправленно письмо с кодом, подвтерждающим права на учетную запись. Пожалуйста, введите его в поле ниже</p>
   <form>
     <div class="form__box">
-      <input class="box__input">
+      <input v-model="formData.code" class="box__input">
     </div>
-    <button type="submit" class="btn btn__login">Подтвердить</button>
+    <button @click.prevent="submit" class="btn btn__login">Подтвердить</button>
     <a class="resend">Отправить повторно</a>
   </form>
 </div>
@@ -14,7 +14,19 @@
 
 <script>
 export default {
-  name: "YFormContent"
+  name: "YFormContent",
+  data() {
+    return {
+      formData: {
+        code: null
+      }
+    }
+  },
+  methods: {
+    submit() {
+      this.$emit('submit', this.formData)
+    }
+  }
 }
 </script>
 

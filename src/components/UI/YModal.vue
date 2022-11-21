@@ -9,9 +9,7 @@
       </div>
       <hr />
       <div class="modal__main">
-        <YFormContent></YFormContent>
-<!--        -->
-
+        <slot></slot>
       </div>
 
     </div>
