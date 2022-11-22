@@ -5,6 +5,7 @@ import YModal from '@/components/UI/YModal';
 import YTestCard from '@/components/UI/YTestCard';
 import YForm from "@/components/UI/YForm";
 import YFormContent from "@/components/UI/YFormContent";
+import YBlock_list from "@/components/UI/YBlock_list";
 
 export default [
   YButton,
@@ -14,4 +15,5 @@ export default [
   YTestCard,
   YForm,
   YFormContent,
+  YBlock_list,
 ]

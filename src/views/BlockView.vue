@@ -2,14 +2,19 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-
+    <y-modal>
+      <y-button :plus="false">Новый блок</y-button>
+    </y-modal>
     </main>
   </div>
 </template>
 
 <script>
+import YModal from "@/components/UI/YModal";
+import YButton from "@/components/UI/YButton";
 export default {
-  name: "BlockView"
+  name: "BlockView",
+  components: {YButton, YModal}
 }
 </script>
 
@@ -18,4 +23,5 @@ export default {
   display: grid;
   grid-template-columns: min-content max-content;
 }
+
 </style>
