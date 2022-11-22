@@ -5,14 +5,12 @@ const Test = {}
 
 Test.getAll = async function() {
   return new Promise((resolve, reject) => {
-    const token = Admin.getToken()
-
     fetch(`${config.host}/test`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Connection': 'keep-alive',
-        'Authorization': `Bearer ${token}`
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
     })
       .then(async res => { resolve(res) })
@@ -26,7 +24,8 @@ Test.get = async function(id) {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
       body: {
         id
@@ -46,7 +45,8 @@ Test.creat = async function(type, title, formula, block_id, questions) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
       body: {
         type,
@@ -72,7 +72,8 @@ Test.patch = async function(test) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
       body: test
     })
@@ -93,7 +94,8 @@ Test.moveToBlock = async function(test, block) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
     })
       .then(async res => { resolve(res) })
@@ -107,7 +109,8 @@ Test.removeFromBlock = async function(test, block, removeIfNoBlocks) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       },
       body: {
         removeIfNoBlocks
@@ -127,7 +130,8 @@ Test.remove = async function(id) {
       method: 'DEL',
       headers: {
         'Content-Type': 'application/json',
-        'Connection': 'keep-alive'
+        'Connection': 'keep-alive',
+        'Authorization': `Bearer ${Admin.getToken()}`
       }
     })
       .then(async res => resolve(res.json()))
