@@ -2,9 +2,9 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-    <y-modal>
-      <y-button :plus="false">Новый блок</y-button>
-    </y-modal>
+      <y-block-list-item>
+        Абоба
+      </y-block-list-item>
     </main>
   </div>
 </template>
@@ -14,7 +14,7 @@ import YModal from "@/components/UI/YModal";
 import YButton from "@/components/UI/YButton";
 export default {
   name: "BlockView",
-  components: {YButton, YModal}
+  components: {}
 }
 </script>
 
