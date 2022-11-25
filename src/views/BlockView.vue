@@ -2,7 +2,11 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-      <y-modal>
+      <y-modal class="main__modal">
+        <header class="header">
+          <h1 class="heading header__heading">Блоки</h1>
+          <y-button :plus="true">Новый блок</y-button>
+        </header>
         <y-list />
       </y-modal>
     </main>
@@ -27,6 +31,15 @@ export default {
 
 .main {
   padding: 4.125rem;
+}
+.main__modal {
+  display: grid;
+  grid-gap: 2.5625rem;
+}
+
+.header {
+  display: grid;
+  grid-template-columns: auto min-content;
 }
 
 </style>

@@ -29,7 +29,7 @@ export default {
 <style scoped>
 .list {
   display: grid;
-  grid-gap: 1rem;
+  grid-gap: 2.5625rem;
   list-style: none;
 }
 </style>
