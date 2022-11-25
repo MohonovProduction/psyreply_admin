@@ -5,15 +5,22 @@ import YModal from '@/components/UI/YModal';
 import YTestCard from '@/components/UI/YTestCard';
 import YForm from "@/components/UI/YForm";
 import YFormContent from "@/components/UI/YFormContent";
-import YBlock_list from "@/components/UI/YBlock_list";
+import YList from "@/components/UI/YLits";
+import YListItem from '@/components/UI/YListItem';
+
 
 export default [
   YButton,
   YBlockCard,
   YLeftSideBar,
+
   YModal,
+
   YTestCard,
+
   YForm,
   YFormContent,
-  YBlock_list,
+
+  YList,
+  YListItem
 ]
