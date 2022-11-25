@@ -8,6 +8,7 @@
           <y-button :plus="true">Новый блок</y-button>
         </header>
         <y-list />
+        <y-input placeholder="testik" />
       </y-modal>
     </main>
   </div>
