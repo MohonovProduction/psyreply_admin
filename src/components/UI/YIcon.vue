@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: "YTestCard"
+  name: "YIcon"
 }
 </script>
 

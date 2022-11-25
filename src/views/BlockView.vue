@@ -7,7 +7,9 @@
           <h1 class="heading header__heading">Блоки</h1>
           <y-button :plus="true">Новый блок</y-button>
         </header>
+<!--        U can add "items" props to list component. It must be array -->
         <y-list />
+        <y-input placeholder="testik" />
       </y-modal>
     </main>
   </div>
@@ -16,8 +18,13 @@
 <script>
 import YModal from "@/components/UI/YModal";
 import YButton from "@/components/UI/YButton";
+import Block from '@/api/admin/Block';
 export default {
   name: "BlockView",
+  created() {
+    const block = new Block(12);
+    block.remove({})
+  },
   components: {}
 }
 </script>

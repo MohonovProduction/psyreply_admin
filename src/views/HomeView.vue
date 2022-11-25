@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="main">
     <y-modal header="true">
       <y-form
         @submit="firstStep"
@@ -32,4 +32,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 
