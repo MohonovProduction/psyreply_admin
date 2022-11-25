@@ -7,10 +7,13 @@ import YForm from "@/components/UI/YForm";
 import YFormContent from "@/components/UI/YFormContent";
 import YList from "@/components/UI/YLits";
 import YListItem from '@/components/UI/YListItem';
+import YCoolButton from '@/components/UI/YCoolButton';
 
 
 export default [
   YButton,
+  YCoolButton,
+
   YBlockCard,
   YLeftSideBar,
 
