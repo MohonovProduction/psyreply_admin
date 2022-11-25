@@ -8,7 +8,6 @@
           <y-button :plus="true">Новый блок</y-button>
         </header>
         <y-list />
-        <y-cool-button>RRR</y-cool-button>
       </y-modal>
     </main>
   </div>
