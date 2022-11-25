@@ -7,6 +7,7 @@
           <h1 class="heading header__heading">Блоки</h1>
           <y-button :plus="true">Новый блок</y-button>
         </header>
+<!--        U can add "items" props to list component. It must be array -->
         <y-list />
         <y-input placeholder="testik" />
       </y-modal>
