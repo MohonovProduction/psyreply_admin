@@ -1,7 +1,7 @@
 <template>
-  <article class="list_item">
+  <li class="list_item">
     <slot></slot>
-  </article>
+  </li>
 </template>
 
 <script>
@@ -14,6 +14,7 @@ export default {
 .list_item {
   background: hsla(0, 0%, 100%, 0.17);
   padding: 1rem;
+  font-size: 2rem;
   border-color: var(--light-opacity);
   border-width: 2px;
   border-style: solid;

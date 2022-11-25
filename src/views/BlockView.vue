@@ -2,9 +2,9 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-      <y-block-list-item>
-        Абоба
-      </y-block-list-item>
+      <y-modal>
+        <y-list />
+      </y-modal>
     </main>
   </div>
 </template>
@@ -21,7 +21,12 @@ export default {
 <style scoped>
 .wrapper {
   display: grid;
-  grid-template-columns: min-content max-content;
+  grid-template-columns: min-content 1fr;
+  width: 100%;
+}
+
+.main {
+  padding: 4.125rem;
 }
 
 </style>

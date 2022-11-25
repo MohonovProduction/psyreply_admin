@@ -21,6 +21,7 @@ export default {
 
 <style scoped>
 .side_bar {
+  font-size: 1.5625rem;
   max-width: max-content;
   min-height: 100vh;
   padding: .875rem;

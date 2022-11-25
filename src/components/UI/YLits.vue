@@ -1,27 +1,35 @@
 <template>
-  <div class="YBlock_list">
-    <div class="block__name_button">
-      <h2 class="block__name">Блок</h2>
-      <div class="button">Кнопка</div>
-    </div>
-    <div class="list">
-      <div></div>
-      <div></div>
-    </div>
-
-
-
-  </div>
+  <ul class="list">
+    <template v-for="item in items" class="list__item">
+      <y-block-list-item>
+        {{ item.name }}
+      </y-block-list-item>
+    </template>
+  </ul>
 </template>
 
 <script>
-import YModal from "@/components/UI/YModal";
 export default {
-  name: "YBlock_list",
-  components: {YModal}
+  name: "YList",
+  components: {},
+
+  props: {
+    items: {
+      type: Array,
+      default: [
+        { name: 'test1' },
+        { name: 'test2' },
+        { name: 'test3' },
+      ]
+    }
+  }
 }
 </script>
 
 <style scoped>
-
+.list {
+  display: grid;
+  grid-gap: 1rem;
+  list-style: none;
+}
 </style>
