@@ -18,8 +18,13 @@
 <script>
 import YModal from "@/components/UI/YModal";
 import YButton from "@/components/UI/YButton";
+import Block from '@/api/admin/Block';
 export default {
   name: "BlockView",
+  created() {
+    const block = new Block(12);
+    block.remove({})
+  },
   components: {}
 }
 </script>
