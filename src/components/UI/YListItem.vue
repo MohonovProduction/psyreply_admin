@@ -2,7 +2,7 @@
   <li class="list__item">
     <div class="elipce"></div>
     <div class="name"><slot></slot></div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
+    <div class="options" ><img src="@/assets/img/options.svg"></div>
   </li>
 </template>
 
