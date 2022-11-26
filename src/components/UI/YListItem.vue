@@ -35,17 +35,25 @@ export default {
   color: #FFFFFF;
 }
 .list__item{
+  padding-left: 1rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   justify-content: start;
-  grid-gap: 10px;
+  grid-gap: 2rem;
   background: linear-gradient(140.62deg, hsla(0, 0%, 100%, 0.25) 2.81%, hsla(0, 0%, 100%, 0.1) 100.82%);
-  padding: 1rem;
   box-shadow: 0 4px 52px hsla(274, 100%, 50%, 0.11);
   border-radius: 1rem;
   border-color: var(--light-opacity);
   border-width: 2px;
   border-style: solid;
+}
+.options{
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.16);
+  display: flex;
+  align-items: center;
+  height: 100%;
+  border-radius: 0px 14px 14px 0px;
 }
 </style>
