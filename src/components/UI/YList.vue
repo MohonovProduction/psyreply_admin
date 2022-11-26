@@ -1,4 +1,4 @@
-<template>
+<!--<template>
 <div class="YList">
   <div class="list_item">
     <div class="elipce"></div>
@@ -16,14 +16,43 @@
     <div class="options"><img src="@/assets/img/options.svg"></div>
   </div>
 </div>
+</template>-->
+
+<template>
+  <ul class="list">
+    <template v-for="item in items">
+      <y-list-item>
+        {{ item.name }}
+      </y-list-item>
+    </template>
+  </ul>
 </template>
 
 <script>
 export default {
-  name: "YList"
+  name: "YList",
+  props: {
+    items: {
+      type: Array,
+      default: [
+        { name: 'test1' },
+        { name: 'test2' },
+        { name: 'test3' },
+      ]
+    }
+  }
 }
 </script>
 
+<style scoped>
+.list {
+  display: grid;
+  grid-gap: 1rem;
+  list-style: none;
+}
+</style>
+
+<!--
 <style scoped>
 .YList{
   display: flex;
@@ -75,4 +104,4 @@ export default {
   grid-column-start: 3;
 }
 
-</style>
+</style>-->

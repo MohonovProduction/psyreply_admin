@@ -2,35 +2,43 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-      <y-modal class="main__modal"
-               v-if="step === 0">
+      <y-modal v-if="window === 'main'" class="main__modal">
         <header class="header">
           <h1 class="heading header__heading">Блоки</h1>
-          <y-button :plus="true" @click="firstStep">Новый блок</y-button>
+          <y-button :plus="true" @click="this.window = 'createBlock'">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
         <y-list />
       </y-modal>
+      <create-block
+        v-if="window === 'createBlock'"
+        @close="this.window = 'main'"
+      />
+      <edit-block
+        v-if="window === 'editBlock'"
+        @close="this.window = 'main'"
+      />
     </main>
   </div>
 </template>
 
 <script>
+import CreateBlock from '@/components/Block/CreateBlock';
+import EditBlock from '@/components/Block/EditBlock';
+
 export default {
   name: "BlockView",
+  components: {
+    CreateBlock, EditBlock
+  },
   data() {
     return {
-      step: 0
+      window: 'main',
     }
   },
   methods: {
-    firstStep(formData) {
-      console.log(formData)
-      this.step = 1
-    },
-    secondStep(formData) {
-      console.log(formData)
-      this.step = 0
+    createBlock() {
+
     }
   }
 }
