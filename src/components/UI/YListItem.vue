@@ -2,7 +2,7 @@
   <li class="list__item">
     <div class="elipce"></div>
     <div class="name"><slot></slot></div>
-    <div class="options" ><img src="@/assets/img/options.svg"></div>
+    <div class="options" @click="$emit('edit')"><img src="@/assets/img/options.svg"></div>
   </li>
 </template>
 
@@ -10,6 +10,9 @@
 export default {
   name: "YListItem",
   props: {
+
+  },
+  methods:{
 
   }
 }
