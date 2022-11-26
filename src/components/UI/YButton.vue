@@ -1,5 +1,5 @@
 <template>
-  <button class="button">
+  <button class="button" type="submit"  >
     <slot></slot>
     <span v-if="plus" class="button__symbol">+</span>
   </button>
@@ -14,6 +14,8 @@ export default {
       default: false
     }
   }
+
+
 
 }
 

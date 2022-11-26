@@ -2,30 +2,37 @@
   <div class="wrapper">
     <y-left-side-bar />
     <main class="main">
-      <y-modal class="main__modal">
+      <y-modal class="main__modal"
+               v-if="step === 0">
         <header class="header">
           <h1 class="heading header__heading">Блоки</h1>
-          <y-button :plus="true">Новый блок</y-button>
+          <y-button :plus="true" @click="firstStep">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
         <y-list />
-        <y-input placeholder="testik" />
       </y-modal>
     </main>
   </div>
 </template>
 
 <script>
-import YModal from "@/components/UI/YModal";
-import YButton from "@/components/UI/YButton";
-import Block from '@/api/admin/Block';
 export default {
   name: "BlockView",
-  created() {
-    const block = new Block(12);
-    block.remove({})
+  data() {
+    return {
+      step: 0
+    }
   },
-  components: {}
+  methods: {
+    firstStep(formData) {
+      console.log(formData)
+      this.step = 1
+    },
+    secondStep(formData) {
+      console.log(formData)
+      this.step = 0
+    }
+  }
 }
 </script>
 
@@ -47,6 +54,17 @@ export default {
 .header {
   display: grid;
   grid-template-columns: auto min-content;
+}
+.header__arrow__button{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.header__arrow__button img{
+  width: 26px;
+  height: 26px;
+  margin-right: 20px;
+  cursor: pointer;
 }
 
 </style>
