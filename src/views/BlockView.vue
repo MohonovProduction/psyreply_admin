@@ -4,11 +4,14 @@
     <main class="main">
       <y-modal v-if="window === 'main'" class="main__modal">
         <header class="header">
-          <h1 class="heading header__heading">Блоки</h1>
+          <div class="header__select">
+            <h1 class="heading header__heading">Блоки</h1>
+            <y-select @select="selectHandle" />
+          </div>
           <y-button :plus="true" @click="this.window = 'createBlock'">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
-        <y-list />
+        <y-list  />
       </y-modal>
       <create-block
         v-if="window === 'createBlock'"
@@ -39,6 +42,9 @@ export default {
   methods: {
     createBlock() {
 
+    },
+    selectHandle(n) {
+      console.log(n)
     }
   }
 }
@@ -63,10 +69,14 @@ export default {
   display: grid;
   grid-template-columns: auto min-content;
 }
-.header__arrow__button{
+.header__select{
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: left;
+}
+.header__heading{
+  margin-right: 1rem;
 }
 .header__arrow__button img{
   width: 26px;
