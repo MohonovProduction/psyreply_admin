@@ -3,11 +3,9 @@
     <y-modal header="true">
       <y-icon class="form__reply__logo"></y-icon>
       <y-form
-        @submit="firstStep"
         v-if="step === 0"
       />
       <y-form-content
-        @submit="secondStep"
         v-else-if="step === 1"
       />
     </y-modal>

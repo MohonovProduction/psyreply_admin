@@ -8,6 +8,8 @@ import YList from "@/components/UI/YList";
 import YLits from "@/components/UI/YLits";
 import YListItem from "@/components/UI/YListItem";
 import YIcon from "@/components/UI/YIcon";
+import YInput from "@/components/UI/YInput";
+
 
 
 
@@ -22,6 +24,6 @@ export default [
   YLits,
   YListItem,
   YIcon,
-
+  YInput,
 
 ]
