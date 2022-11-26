@@ -6,6 +6,7 @@
       </y-block-list-item>
     </template>
   </ul>
+
 </template>
 
 <script>
@@ -17,12 +18,11 @@ export default {
     items: {
       type: Array,
       default: [
-        { name: 'test1' },
-        { name: 'test2' },
-        { name: 'test3' },
+        { name: 'Block_1' },
+        { name: 'Block_2' },
+        { name: 'Block_3' },
       ]
-    }
-  }
+    }}
 }
 </script>
 

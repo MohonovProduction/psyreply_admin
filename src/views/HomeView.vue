@@ -1,12 +1,11 @@
 <template>
   <div class="main">
     <y-modal header="true">
+      <y-icon class="form__reply__logo"></y-icon>
       <y-form
-        @submit="firstStep"
         v-if="step === 0"
       />
       <y-form-content
-        @submit="secondStep"
         v-else-if="step === 1"
       />
     </y-modal>
@@ -14,8 +13,10 @@
 </template>
 
 <script>
+import YIcon from "@/components/UI/YIcon";
 export default {
   name: 'HomeView',
+  components: {YIcon},
   data() {
     return {
       step: 0
@@ -34,6 +35,9 @@ export default {
 </script>
 
 <style>
+.form__reply__logo{
+  margin-bottom: 5%;
+}
 .main {
   width: 100%;
   display: flex;

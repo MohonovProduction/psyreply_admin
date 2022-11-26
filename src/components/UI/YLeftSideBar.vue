@@ -6,6 +6,7 @@
       <hr class="header__line">
     </header>
     <nav class="side_bar__nav">
+      <a href="/company" class="link nav__link">Компании</a>
       <a href="/block" class="link nav__link">Блоки</a>
       <a href="/test" class="link nav__link">Тесты</a>
       <a href="/results" class="link nav__link">Результаты</a>
