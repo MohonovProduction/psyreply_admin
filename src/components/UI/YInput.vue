@@ -1,5 +1,11 @@
 <template>
-  <input class="input" :type="type" :placeholder="placeholder">
+  <input
+    @input="$emit('update:modelValue', $event.target.value)"
+    class="input"
+    :type="type"
+    :placeholder="placeholder"
+    :value="modelValue"
+  >
 </template>
 
 <script>
@@ -13,16 +19,17 @@ export default {
     type: {
       type: String,
       default: 'text'
-    }
-  }
+    },
+    modelValue: String
+  },
 }
 </script>
 
 <style scoped>
 .input {
   background: hsla(0, 0%, 100%, 0.17);
-  padding: 1rem;
-  font-size: 2rem;
+  font-size: 1.3rem;
+  padding: .8em;
   color: var(--light);
   border-color: var(--light-opacity);
   border-width: 2px;

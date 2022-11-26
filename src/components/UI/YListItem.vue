@@ -1,64 +1,51 @@
 <template>
-  <div class="list_item">
-    <div class="text__elipce">
-      <div class="elipce active "></div>
-      <slot></slot>
-    </div>
-    <div class="options">
-      <img src="@/assets/img/options.svg">
-    </div>
-
-
-  </div>
+  <li class="list__item">
+    <div class="elipce"></div>
+    <div class="name"><slot></slot></div>
+    <div class="options"><img src="@/assets/img/options.svg"></div>
+  </li>
 </template>
 
 <script>
 export default {
-  name: "YBlockListItem",
+  name: "YListItem",
+  props: {
 
+  }
 }
 </script>
 
 <style scoped>
-.list_item {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  background: hsla(0, 0%, 100%, 0.17);
-  font-size: 2rem;
-  border-color: var(--light-opacity);
-  border-width: 2px;
-  border-style: solid;
-  border-radius: .875rem;
-
-}
 .elipce {
   width: 25px;
   height: 25px;
   background: linear-gradient(155.31deg, rgba(255, 255, 255, 0.5) 12.33%, rgba(255, 255, 255, 0) 34.31%, rgba(255, 255, 255, 0) 52.66%, rgba(255, 255, 255, 0.54) 74.67%);
   background-blend-mode: overlay;
   border-radius: 50%;
-  border: 1px solid;
-  border-color: rgba(255, 255, 255, 0.5);
-  margin-right: 30px;
-  margin-left: 20px;
-
+  border: 1px solid rgba(255, 255, 255, 0.5);
 }
-.text__elipce{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.options{
-  padding: 1rem;
-  background: rgba(255, 255, 255, 0.16);
-  display: flex;
-  align-items: center;
-  height: 100%;
-  border-radius: 0px 14px 14px 0px;
-}
-.active{
+.elipce_active {
   background: linear-gradient(200.42deg, #38F9D7 13.57%, #43E97B 98.35%);
+}
+.name{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 32px;
+  line-height: 100%;
+  color: #FFFFFF;
+}
+.list__item{
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  justify-content: start;
+  grid-gap: 10px;
+  background: linear-gradient(140.62deg, hsla(0, 0%, 100%, 0.25) 2.81%, hsla(0, 0%, 100%, 0.1) 100.82%);
+  padding: 1rem;
+  box-shadow: 0 4px 52px hsla(274, 100%, 50%, 0.11);
+  border-radius: 1rem;
+  border-color: var(--light-opacity);
+  border-width: 2px;
+  border-style: solid;
 }
 </style>
