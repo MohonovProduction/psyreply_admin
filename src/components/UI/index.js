@@ -9,6 +9,8 @@ import YListItem from "@/components/UI/YListItem";
 import YIcon from "@/components/UI/YIcon";
 import YInput from "@/components/UI/YInput";
 import YLeftArrowButton from '@/components/UI/YLeftArrowButton';
+import YSelect from "@/components/UI/YSelect";
+
 
 
 
@@ -24,5 +26,6 @@ export default [
   YList,
   YListItem,
   YIcon,
-  YInput
+  YInput,
+  YSelect,
 ]

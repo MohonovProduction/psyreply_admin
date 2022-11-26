@@ -1,7 +1,7 @@
 <template>
   <ul class="list">
     <template v-for="item in items" class="list__item">
-      <y-block-list-item>
+      <y-block-list-item >
         {{ item.name }}
       </y-block-list-item>
     </template>
