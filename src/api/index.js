@@ -1,4 +1,5 @@
 import Admin from '@/api/admin';
+import axios from 'axios';
 
 class Error {
   message = ''
@@ -14,7 +15,7 @@ class Error {
 }
 
 export default class Request {
-  host = ''
+  host = 'https://api.psyreply.com/'
   endpoint = null
   id = null
 
