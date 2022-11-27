@@ -9,7 +9,13 @@
         v-model="company.name"
         placeholder="Название компании"
     />
-    <y-list @select="selectBlock" v-if="blocks.length > 0" key-of-name="name" :items="blocks" />
+    <y-list
+      @select="selectBlock"
+      v-if="blocks.length > 0"
+      key-of-name="name"
+      :items="blocks"
+      :selectable="true"
+    />
     <y-cool-button @click="createCompany">Создать компанию</y-cool-button>
   </y-modal>
 </template>
