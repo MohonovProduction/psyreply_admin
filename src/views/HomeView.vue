@@ -34,11 +34,11 @@ export default {
       console.log(formData)
     },
     secondStep(formData) {
-      Admin.authCode(fomrData.code)
+      Admin.authCode(formData.code)
         .then(res => {
+          console.log(res)
           this.$router.push('/block')
         })
-      console.log(formData)
     }
   }
 }
