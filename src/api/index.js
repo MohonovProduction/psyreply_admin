@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class Error {
   message = ''
-  bad = true
+  ok = false
 
   constructor(message) {
     this.message = message
@@ -15,7 +15,7 @@ class Error {
 }
 
 export default class Request {
-  host = 'https://api.psyreply.com/'
+  host = 'https://api.psyreply.com'
   endpoint = null
   id = null
 
@@ -28,30 +28,44 @@ export default class Request {
     return new Promise((resolve, reject) => {
 
       const input = `${this.host}/${url}`
+      console.log(input)
 
-      const init = {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Connection': 'keep-alive',
-          'Authorization': `Bearer ${Admin.getToken()}`
-        },
-        body
+      let init = null
+
+      if (body === false) {
+        init = {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': `Bearer ${Admin.getToken()}`
+          },
+        }
+      } else {
+        init = {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': `Bearer ${Admin.getToken()}`
+          },
+          body: JSON.stringify(body)
+        }
       }
 
       fetch(input, init)
-        .then(async res => {
+        .then(res => {
           if (res.ok) {
-            resolve(onResolve(await res.json()))
+            resolve(onResolve(res))
           } else {
             switch (res.status) {
-              case 400: resolve(new Error('не корректный запрос'))
+              case 400: resolve(onResolve(new Error('не корректный запрос')))
                 break
-              case 401: resolve(new Error('не авоторизован'))
+              case 401: resolve(onResolve(new Error('не авоторизован')))
                 break
-              case 404: resolve(new Error('не найдено'))
+              case 404: resolve(onResolve(new Error('не найдено')))
                 break
-              case 500: resolve(new Error('Сервер не отвечает. Да, всё очень плохо'))
+              case 500: resolve(onResolve(new Error('Сервер не отвечает. Да, всё очень плохо')))
             }
           }
         })
@@ -59,23 +73,27 @@ export default class Request {
     });
   }
 
+  getOne(onResolve = (res) => res, onReject = (err) => err) {
+    return this.execute(`${this.endpoint}`, 'GET', false, onResolve, onReject)
+  }
+
   getAll(filters, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/all`, 'POST', filters, onResolve, onReject)
+    return this.execute(`${this.endpoint}/all`, 'POST', filters, onResolve, onReject)
   }
 
   get(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'GET', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'GET', false, onResolve, onReject)
   }
 
   remove(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'DELETE', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'DELETE', false, onResolve, onReject)
   }
 
   update(id, body, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'PATCH', body, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'PATCH', body, onResolve, onReject)
   }
 
   create(id, body, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'POST', body, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'POST', body, onResolve, onReject)
   }
 }

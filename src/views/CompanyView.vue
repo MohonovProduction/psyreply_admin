@@ -11,13 +11,24 @@
           <y-button :plus="true" @click="this.window ='createCompany'">Новая компания</y-button>
         </header>
         <!--        U can add "items" props to list component. It must be array -->
-        <y-list  />
+        <y-list
+          v-if="companies.length > 0"
+          :items="companies"
+          key-of-name="name"
+          :selectable="false"
+          :editable="true"
+          @edit="editCompany"
+        />
       </y-modal>
       <create-company
           v-if="window === 'createCompany'"
-          @close="this.window = 'main'"
+          @close="getCompanies"
       />
-
+      <edit-company
+        v-if="window === 'editCompany'"
+        :company="company"
+        @close="getCompanies"
+      />
     </main>
   </div>
 </template>
@@ -26,23 +37,46 @@
 import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 import CreateCompany from "@/components/Company/CreateCompany";
+import EditCompany from '@/components/Company/EditCompany';
+import Company from '@/api/admin/Company';
 
 export default {
   name: "CompanyView",
   components: {
-    CreateCompany,
+    CreateCompany, EditCompany,
     CreateBlock, EditBlock
   },
   data() {
     return {
       window: 'main',
+      companies: [],
+      company: {}
     }
   },
+  created() {
+    const company = new Company()
+    company.getOne()
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.companies = r)
+        }
+      })
+  },
   methods: {
-    createCompany() {
-
+    getCompanies() {
+      this.window = 'main'
+      const company = new Company()
+      company.getOne()
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => this.companies = r)
+          }
+        })
     },
-
+    editCompany(n) {
+      this.company = n
+      this.window = 'editCompany'
+    },
     selectHandle(n) {
       console.log(n)
     }

@@ -43,4 +43,8 @@
 .link:active {
   color: var(--light);
 }
+
+#app {
+  position: relative;
+}
 </style>

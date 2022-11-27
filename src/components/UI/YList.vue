@@ -1,30 +1,16 @@
-<!--<template>
-<div class="YList">
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-</div>
-</template>-->
-
 <template>
   <ul class="list">
-    <template v-for="item in items">
-      <y-list-item>
-        {{ item.name }}
-      </y-list-item>
-    </template>
+    <y-list-item
+      v-for="item in items"
+      :key="`${item.id}${item[keyOfName]}`"
+      :selectable="selectable"
+      :editable="editable"
+      :active="item.active"
+      @select="$emit('select', item)"
+      @edit="$emit('edit', item)"
+    >
+      {{item.id}} {{item[keyOfName]}}
+    </y-list-item>
   </ul>
 </template>
 
@@ -39,6 +25,18 @@ export default {
         { name: 'test2' },
         { name: 'test3' },
       ]
+    },
+    keyOfName: {
+      type: String,
+      default: name
+    },
+    selectable: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
     }
   }
 }

@@ -1,8 +1,22 @@
 <template>
-  <li class="list__item">
-    <div class="elipce"></div>
+  <li
+    class="list__item"
+    :class="{ list__item_not_settings: !editable, list__item_not_select: !selectable }"
+  >
+    <div
+      v-if="selectable"
+      @click="$emit('select')"
+      class="elipce"
+      :class="{ elipce_active: active }"
+    ></div>
     <div class="name"><slot></slot></div>
-    <div class="options" @click="$emit('edit')"><img src="@/assets/img/options.svg"></div>
+    <div
+      v-if="editable"
+      @click="$emit('edit')"
+      class="options"
+    >
+      <img v-if="editable" src="@/assets/img/options.svg">
+    </div>
   </li>
 </template>
 
@@ -10,7 +24,18 @@
 export default {
   name: "YListItem",
   props: {
-
+    active: {
+      type: Boolean,
+      default: false
+    },
+    selectable: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
+    }
   },
   methods:{
 
@@ -26,6 +51,9 @@ export default {
   background-blend-mode: overlay;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.elipce:hover {
+  cursor: pointer;
 }
 .elipce_active {
   background: linear-gradient(200.42deg, #38F9D7 13.57%, #43E97B 98.35%);
@@ -51,6 +79,12 @@ export default {
   border-width: 2px;
   border-style: solid;
 }
+.list__item_not_settings {
+  padding: 1rem;
+}
+.list__item_not_select {
+  grid-template-columns: 1fr auto;
+}
 .options{
   padding: 1rem;
   background: rgba(255, 255, 255, 0.16);
@@ -58,5 +92,8 @@ export default {
   align-items: center;
   height: 100%;
   border-radius: 0px 14px 14px 0px;
+}
+.options:hover {
+  cursor: pointer;
 }
 </style>

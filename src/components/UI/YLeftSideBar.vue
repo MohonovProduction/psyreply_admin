@@ -22,9 +22,10 @@ export default {
 
 <style scoped>
 .side_bar {
+  position: sticky;
+  top: 0;
   font-size: 1.5625rem;
-  max-width: max-content;
-  min-height: 100vh;
+  height: 100vh;
   padding: .875rem;
   background: linear-gradient(140.62deg, rgba(255, 255, 255, 0.25) 2.81%, rgba(255, 255, 255, 0.1) 100.82%);
   box-shadow: 0 4px 52px rgba(143, 0, 255, 0.11);
