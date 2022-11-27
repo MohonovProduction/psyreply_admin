@@ -1,18 +1,17 @@
 <template>
 <div class="YForm">
-  <form>
+  <form @submit.prevent>
     <div class="form__box">
       <label class="box__lable">Логин</label>
-      <input class="box__input" v-model="formData.email">
+      <y-input class="box__input" v-model="formData.email" />
     </div>
     <div class="form__box">
       <label class="box__lable">Пароль</label>
-      <input class="box__input" v-model="formData.password">
+      <y-input class="box__input" v-model="formData.password" />
     </div>
     <div class="form__button">
       <button @click.prevent="submit" class="btn btn__login">Войти</button>
     </div>
-
   </form>
 </div>
 </template>

@@ -61,13 +61,13 @@ export default {
 </script>
 
 <style scoped>
+
 .button{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  cursor: pointer;
+  align-self: end;
   position: relative;
   color: var(--light);
-  font-size: 1.25rem;
+  font-size: 1rem;
 
 }
 .button img{
@@ -86,6 +86,12 @@ export default {
   padding: 1rem 3rem ;
   list-style: none;
   border-radius: 14px 14px 0px 0px;
+
+}
+.list__item button{
+
+  color: var(--light);
+  font-size: 1rem;
 }
 .list__item:hover{
   background: linear-gradient(200.42deg, #B275FF 13.57%, #DD7EFF 98.35%);

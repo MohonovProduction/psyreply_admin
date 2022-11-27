@@ -1,10 +1,13 @@
 import config from '@/api/index';
+import Request from '@/api/index';
+
+const req = new Request
 
 const Admin = {}
 
 Admin.auth = async function(email, password) {
   return new Promise((resolve, reject) => {
-    fetch(`${config.host}/auth`, {
+    fetch(`${req.host}/auth`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -16,10 +19,10 @@ Admin.auth = async function(email, password) {
       }
     })
       .then(async res => {
-        resolve(await res.json())
+        resolve(res)
       })
       .catch(err => {
-        reject(err)
+        resolve(err)
       })
   })
 }
@@ -38,10 +41,10 @@ Admin.authCode = async function(code) {
     })
       .then(async res => {
         const token = await res.json()
-        localStorage.setItem('token', token.token)
+        //localStorage.setItem('token', token.token)
       })
       .catch(err => {
-        reject(err)
+        resolve(err)
       })
   })
 }

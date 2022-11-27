@@ -2,18 +2,28 @@
   <y-modal class="modal">
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
-      <h1 class="heading">Список тестов</h1>
+      <h1 class="heading">Новая компания</h1>
+      <y-button :plus="true">Добавить блок</y-button>
     </header>
+
+    <y-input
+        v-model="testName"
+        placeholder="Название компании"
+    />
     <y-list />
-    <y-cool-button>Сохранить блок</y-cool-button>
+    <y-cool-button>Создать компанию</y-cool-button>
   </y-modal>
 </template>
 
 <script>
-import YModal from "@/components/UI/YModal";
 export default {
-  name: "EditBlock",
-  components: {YModal}
+  name: "CreateCompany",
+  components: {},
+  data() {
+    return {
+      testName: null
+    }
+  }
 }
 </script>
 

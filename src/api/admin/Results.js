@@ -1,5 +1,5 @@
 import config from '@/api'
-import Admin from '@/api/admin/index'
+import Admin from '@/api/admin/Auth'
 
 const Results = {}
 

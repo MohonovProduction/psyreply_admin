@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Admin from '@/api/admin/index';
+import Admin from '@/api/admin/Auth';
 
 const routes = [
   {
