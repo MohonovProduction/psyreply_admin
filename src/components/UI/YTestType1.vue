@@ -1,45 +1,76 @@
 <template>
-<div class="test__type__1">
-  <y-input placeholder="Введите вопрос"/>
-  <div class="scors">
-    <div class="scor__item scors__yes">
-      <div>Баллы "Да" </div>
-      <y-input></y-input>
+  <article class="question">
+    <span class="question__id">{{id}}.</span>
+    <y-input v-model="question.title" />
+    <div class="question__coins">
+      <label class="label">
+        Баллы “Да”
+      </label>
+      <y-input v-model="question.answers[0].value" class="question__input" />
+      <label class="label">
+        Баллы “Нет”
+      </label>
+      <y-input v-model="question.answers[1].value" class="question__input" />
     </div>
-    <div class="scor__item scors__no">
-      <div>Баллы "Нет" </div>
-      <y-input></y-input>
-    </div>
-  </div>
-</div>
+    <y-button class="question__del">X</y-button>
+  </article>
 </template>
 
 <script>
-import YInput from "@/components/UI/YInput";
 export default {
   name: "YTestType1",
-  components: {YInput}
+  props: {
+    id: Number
+  },
+  data() {
+    return {
+      question: {
+        title: null,
+        picture: null,
+        answers: [
+          {
+            id: 1,
+            title: 'Да',
+            value: null
+          },
+          {
+            id: 2,
+            title: 'Нет',
+            value: null
+          }
+        ],
+        coins: null
+      }
+    }
+  },
+  methods: {
+
+  }
 }
 </script>
 
 <style scoped>
-.test__type__1{
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-
-}
-.scors{
-  display: flex;
-  flex-direction: column;
+.question {
+  display: grid;
+  grid-template-columns: auto auto auto min-content;
+  grid-gap: 1.3rem;
   align-items: center;
 }
-.scor__item{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction:row;
+.question__id {
+  font-size: 2rem;
 }
-
+.question__coins {
+  display: grid;
+  grid-template-columns: max-content minmax(50px, 100px);
+  grid-template-rows: repeat(2, auto);
+  align-items: center;
+  grid-gap: .3em;
+}
+.question__input {
+  padding: .3em;
+}
+.question__del {
+  color: red;
+  width: min-content;
+}
 </style>

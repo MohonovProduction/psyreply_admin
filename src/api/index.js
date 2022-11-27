@@ -30,14 +30,27 @@ export default class Request {
       const input = `${this.host}/${url}`
       console.log(input)
 
-      const init = {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Connection': 'keep-alive',
-          'Authorization': `Bearer ${Admin.getToken()}`
-        },
-        body: JSON.stringify(body)
+      let init = null
+
+      if (body === false) {
+        init = {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': `Bearer ${Admin.getToken()}`
+          },
+        }
+      } else {
+        init = {
+          method,
+          headers: {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Authorization': `Bearer ${Admin.getToken()}`
+          },
+          body: JSON.stringify(body)
+        }
       }
 
       fetch(input, init)
@@ -60,16 +73,20 @@ export default class Request {
     });
   }
 
+  getOne(onResolve = (res) => res, onReject = (err) => err) {
+    return this.execute(`${this.endpoint}`, 'GET', false, onResolve, onReject)
+  }
+
   getAll(filters, onResolve = (res) => res, onReject = (err) => err) {
     return this.execute(`${this.endpoint}/all`, 'POST', filters, onResolve, onReject)
   }
 
   get(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.endpoint}/${id}`, 'GET', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'GET', false, onResolve, onReject)
   }
 
   remove(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.endpoint}/${id}`, 'DELETE', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'DELETE', false, onResolve, onReject)
   }
 
   update(id, body, onResolve = (res) => res, onReject = (err) => err) {
