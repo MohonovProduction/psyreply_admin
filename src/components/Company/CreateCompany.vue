@@ -6,21 +6,68 @@
       <y-button :plus="true">Добавить блок</y-button>
     </header>
     <y-input
-        v-model="testName"
+        v-model="company.name"
         placeholder="Название компании"
     />
-    <y-list />
-    <y-cool-button>Создать компанию</y-cool-button>
+    <y-list @select="selectBlock" v-if="blocks.length > 0" key-of-name="name" :items="blocks" />
+    <y-cool-button @click="createCompany">Создать компанию</y-cool-button>
   </y-modal>
 </template>
 
 <script>
+import Block from '@/api/admin/Block';
+import Company from '@/api/admin/Company';
+
 export default {
   name: "CreateCompany",
   components: {},
   data() {
     return {
-      testName: null
+      company: {
+        name: '',
+      },
+      blocks: []
+    }
+  },
+  created() {
+    const block = new Block()
+    block.getAll({ filters: { "company_id": null }})
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.blocks = r)
+        }
+      })
+  },
+  methods: {
+    selectBlock(n) {
+      console.log(n)
+      let block = this.blocks.filter(el => el.id === n.id)
+      block = block[0]
+      if ('active' in block) {
+        block.active = !block.active
+      } else {
+        block['active'] = true
+      }
+    },
+    createCompany() {
+      const company = new Company()
+      const blocks = []
+      this.blocks.map(el => {if (el.active) blocks.push(el.id)})
+      const body = {}
+      if (this.company.name.length > 3) {
+        body.company = this.company
+      } else {
+        return this.errorMessage('Слишком короткоее название')
+      }
+      if (blocks.length > 0) body.inputBlocks = blocks
+      company.create('', body)
+        .then(res => {
+          console.log(res)
+          alert('компания создана')
+        })
+    },
+    errorMessage(err) {
+      alert(err)
     }
   }
 }

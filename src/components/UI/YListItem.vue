@@ -1,6 +1,6 @@
 <template>
   <li class="list__item">
-    <div class="elipce"></div>
+    <div @click="$emit('select')" class="elipce" :class="{ elipce_active: active }"></div>
     <div class="name"><slot></slot></div>
     <div class="options" @click="$emit('edit')"><img src="@/assets/img/options.svg"></div>
   </li>
@@ -10,7 +10,10 @@
 export default {
   name: "YListItem",
   props: {
-
+    active: {
+      type: Boolean,
+      default: false
+    }
   },
   methods:{
 
@@ -26,6 +29,9 @@ export default {
   background-blend-mode: overlay;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.elipce:hover {
+  cursor: pointer;
 }
 .elipce_active {
   background: linear-gradient(200.42deg, #38F9D7 13.57%, #43E97B 98.35%);

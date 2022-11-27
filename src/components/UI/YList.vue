@@ -20,11 +20,13 @@
 
 <template>
   <ul class="list">
-    <template v-for="item in items">
-      <y-list-item>
-        {{ item.title }}
-      </y-list-item>
-    </template>
+    <y-list-item
+      v-for="item in items"
+      :key="`${item.id}${item[keyOfName]}`"
+      @select="$emit('select', item)"
+      :active="item.active">
+      {{ item[keyOfName] }}
+    </y-list-item>
   </ul>
 </template>
 
@@ -39,6 +41,10 @@ export default {
         { name: 'test2' },
         { name: 'test3' },
       ]
+    },
+    keyOfName: {
+      type: String,
+      default: name
     }
   }
 }

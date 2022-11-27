@@ -11,11 +11,11 @@
           <y-button :plus="true" @click="this.window ='createCompany'">Новая компания</y-button>
         </header>
         <!--        U can add "items" props to list component. It must be array -->
-        <y-list  />
+        <y-list v-if="companies.length > 0" :items="companies" key-of-name="name" />
       </y-modal>
       <create-company
           v-if="window === 'createCompany'"
-          @close="this.window = 'main'"
+          @close="getCompanies"
       />
     </main>
   </div>
@@ -25,6 +25,7 @@
 import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 import CreateCompany from "@/components/Company/CreateCompany";
+import Company from '@/api/admin/Company';
 
 export default {
   name: "CompanyView",
@@ -35,11 +36,28 @@ export default {
   data() {
     return {
       window: 'main',
+      companies: []
     }
   },
+  created() {
+    const company = new Company()
+    company.getOne()
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.companies = r)
+        }
+      })
+  },
   methods: {
-    createCompany() {
-
+    getCompanies() {
+      this.window = 'main'
+      const company = new Company()
+      company.getOne()
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => this.companies = r)
+          }
+        })
     },
 
     selectHandle(n) {

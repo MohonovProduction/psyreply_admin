@@ -3,7 +3,7 @@ import axios from 'axios';
 
 class Error {
   message = ''
-  bad = true
+  ok = false
 
   constructor(message) {
     this.message = message
@@ -54,18 +54,18 @@ export default class Request {
       }
 
       fetch(input, init)
-        .then(async res => {
+        .then(res => {
           if (res.ok) {
-            resolve(onResolve(await res.json()))
+            resolve(onResolve(res))
           } else {
             switch (res.status) {
-              case 400: resolve(new Error('не корректный запрос'))
+              case 400: resolve(onResolve(new Error('не корректный запрос')))
                 break
-              case 401: resolve(new Error('не авоторизован'))
+              case 401: resolve(onResolve(new Error('не авоторизован')))
                 break
-              case 404: resolve(new Error('не найдено'))
+              case 404: resolve(onResolve(new Error('не найдено')))
                 break
-              case 500: resolve(new Error('Сервер не отвечает. Да, всё очень плохо'))
+              case 500: resolve(onResolve(new Error('Сервер не отвечает. Да, всё очень плохо')))
             }
           }
         })
