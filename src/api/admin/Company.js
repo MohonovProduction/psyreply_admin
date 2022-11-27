@@ -1,7 +1,7 @@
-import config from '@/api/index'
+import Request from '@/api';
 
-const Company = {}
-
-
-
-export default Company
+export default class Company extends Request {
+  constructor(id) {
+    super('company', id);
+  }
+}

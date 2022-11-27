@@ -1,12 +1,8 @@
 import Request from '@/api';
 
-
 export default class Test extends Request {
-
-
   constructor(id) {
-    super();
-    this.id = id
+    super('test', id);
   }
 
   addToBlock(testId, blockId) {
