@@ -13,12 +13,18 @@
 </template>
 
 <script>
+import Block from '@/api/admin/Block';
+
 export default {
   name: 'HomeView',
   data() {
     return {
       step: 0
     }
+  },
+  mounted() {
+    const block = new Block(0)
+    block.getAll({}).then(res => console.log(res))
   },
   methods: {
     firstStep(formData) {
