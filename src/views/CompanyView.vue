@@ -17,7 +17,6 @@
           v-if="window === 'createCompany'"
           @close="this.window = 'main'"
       />
-
     </main>
   </div>
 </template>

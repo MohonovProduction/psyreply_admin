@@ -5,7 +5,6 @@
       <h1 class="heading">Новая компания</h1>
       <y-button :plus="true">Добавить блок</y-button>
     </header>
-
     <y-input
         v-model="testName"
         placeholder="Название компании"

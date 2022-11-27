@@ -1,7 +1,7 @@
 import Request from '@/api';
 
 export default class Test extends Request {
-  constructor(id) {
+  constructor(id = 0) {
     super('test', id);
   }
 

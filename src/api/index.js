@@ -15,7 +15,7 @@ class Error {
 }
 
 export default class Request {
-  host = 'https://api.psyreply.com/'
+  host = 'https://api.psyreply.com'
   endpoint = null
   id = null
 
@@ -28,6 +28,7 @@ export default class Request {
     return new Promise((resolve, reject) => {
 
       const input = `${this.host}/${url}`
+      console.log(input)
 
       const init = {
         method,
@@ -36,7 +37,7 @@ export default class Request {
           'Connection': 'keep-alive',
           'Authorization': `Bearer ${Admin.getToken()}`
         },
-        body
+        body: JSON.stringify(body)
       }
 
       fetch(input, init)
@@ -60,22 +61,22 @@ export default class Request {
   }
 
   getAll(filters, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/all`, 'POST', filters, onResolve, onReject)
+    return this.execute(`${this.endpoint}/all`, 'POST', filters, onResolve, onReject)
   }
 
   get(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'GET', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'GET', {}, onResolve, onReject)
   }
 
   remove(id, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'DELETE', {}, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'DELETE', {}, onResolve, onReject)
   }
 
   update(id, body, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'PATCH', body, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'PATCH', body, onResolve, onReject)
   }
 
   create(id, body, onResolve = (res) => res, onReject = (err) => err) {
-    return this.execute(`${this.host}/${this.endpoint}/${id}`, 'POST', body, onResolve, onReject)
+    return this.execute(`${this.endpoint}/${id}`, 'POST', body, onResolve, onReject)
   }
 }

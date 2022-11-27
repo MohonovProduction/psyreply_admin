@@ -22,7 +22,7 @@
   <ul class="list">
     <template v-for="item in items">
       <y-list-item>
-        {{ item.name }}
+        {{ item.title }}
       </y-list-item>
     </template>
   </ul>
