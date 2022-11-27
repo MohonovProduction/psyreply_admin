@@ -36,5 +36,6 @@ export default {
   grid-template-columns: auto 1fr min-content;
   grid-gap: 2rem;
   justify-content: start;
+  align-items: center;
 }
 </style>

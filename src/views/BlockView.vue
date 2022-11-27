@@ -8,7 +8,7 @@
             <div class="heading header__heading">Блоки</div>
             <y-select @select="selectHandle" />
           </div>
-          <y-button :plus="true" @click="this.window = 'createBlock'">Новый блок</y-button>
+          <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
         <y-list  @click="this.window = 'editBlock'" />
