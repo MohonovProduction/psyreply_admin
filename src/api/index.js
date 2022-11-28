@@ -1,5 +1,5 @@
 import Admin from '@/api/admin/Auth';
-import axios from 'axios';
+
 
 class Error {
   message = ''

@@ -44,6 +44,7 @@
         </div>
 
         <y-test-type1 :id="1" />
+        <y-test-type2 @click="this.window='AddAnswers'"/>
 
         <div class="questions__list">
           <div class="state_1" v-if="newTest.questions.length === 0">Здесь будет отображаться список вопросов. <span
@@ -59,9 +60,14 @@
 
       </section>
   </y-modal>
+  <add-answers
+  v-if="window==='AddAnswers'"
+  ></add-answers>
 </template>
 
 <script>
+import AddAnswers from "@/components/Test/AddAnswers";
+
 class Answer {
   id = null
   title = null
@@ -101,7 +107,7 @@ import Metric from '@/api/admin/Metric';
 import QuestionType from '@/api/admin/QuestionType';
 export default {
   name: "CreateTest",
-  components: {YTestType1, YMiniButton},
+  components: {AddAnswers, YTestType1, YMiniButton},
   data(){
     return{
       types: [],

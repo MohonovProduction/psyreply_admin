@@ -12,6 +12,8 @@ import YLeftArrowButton from '@/components/UI/YLeftArrowButton';
 import YSelect from "@/components/UI/YSelect";
 import YMiniButton from "@/components/UI/YMiniButton";
 import YTestType1 from "@/components/UI/YTestType1";
+import YTestType2 from "@/components/UI/YTestType2";
+
 
 
 
@@ -33,4 +35,5 @@ export default [
   YSelect,
   YMiniButton,
   YTestType1,
+  YTestType2,
 ]
