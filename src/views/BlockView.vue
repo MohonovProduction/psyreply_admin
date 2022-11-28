@@ -11,7 +11,11 @@
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
-        <y-list  @click="this.window = 'editBlock'" />
+        <y-list
+          key-of-name="name"
+          :editable="true"
+          @edit="this.window = 'editBlock'"
+        />
       </y-modal>
       <create-block
         v-if="window === 'createBlock'"
