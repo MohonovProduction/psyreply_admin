@@ -36,7 +36,7 @@ export default {
   },
   created() {
     const test = new Test()
-    test.getAll({ filters: {} })
+    test.getAll({ filters: {  } })
       .then(res => {
         console.log(res)
         this.tests = res
