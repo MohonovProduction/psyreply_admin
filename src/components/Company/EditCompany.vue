@@ -20,7 +20,6 @@
         <h2 class="heading">Блоки, которые можно добавить</h2>
       </header>
       <y-list
-        @select="selectBlock"
         v-if="blocks.length > 0"
         key-of-name="name"
         :items="blocks"
@@ -32,22 +31,42 @@
 </template>
 
 <script>
+import Company from '@/api/admin/Company';
 import Block from '@/api/admin/Block';
+
+function getCompany() {
+
+}
 
 export default {
   name: "EditCompany",
   components: {},
   props: {
-    company: {
-      type: Object
-    }
+    companyId: Number
   },
   data() {
     return {
-      blocks: []
+      blocks: [],
+      company: {
+        id: null,
+        name: null,
+        createdAt: null,
+        updatedAt: null,
+        blocks: []
+      }
     }
   },
   created() {
+    const company = new Company()
+    company.get(this.companyId)
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => {
+            for (let key in r) this.company[key] = r[key]
+          })
+        }
+      })
+
     const block = new Block()
     block.getAll({ filters: { "company_id": null }})
       .then(res => {
@@ -55,17 +74,23 @@ export default {
           res.json().then(r => this.blocks = r)
         }
       })
+    block.getAll({ filters: { "company_id": this.companyId }})
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.company.blocks = r)
+        }
+      })
   },
   methods: {
     addBlock(n) {
       console.log(n)
       const block = new Block(n.id)
-      block.create(`${n.id}/copy/${this.company.id}`)
+      block.create(`${n.id}/copy/${this.companyId}`)
         .then(res => {
           if (res.ok) {
             console.log(res)
             alert('Блок успешно доавлен')
-            this.$emit('close')
+            this.updateComponent()
           }
         })
     },
@@ -77,7 +102,16 @@ export default {
           if (res.ok) {
             console.log(res)
             alert('Блок удалён')
-            this.$emit('close')
+            this.updateComponent()
+          }
+        })
+    },
+    updateComponent() {
+      const block = new Block()
+      block.getAll({ filters: { "company_id": this.companyId }})
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => this.company.blocks = r)
           }
         })
     }

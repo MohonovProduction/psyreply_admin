@@ -26,7 +26,7 @@
       />
       <edit-company
         v-if="window === 'editCompany'"
-        :company="company"
+        :companyId="companyId"
         @close="getCompanies"
       />
     </main>
@@ -50,7 +50,7 @@ export default {
     return {
       window: 'main',
       companies: [],
-      company: {}
+      companyId: null
     }
   },
   created() {
@@ -74,7 +74,8 @@ export default {
         })
     },
     editCompany(n) {
-      this.company = n
+      console.log(n)
+      this.companyId = n.id
       this.window = 'editCompany'
     },
     selectHandle(n) {
