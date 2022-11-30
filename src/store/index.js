@@ -14,7 +14,7 @@ export default createStore({
     question: (state) => (id) => {
       return state.newTest.questions[id]
     },
-    test: (state) => (id) => {
+    test: (state) => {
       return state.newTest
     }
   },
