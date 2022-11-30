@@ -11,6 +11,10 @@ import YInput from "@/components/UI/YInput";
 import YLeftArrowButton from '@/components/UI/YLeftArrowButton';
 import YSelect from "@/components/UI/YSelect";
 import YMiniButton from "@/components/UI/YMiniButton";
+import YDate from "@/components/UI/YDate";
+import YPopup from "@/components/UI/YPopup";
+import YPopupError from "@/components/UI/YPopupError";
+import YResultsListItem from "@/components/UI/YResultsListItem";
 
 export default [
   YButton,
@@ -26,4 +30,8 @@ export default [
   YInput,
   YSelect,
   YMiniButton,
+  YDate,
+  YPopup,
+  YPopupError,
+  YResultsListItem,
 ]
