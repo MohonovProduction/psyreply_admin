@@ -1,40 +1,70 @@
 <template>
-  <y-modal class="modal">
-    <header class="header">
-      <y-left-arrow-button @click="$emit('close')" />
-      <h1 class="heading">Добавить ответы</h1>
-    </header>
-    <artical class="answers__add">
-    <y-input placeholder="Введите ответ"></y-input>
-      <div class="question__coins">
-        <label class="label">
-          Баллы за ответ
-        </label>
-        <y-input class="question__input" />
+  <article class="wrapper">
+    <y-modal class="modal">
+      <header class="header">
+        <y-left-arrow-button @click="$emit('close')" />
+        <h1 class="heading">Добавить ответы</h1>
+      </header>
 
+      <template v-if="answers.length > 0">
+        <article v-for="answer of answers" class="answers__add" >
+          <y-input v-model="answer.title" placeholder="Введите ответ"></y-input>
+          <div class="question__coins">
+            <label class="label">Баллы за ответ</label>
+            <y-input v-model="answer.value" class="question__input" />
+          </div>
+          <y-button class="question__del">X</y-button>
+        </article>
+      </template>
+
+      <hr/>
+
+      <div class="anw__add__button">
+        <button @click="addAnswer" class="plus">+</button>
       </div>
-      <y-button class="question__del">X</y-button>
-    </artical>
 
-
-
-    <hr/>
-    <div class="anw__add__button">
-      <button class="plus">+</button>
-    </div>
-
-  </y-modal>
+      <y-cool-button @click="giveData">Сохранить и вернтуься</y-cool-button>
+    </y-modal>
+  </article>
 </template>
 
 <script>
-import YInput from "@/components/UI/YInput";
 export default {
   name: "AddAnswers",
-  components: {YInput}
+  data() {
+    return {
+      answers: []
+    }
+  },
+  methods: {
+    addAnswer() {
+      this.answers.push({})
+      const id = this.answers.length - 1
+      this.answers[id]['id'] = id
+      this.answers[id]['title'] = null
+      this.answers[id]['value'] = null
+    },
+    giveData() {
+      this.$emit('giveData', this.answers)
+      this.$emit('close')
+    }
+  }
 }
 </script>
 
 <style scoped>
+.wrapper {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background-color: rgba(0, 0, 0, 0.42);
+}
 .header {
   display: grid;
   grid-template-columns: auto 1fr min-content;

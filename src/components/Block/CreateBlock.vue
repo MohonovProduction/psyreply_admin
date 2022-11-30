@@ -1,26 +1,90 @@
 <template>
-  <y-modal class="modal">
+  <y-modal class="modal" v-if="window === 'main'">
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
       <h1 class="heading">Новый блок</h1>
-      <y-button :plus="true">Добавить тест</y-button>
+      <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
     </header>
+    <y-input v-model="block.name" placeholder="Название блока" />
     <y-input
-      v-model="testName"
       placeholder="Название теста..."
     />
-    <y-list />
-    <y-cool-button>Сохранить блок</y-cool-button>
+    <y-list
+      :items="tests"
+      key-of-name="title"
+      :selectable="true"
+      @select="selectTest"
+    />
+    <y-cool-button @click="saveBlock">Сохранить блок</y-cool-button>
   </y-modal>
+
+  <create-test
+    v-if="window === 'createTest'"
+  />
 </template>
 
 <script>
+import CreateTest from '@/components/Test/CreateTest';
+import Test from '@/api/admin/Test'
+import Block from '@/api/admin/Block';
+
 export default {
   name: "CreateBlock",
-  components: {},
+  components: {
+    CreateTest
+  },
   data() {
     return {
-      testName: null
+      window: 'main',
+      block: {
+        name: null,
+      },
+      tests: []
+    }
+  },
+  created() {
+    const test = new Test()
+    test.getAll({ filters: {  } })
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.tests = r)
+        } else {
+          alert(res.msg())
+        }
+      })
+  },
+  methods: {
+    selectTest(n) {
+      let test = this.tests.filter(el => el.id === n.id)
+      test = test[0]
+      if ('active' in test) {
+        test.active = !test.active
+      } else {
+        test['active'] = true
+      }
+    },
+    saveBlock() {
+      console.log('asfsadf')
+      const body = this.block
+      const tests = this.tests.filter(el => el.active)
+
+      body.tests = []
+
+      tests.map(el => body.tests.push(el.id))
+
+      console.log(body.test)
+
+      const block = new Block()
+      block.create('', body)
+        .then(res => {
+          console.log(res)
+          if (res.ok) {
+            alert('Блок успешно создан')
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
     }
   }
 }

@@ -1,27 +1,23 @@
 <template>
   <article class="question">
-    <span class="question__id">{{id}}.</span>
-    <y-input v-model="question.title" />
+    <span class="question__id">{{relativeId+1}}</span>
+    <y-input @input="giveData" v-model="question.title" />
     <div class="question__coins">
-      <label class="label">
-        Баллы “Да”
-      </label>
-      <y-input v-model="question.answers[0].value" class="question__input" />
-      <label class="label">
-        Баллы “Нет”
-      </label>
-      <y-input v-model="question.answers[1].value" class="question__input" />
+      <label class="label">Баллы “Да”</label>
+      <y-input @input="giveData" v-model="question.answers[0].value" class="question__input" />
+      <label class="label">Баллы “Нет”</label>
+      <y-input @input="giveData" v-model="question.answers[1].value" class="question__input" />
+      <label class="label">Монеты</label>
+      <y-input @input="giveData" v-model="question.coins" class="question__input" />
     </div>
-    <y-button class="question__del">X</y-button>
+    <y-button @click="$emit('remove')" class="question__del">X</y-button>
   </article>
 </template>
 
 <script>
 export default {
-  name: "YTestType1",
-  props: {
-    id: Number
-  },
+  name: "QuestionType2",
+  props: [ 'id', 'relativeId'],
   data() {
     return {
       question: {
@@ -40,11 +36,13 @@ export default {
           }
         ],
         coins: null
-      }
+      },
     }
   },
   methods: {
-
+    giveData() {
+      this.$emit('giveData', this.question)
+    },
   }
 }
 </script>
@@ -62,9 +60,8 @@ export default {
 .question__coins {
   display: grid;
   grid-template-columns: max-content minmax(50px, 100px);
-  grid-template-rows: repeat(2, auto);
   align-items: center;
-  grid-gap: .3em;
+  grid-gap: .3em .5em;
 }
 .question__input {
   padding: .3em;
