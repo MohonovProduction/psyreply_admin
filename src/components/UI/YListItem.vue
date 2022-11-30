@@ -64,6 +64,9 @@ export default {
   font-size: 32px;
   line-height: 100%;
   color: #FFFFFF;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .list__item{
   padding-left: 1rem;

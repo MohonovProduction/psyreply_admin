@@ -14,11 +14,17 @@
           key-of-name="title"
           :items="tests"
           :editable="true"
+          @edit="editTest"
         />
       </y-modal>
       <create-test
           @close="window = 'main'"
           v-if="window === 'createTest'"
+      />
+      <edit-test
+        @close="window = 'main'"
+        v-if="window === 'editTest'"
+        :id="editTestId"
       />
     </main>
   </div>
@@ -26,16 +32,20 @@
 
 <script>
 import CreateTest from "@/components/Test/CreateTest";
+import EditTest from '@/components/Test/EditTest';
+
 import Test from '@/api/admin/Test'
+
 export default {
   name: "TestView",
   components: {
-    CreateTest,
+    CreateTest, EditTest
   },
   data() {
     return {
       window: 'main',
-      tests: []
+      tests: [],
+      editTestId: null
     }
   },
   created() {
@@ -48,6 +58,10 @@ export default {
       })
   },
   methods: {
+    editTest(n) {
+      this.editTestId = n.id
+      this.window = 'editTest'
+    }
   }
 }
 </script>

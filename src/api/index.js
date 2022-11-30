@@ -67,6 +67,8 @@ export default class Request {
                 break
               case 404: resolve(onResolve(new Error('не найдено', res)))
                 break
+              case 409: resolve(onResolve(new Error('не удалось произвести транзакцию', res)))
+                break
               case 500: resolve(onResolve(new Error('Сервер не отвечает. Да, всё очень плохо', res)))
             }
           }
