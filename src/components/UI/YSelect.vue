@@ -69,12 +69,19 @@ export default {
   color: var(--light);
   font-size: 1rem;
 }
+
 .button__icon {
   width: 1rem;
 }
 
 .select__button {
   padding: .3rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.button__icon{
+  margin-left: 0.5rem;
 }
 .select__list{
   position: absolute;
