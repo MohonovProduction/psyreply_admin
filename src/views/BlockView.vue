@@ -14,7 +14,8 @@
         <y-list
           key-of-name="name"
           :editable="true"
-          @edit="this.window = 'editBlock'"
+          @edit="editBlock"
+          :items="blocks"
         />
       </y-modal>
       <create-block
@@ -22,6 +23,7 @@
         @close="this.window = 'main'"
       />
       <edit-block
+        :id="editBlockId"
         v-if="window === 'editBlock'"
         @close="this.window = 'main'"
       />
@@ -33,6 +35,8 @@
 import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 
+import Block from '@/api/admin/Block';
+
 export default {
   name: "BlockView",
   components: {
@@ -41,14 +45,26 @@ export default {
   data() {
     return {
       window: 'main',
+      blocks: [],
+      editBlockId: null,
     }
+  },
+  created() {
+    const block = new Block()
+    block.getAll({})
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.blocks = r)
+        }
+      })
   },
   methods: {
     createBlock() {
 
     },
-    editblock(){
-
+    editBlock(n){
+      this.window = 'editBlock'
+      this.editBlockId = n.id
     },
     selectHandle(n) {
       console.log(n)

@@ -160,7 +160,6 @@ export default {
         .then(res => {
           if (res.ok) {
             alert('Тест успешно сохранён')
-            window.location.reload()
           } else {
             alert(res.msg())
           }
