@@ -190,7 +190,18 @@ export default {
         })
     },
     removeBlock() {
+      const block = new Block()
 
+      block.remove(this.id)
+        .then(res => {
+          if (res.ok) {
+            alert('Блок успешно удалён')
+            this.$emit('close')
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
     }
   }
 }
