@@ -21,6 +21,7 @@ export default {
   components: {
     QuestionType1, QuestionType2
   },
+  emits: ['remove'],
   props: [
     'questionId',
     'type'

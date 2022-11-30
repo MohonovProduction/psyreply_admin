@@ -1,7 +1,7 @@
 <template>
   <y-modal class="modal">
       <header class="header">
-        <y-left-arrow-button @click="$emit('close')" />
+        <y-left-arrow-button @click="close" />
         <h1 class="heading">Новый тест</h1>
       </header>
 
@@ -91,22 +91,45 @@ export default {
   components: {
     AddAnswers, Question
   },
-  emits: ['giveData', 'remove'],
+  emits: ['close'],
+  props: {
+    testId: {
+      type: Number,
+      default: -1
+    }
+  },
   data(){
     return {
       questionTypes: [],
       metrics: [],
-      formula: null,
       test: {
-        type: null, //change to null
+        type: null,
         title: null,
         formula: null,
-        metric: null, //change to null
-        questions: [],
+        metric: null,
       },
     }
   },
-  created() {
+  mounted() {
+    if (this.testId !== -1) {
+      const test = new Test()
+      test.get(this.testId)
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => {
+              this.test.type = r.type.id
+              this.test.title = r.title
+              this.test.formula = r.formula
+              this.test.metric = r.metric.id
+              this.$store.commit('fillQuestions', r.questions)
+            })
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
+    }
+
     const metric = new Metric
     metric.getOne()
       .then(res => {
@@ -127,6 +150,28 @@ export default {
       })
   },
   methods: {
+    close() {
+      this.$emit('close')
+      this.$store.commit('clearNewTest')
+    },
+    update() {
+      const test = new Test()
+      test.get(this.testId)
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => {
+              this.test.type = r.type.id
+              this.test.title = r.title
+              this.test.formula = r.formula
+              this.test.metric = r.metric.id
+              this.$store.commit('fillQuestions', r.questions)
+            })
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
+    },
     addQuestion() {
       let question = {}
 
@@ -165,23 +210,40 @@ export default {
       const test = new Test()
 
       const body = this.test
-      body.questions.forEach(el => delete el.id)
 
-      console.log(body.type = 1)
+      body.questions = this.questions
+      console.log(body)
 
-      test.create('', body)
-        .then(res => {
-          if (res.ok) {
-            alert('Тест успешно сохранён')
-            this.$store.commit('clearNewTest')
-            this.test.type = null
-            this.test.formula = null
-            this.test.metric = null
-            this.test.title = null
-          } else {
-            alert(res.msg())
-          }
-        })
+      if (this.testId !== -1) {
+        test.update(this.testId, body)
+          .then(res => {
+            if (res.ok) {
+              alert('Тест успешно изменён')
+              this.$store.commit('clearNewTest')
+              this.test.type = null
+              this.test.formula = null
+              this.test.metric = null
+              this.test.title = null
+              this.update()
+            } else {
+              alert(res.msg())
+            }
+          })
+      } else {
+        test.create('', body)
+          .then(res => {
+            if (res.ok) {
+              alert('Тест успешно сохранён')
+              this.$store.commit('clearNewTest')
+              this.test.type = null
+              this.test.formula = null
+              this.test.metric = null
+              this.test.title = null
+            } else {
+              alert(res.msg())
+            }
+          })
+      }
     },
     removeQuestion(id) {
       this.$store.commit('removeQuestion', id)
@@ -190,7 +252,7 @@ export default {
   computed: {
     questions() {
       return this.$store.getters.questions
-    }
+    },
   }
 }
 </script>

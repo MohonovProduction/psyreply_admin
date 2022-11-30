@@ -14,6 +14,9 @@ export default createStore({
     question: (state) => (id) => {
       return state.newTest.questions[id]
     },
+    test: (state) => (id) => {
+      return state.newTest
+    }
   },
   mutations: {
     addQuestion(state, question) {
@@ -31,6 +34,9 @@ export default createStore({
     removeQuestion(state, question) {
       state.newTest.questions.splice(question, 1)
     },
+    fillQuestions(state, questions) {
+      state.newTest.questions = questions
+    },
     addAnswer(state, data) {
       console.log(data)
       state.newTest.questions[data.questionId].answers.push(data.answer)
@@ -46,6 +52,9 @@ export default createStore({
         questionsCount: 0,
         questions: []
       }
+    },
+    fillTest(state, test) {
+      state.newTest = test
     }
   },
   actions: {
