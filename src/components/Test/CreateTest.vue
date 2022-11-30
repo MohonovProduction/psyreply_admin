@@ -18,9 +18,10 @@
           <div class="type__test">
             <div class="type__test__title">Тип теста</div>
             <y-mini-button
+              class="type__test__type"
               v-for="type of questionTypes"
               :key="`${type.id}${type.name}`"
-              @click="this.test.type = type.id"
+              @click="selectLabel('type', type.id)"
             >
               {{ type.name }}
             </y-mini-button>
@@ -31,7 +32,7 @@
               class="type__test__type"
               v-for="metric of metrics"
               :key="`${metric.id}${metric.name}`"
-              @click="this.test.metric = metric.id"
+              @click="selectLabel('metric', metric.id)"
             >
               {{ metric.name }}
             </y-mini-button>
@@ -85,6 +86,7 @@ import Question from '@/components/Test/Question';
 import Metric from '@/api/admin/Metric';
 import QuestionType from '@/api/admin/QuestionType';
 import Test from '@/api/admin/Test'
+import question from '@/components/Test/Question';
 
 export default {
   name: "CreateTest",
@@ -171,6 +173,13 @@ export default {
             console.log(res)
           }
         })
+    },
+    selectLabel(type, id) {
+      if (this.questions.length > 0 && type === 'type') {
+        alert('Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
+        return
+      }
+      this.test[type] = id
     },
     addQuestion() {
       let question = {}
@@ -283,6 +292,8 @@ export default {
   margin-top: 40px;
   display: flex;
   align-items: center;
+  justify-content: stretch;
+  flex-wrap: wrap;
 }
 .types__test{
   display: grid;
@@ -295,9 +306,10 @@ export default {
 }
 .type__test__type {
   margin-right: .5rem;
+  margin-bottom: .5rem;
 }
 .type__test__type:last-child {
-  margin: 0;
+  margin-right: 0;
 }
 .plus{
   margin-left:10px ;
