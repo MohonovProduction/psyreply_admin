@@ -76,6 +76,9 @@ export default {
     },
     addToBlock() {
       const block = this.blocks.filter(el => el.active)
+      if (block.length === 0) {
+        return alert('Выберите блок, пожалуйста')
+      }
       const test = new Test()
       test.addToBlock(this.test.id, block[0].id)
         .then(res => {
