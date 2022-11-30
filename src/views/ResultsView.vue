@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <y-left-side-bar />
-    <y-popup/>
+<!--    <y-popup/>-->
 
     <main class="main">
 
@@ -16,7 +16,7 @@
           </div>
 
         </header>
-
+        <y-results-list></y-results-list>
       </y-modal>
 
     </main>
@@ -32,10 +32,14 @@ import YSelect from "@/components/UI/YSelect";
 import YDate from "@/components/UI/YDate";
 import YPopup from "@/components/UI/YPopup";
 import YPopupError from "@/components/UI/YPopupError";
+import YResultsListItem from "@/components/UI/YResultsListItem";
+import YResultsList from "@/components/Results/YResultsList";
 
 export default {
   name: "RelultsView",
   components: {
+    YResultsList,
+    YResultsListItem,
     YPopupError,
     YPopup,
     YDate,

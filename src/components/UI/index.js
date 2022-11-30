@@ -16,6 +16,8 @@ import YTestType2 from "@/components/UI/YTestType2";
 import YDate from "@/components/UI/YDate";
 import YPopup from "@/components/UI/YPopup";
 import YPopupError from "@/components/UI/YPopupError";
+import YResultsListItem from "@/components/UI/YResultsListItem";
+
 
 
 
@@ -43,4 +45,5 @@ export default [
   YDate,
   YPopup,
   YPopupError,
+  YResultsListItem,
 ]

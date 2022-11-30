@@ -23,7 +23,7 @@
     <y-list-item
       v-for="item in items"
       :key="`${item.id}${item[keyOfName]}`"
-      @select="$emit('select', item)"
+      @select="$emit('select', item.name)"
       :active="item.active">
       {{ item[keyOfName] }}
     </y-list-item>
