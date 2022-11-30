@@ -34,6 +34,7 @@ export default {
   components: {
     CreateTest
   },
+  emits: ['close'],
   data() {
     return {
       window: 'main',
