@@ -22,9 +22,9 @@
         key-of-name="title"
         :items="block.tests"
         :selectable="true"
-        @select="selectTest"
+        @select="selectAddTest"
       />
-      <y-cool-button @click="removeTests">Удалить тесты</y-cool-button>
+      <y-cool-button @click="removeTests">Удалить тест из блока</y-cool-button>
     </y-modal>
 
     <y-modal v-if="tests.length > 0">
@@ -33,9 +33,11 @@
       </header>
       <y-list
         :selectable="true"
-        @select="selectTest"
+        @select="selectRemoveTest"
         :items="tests"
+        key-of-name="title"
       />
+      <y-cool-button @click="addTests">Добавить в блок</y-cool-button>
     </y-modal>
     <y-modal>
       <header class="header">
@@ -76,10 +78,10 @@ export default {
       })
 
     const test = new Test()
-    test.getAll({ filters: { block_id: null } })
+    test.getAll({ filters: {  } })
       .then(res => {
         if (res.ok) {
-          res.json(r => this.tests = r)
+          res.json().then(r => this.tests = r)
         } else {
           alert(res.msg())
           console.log(res)
@@ -99,18 +101,19 @@ export default {
         })
 
       const test = new Test()
-      test.getAll({ filters: { block_id: null } })
+      test.getAll({ filters: {  } })
         .then(res => {
           if (res.ok) {
-            res.json(r => this.tests = r)
+            res.json().then(r => this.tests = r)
           } else {
             alert(res.msg())
             console.log(res)
           }
         })
     },
-    selectTest(n) {
+    selectAddTest(n) {
       console.log(n)
+      this.block.tests.forEach(el => el.active = false)
       let test = this.block.tests.filter(el => el.id === n.id)
       test = test[0]
       if ('active' in test) {
@@ -119,11 +122,56 @@ export default {
         test['active'] = true
       }
     },
+    selectRemoveTest(n) {
+      console.log(n)
+      this.tests.forEach(el => el.active = false)
+      let test = this.tests.filter(el => el.id === n.id)
+      test = test[0]
+      if ('active' in test) {
+        test.active = !test.active
+      } else {
+        test['active'] = true
+      }
+    },
     removeTests() {
+      const test = new Test()
 
+      const removeTest = this.block.tests.filter(el => el.active)
+
+      if (removeTest.length === 0) {
+        alert('Пожалуйста, выберите тест для удаления')
+      }
+
+      test.removeFromBlock(removeTest[0].id, this.id)
+        .then(res => {
+          if (res.ok) {
+            alert('Тест успешно удалён из блока')
+            this.update()
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
     },
     addTests() {
+      const test = new Test()
 
+      const addTest = this.tests.filter(el => el.active)
+
+      if (addTest.length === 0) {
+        alert('Пожалуйста, выберите тест для добавления')
+      }
+
+      test.addToBlock(addTest[0].id, this.id)
+        .then(res => {
+          if (res.ok) {
+            alert('Тест успешно добавлен в блок блока')
+            this.update()
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
     },
     updateBlock() {
       const block = new Block()
@@ -134,6 +182,7 @@ export default {
         .then(res=> {
           if (res.ok) {
             alert('Название блока успешно изменено')
+            this.update()
           } else {
             alert(res.msg())
             console.log(res)
