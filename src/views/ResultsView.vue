@@ -16,7 +16,12 @@
           </div>
 
         </header>
-        <y-results-list></y-results-list>
+        <y-results-list>
+          <y-results-list-item/>
+        </y-results-list>
+      </y-modal>
+      <y-modal v-if="window==='dashboard'">
+          <y-dashboard/>
       </y-modal>
 
     </main>
@@ -34,6 +39,7 @@ import YPopup from "@/components/UI/YPopup";
 import YPopupError from "@/components/UI/YPopupError";
 import YResultsListItem from "@/components/UI/YResultsListItem";
 import YResultsList from "@/components/Results/YResultsList";
+import YDashboard from "@/components/Results/YDashboard";
 
 export default {
   name: "RelultsView",
@@ -43,13 +49,14 @@ export default {
     YPopupError,
     YPopup,
     YDate,
-    YSelect
+    YSelect,
+    YDashboard,
 
   },
   data() {
     return {
-      window: 'main',
-      companies: []
+      window: 'dashboard',
+
     }
   }}
 </script>

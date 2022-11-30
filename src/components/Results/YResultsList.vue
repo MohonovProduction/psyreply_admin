@@ -1,6 +1,6 @@
 <template>
 <ul class="results__list">
-  <y-results-list-item></y-results-list-item>
+  <slot></slot>
 </ul>
 </template>
 
