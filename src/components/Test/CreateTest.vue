@@ -50,15 +50,13 @@
           <button @click="addQuestion" class="plus">+</button>
         </div>
 
-        <template v-if="test.questions.length > 0">
+        <template v-if="questions.length > 0">
 
-          <template v-for="(question, id) in test.questions" :key="`${id}${question.id}`">
+          <template v-for="(question, id) in questions" :key="`${id}${question.id}`">
             <question
-              :id="question.id"
-              :relative-id="id"
+              :question-id="id"
               :type="test.type"
-              @give-data="saveQuestionData"
-              @remove="removeQuestion"
+              @remove="removeQuestion(id)"
             />
           </template>
 
@@ -98,7 +96,6 @@ export default {
     return {
       questionTypes: [],
       metrics: [],
-      questions: 0,
       formula: null,
       test: {
         type: null, //change to null
@@ -131,22 +128,38 @@ export default {
   },
   methods: {
     addQuestion() {
-      const question = { id: this.questions }
-      this.test.questions.push(question)
-      this.questions++
-    },
-    saveQuestionData(n) {
-      this.test.questions[n.relative_id] = n
-    },
-    removeQuestion(n) {
-      // console.log(n)
-      alert(`К сожалению не удалось удалть блок ${n}, пожалуйста, проверьте подключение к интернету`)
-      // let arr = this.test.questions
-      // const question = arr.filter(el => el.id === n)
-      // arr.splice(question.relativeId, 1)
-      // this.test.questions = []
-      // arr.forEach(el => this.test.questions.push({ ...el }))
-      // console.log(this.test.questions)
+      let question = {}
+
+      switch (this.test.type) {
+        case 1:
+          question = {
+            title: null,
+            picture: null,
+            answers: [],
+            coins: null
+          }
+          break
+        case 2:
+          question = {
+            title: null,
+            picture: null,
+            answers: [
+              {
+                id: 1,
+                title: 'Да',
+                value: null
+              },
+              {
+                id: 2,
+                title: 'Нет',
+                value: null
+              }
+            ],
+            coins: null
+          }
+      }
+
+      this.$store.commit('addQuestion', question)
     },
     saveTest() {
       const test = new Test()
@@ -160,10 +173,23 @@ export default {
         .then(res => {
           if (res.ok) {
             alert('Тест успешно сохранён')
+            this.$store.commit('clearNewTest')
+            this.test.type = null
+            this.test.formula = null
+            this.test.metric = null
+            this.test.title = null
           } else {
             alert(res.msg())
           }
         })
+    },
+    removeQuestion(id) {
+      this.$store.commit('removeQuestion', id)
+    }
+  },
+  computed: {
+    questions() {
+      return this.$store.getters.questions
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <article class="question">
-    <span class="question__id">{{id}}</span>
+    <span class="question__id">{{listId}}</span>
     <y-input @input="giveData" v-model="question.title" />
    <div class="question__title__add">
     <h3>Ответы</h3>
@@ -9,13 +9,13 @@
     <y-button @click="$emit('remove')" class="question__del">X</y-button>
 
     <label>
-      Монеты <y-input v-model="question.coins" />
+      Монеты <y-input @input="giveData" v-model="question.coins" />
     </label>
 
     <add-answers
+      :questionId="questionId"
       v-if="popUp.show === true"
       @close="popUp.show = false"
-      @give-data="giveData"
     />
   </article>
 </template>
@@ -28,25 +28,32 @@ export default {
   components: {
     AddAnswers
   },
-  props: [ 'id' ],
+  props: [
+    'questionId'
+  ],
   data() {
     return {
       popUp: {
         show: false
       },
-      question: {
-        title: null,
-        picture: null,
-        answers: [],
-        coins: null
-      },
     }
   },
   methods: {
-    giveData(n) {
-      this.question.answers = n
-      this.$emit('giveData', this.question)
+    giveData() {
+      this.$store.commit('editQuestion', {
+        questionId: this.questionId,
+        question: this.question
+      })
     },
+  },
+  computed: {
+    listId() {
+      const listId = this.questionId + 1
+      return listId
+    },
+    question() {
+      return this.$store.getters.question(this.questionId)
+    }
   }
 }
 </script>

@@ -7,13 +7,13 @@
       </header>
 
       <template v-if="answers.length > 0">
-        <article v-for="answer of answers" class="answers__add" >
-          <y-input v-model="answer.title" placeholder="Введите ответ"></y-input>
+        <article v-for="(answer, id) of answers" class="answers__add" >
+          <y-input @input="giveData(answer, id)" v-model="answer.title" placeholder="Введите ответ"></y-input>
           <div class="question__coins">
             <label class="label">Баллы за ответ</label>
-            <y-input v-model="answer.value" class="question__input" />
+            <y-input @input="giveData(answer, id)" v-model="answer.value" class="question__input" />
           </div>
-          <y-button class="question__del">X</y-button>
+          <y-button @click="removeAnswer(id)" class="question__del">X</y-button>
         </article>
       </template>
 
@@ -23,7 +23,7 @@
         <button @click="addAnswer" class="plus">+</button>
       </div>
 
-      <y-cool-button @click="giveData">Сохранить и вернтуься</y-cool-button>
+      <y-cool-button @click="$emit('close')">Сохранить и вернтуься</y-cool-button>
     </y-modal>
   </article>
 </template>
@@ -31,22 +31,37 @@
 <script>
 export default {
   name: "AddAnswers",
-  data() {
-    return {
-      answers: []
-    }
-  },
+  props: [
+    'questionId'
+  ],
   methods: {
     addAnswer() {
-      this.answers.push({})
-      const id = this.answers.length - 1
-      this.answers[id]['id'] = id
-      this.answers[id]['title'] = null
-      this.answers[id]['value'] = null
+      const answer = {}
+      answer['id'] = this.answers.length
+      answer['title'] = null
+      answer['value'] = null
+      this.$store.commit('addAnswer', {
+        answer,
+        questionId: this.questionId
+      })
     },
-    giveData() {
-      this.$emit('giveData', this.answers)
-      this.$emit('close')
+    removeAnswer(id) {
+      this.$store.commit('removeAnswer', {
+        id,
+        questionId: this.questionId
+      })
+    },
+    giveData(answer, id) {
+      this.$store.commit('editAnswer', {
+        answer,
+        id,
+        questionId: this.questionId
+      })
+    }
+  },
+  computed: {
+    answers() {
+      return this.$store.getters.question(this.questionId).answers
     }
   }
 }
