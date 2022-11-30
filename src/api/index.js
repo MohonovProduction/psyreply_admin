@@ -4,9 +4,11 @@ import Admin from '@/api/admin/Auth';
 class Error {
   message = ''
   ok = false
+  err = null
 
-  constructor(message) {
+  constructor(message, err) {
     this.message = message
+    this.err = err
   }
 
   msg() {
@@ -59,13 +61,13 @@ export default class Request {
             resolve(onResolve(res))
           } else {
             switch (res.status) {
-              case 400: resolve(onResolve(new Error('не корректный запрос')))
+              case 400: resolve(onResolve(new Error('не корректный запрос', res)))
                 break
-              case 401: resolve(onResolve(new Error('не авоторизован')))
+              case 401: resolve(onResolve(new Error('не авоторизован', res)))
                 break
-              case 404: resolve(onResolve(new Error('не найдено')))
+              case 404: resolve(onResolve(new Error('не найдено', res)))
                 break
-              case 500: resolve(onResolve(new Error('Сервер не отвечает. Да, всё очень плохо')))
+              case 500: resolve(onResolve(new Error('Сервер не отвечает. Да, всё очень плохо', res)))
             }
           }
         })

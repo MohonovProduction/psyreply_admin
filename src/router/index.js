@@ -21,8 +21,12 @@ const routes = [
     path: '/company',
     name: 'company',
     component: () => import('@/views/CompanyView')
+  },
+  {
+    path: '/results',
+    name: 'results',
+    component: () => import('@/views/ResultsView')
   }
-
 ]
 
 const router = createRouter({

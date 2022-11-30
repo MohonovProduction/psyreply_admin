@@ -7,14 +7,18 @@
           <div class="header__select">
             <div class="heading header__heading">Тесты</div>
           </div>
-          <y-button :plus="true"  @click="this.window = 'createTest'">Новый тест</y-button>
+          <y-button :plus="true"  @click="window = 'createTest'">Новый тест</y-button>
         </header>
-        <!--        U can add "items" props to list component. It must be array -->
-        <y-list :items="tests" />
+        <y-list
+          v-if="tests.length > 0"
+          key-of-name="title"
+          :items="tests"
+          :editable="true"
+        />
       </y-modal>
       <create-test
+          @close="window = 'main'"
           v-if="window === 'createTest'"
-          @close="this.window = 'main'"
       />
     </main>
   </div>
@@ -31,15 +35,16 @@ export default {
   data() {
     return {
       window: 'main',
-      tests: null
+      tests: []
     }
   },
   created() {
     const test = new Test()
     test.getAll({ filters: {  } })
       .then(res => {
-        console.log(res)
-        this.tests = res
+        if (res.ok) {
+          res.json().then(r => this.tests = r)
+        }
       })
   },
   methods: {
