@@ -1,7 +1,7 @@
 <template>
   <y-modal class="main">
     <header class="header">
-      <y-left-arrow-button @click="$emit('close')" />
+      <y-left-arrow-button @click="close" />
       <h1>Редактирование: {{test.title}}</h1>
     </header>
     <y-modal class="block" v-if="blocks.length > 0">
@@ -16,6 +16,10 @@
       />
       <y-cool-button @click="addToBlock">Добавить в блок</y-cool-button>
     </y-modal>
+    <y-modal class="block">
+      <h2 class="heading">Опасная зона</h2>
+      <y-cool-button @click="removeTest">Удалить тест</y-cool-button>
+    </y-modal>
   </y-modal>
 </template>
 
@@ -25,6 +29,8 @@ import Block from '@/api/admin/Block';
 
 export default {
   name: "EditTest",
+  components: {},
+
   props: {
     id: Number
   },
@@ -56,6 +62,7 @@ export default {
       })
   },
   methods: {
+    close() { window.location.reload() },
     selectBlocks(n) {
       console.log(n)
       this.blocks.forEach(el => el['active'] = false)
@@ -82,6 +89,19 @@ export default {
             }
           }
         })
+    },
+    removeTest() {
+      const test = new Test()
+      test.remove(this.test.id)
+        .then(res => {
+          if (res.ok) {
+            alert('Тест успешно удален')
+            this.close()
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
+        })
     }
   }
 }
@@ -100,6 +120,15 @@ export default {
 }
 .block {
   display: grid;
-  grid-gap: .5rem;
+  grid-gap: .8rem;
+}
+hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  min-width: 30vw;
+  border-left: 0px solid white;
+  border-right: 0px solid white;
+  border-bottom: 0px solid white;
+  border-top: 1px solid rgba(255, 255, 255, 0.52);
 }
 </style>
