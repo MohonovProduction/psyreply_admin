@@ -1,15 +1,13 @@
 <template>
   <question-type1
     v-if="type === 1"
-    @give-data="giveData"
-    @remove="remove"
+    :question-id="questionId"
+    @remove="$emit('remove')"
   />
   <question-type2
     v-else-if="type === 2"
-    :id="id"
-    :relative-id="relativeId"
-    @give-data="giveData"
-    @remove="remove"
+    :question-id="questionId"
+    @remove="$emit('remove')"
   />
   <hr>
 </template>
@@ -23,23 +21,11 @@ export default {
   components: {
     QuestionType1, QuestionType2
   },
-  emits: ['giveData', 'remove'],
-  props: {
-    id: Number,
-    type: Number,
-    relativeId: Number
-  },
-  methods: {
-    giveData(n) {
-      n.relative_id = this.relativeId
-      n.id = this.id
-      this.$emit('giveData', n)
-    },
-    remove() {
-      console.log(this.id)
-      this.$emit('remove', this.id)
-    }
-  }
+  emits: ['remove'],
+  props: [
+    'questionId',
+    'type'
+  ],
 }
 </script>
 

@@ -16,6 +16,11 @@
       />
       <y-cool-button @click="addToBlock">Добавить в блок</y-cool-button>
     </y-modal>
+
+    <create-test
+      :test-id="id"
+    />
+
     <y-modal class="block">
       <h2 class="heading">Опасная зона</h2>
       <y-cool-button @click="removeTest">Удалить тест</y-cool-button>
@@ -24,13 +29,16 @@
 </template>
 
 <script>
+import CreateTest from '@/components/Test/CreateTest';
+
 import Test from '@/api/admin/Test';
 import Block from '@/api/admin/Block';
 
 export default {
   name: "EditTest",
-  components: {},
-
+  components: {
+    CreateTest
+  },
   props: {
     id: Number
   },

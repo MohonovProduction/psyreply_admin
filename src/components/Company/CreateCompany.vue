@@ -1,9 +1,9 @@
 <template>
-  <y-modal class="modal">
+  <y-modal v-if="window === 'main'" class="modal">
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
       <h1 class="heading">Новая компания</h1>
-      <y-button :plus="true">Добавить блок</y-button>
+      <y-button @click="this.window = 'addBlock'" :plus="true">Добавить блок</y-button>
     </header>
     <y-input
         v-model="company.name"
@@ -18,17 +18,27 @@
     />
     <y-cool-button @click="createCompany">Создать компанию</y-cool-button>
   </y-modal>
+
+  <create-block
+    v-if="window === 'addBlock'"
+    @close="close"
+  />
 </template>
 
 <script>
+import CreateBlock from '@/components/Block/CreateBlock';
 import Block from '@/api/admin/Block';
 import Company from '@/api/admin/Company';
 
 export default {
   name: "CreateCompany",
-  components: {},
+  components: {
+    CreateBlock
+  },
+  emits: ['close'],
   data() {
     return {
+      window: 'main',
       company: {
         name: '',
       },
@@ -45,6 +55,19 @@ export default {
       })
   },
   methods: {
+    update() {
+      const block = new Block()
+      block.getAll({ filters: { "company_id": null }})
+        .then(res => {
+          if (res.ok) {
+            res.json().then(r => this.blocks = r)
+          }
+        })
+    },
+    close() {
+      this.window = 'main'
+      this.update()
+    },
     selectBlock(n) {
       console.log(n)
       let block = this.blocks.filter(el => el.id === n.id)
@@ -63,7 +86,7 @@ export default {
       if (this.company.name.length > 3) {
         body.company = this.company
       } else {
-        return this.errorMessage('Слишком короткоее название')
+        alert('Слишком короткоее название')
       }
       if (blocks.length > 0) body.company.inputBlocks = blocks
       company.create('', body)
@@ -73,9 +96,6 @@ export default {
           this.$emit('close')
         })
     },
-    errorMessage(err) {
-      alert(err)
-    }
   }
 }
 </script>

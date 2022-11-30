@@ -20,6 +20,7 @@
 
   <create-test
     v-if="window === 'createTest'"
+    @close="window = 'main'"
   />
 </template>
 
@@ -33,6 +34,7 @@ export default {
   components: {
     CreateTest
   },
+  emits: ['close'],
   data() {
     return {
       window: 'main',
@@ -80,6 +82,7 @@ export default {
           console.log(res)
           if (res.ok) {
             alert('Блок успешно создан')
+            this.$emit('close')
           } else {
             alert(res.msg())
             console.log(res)
