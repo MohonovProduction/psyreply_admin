@@ -6,10 +6,10 @@
       <hr class="header__line">
     </header>
     <nav class="side_bar__nav">
-      <a href="/company" class="link nav__link">Компании</a>
-      <a href="/block" class="link nav__link">Блоки</a>
-      <a href="/test" class="link nav__link">Тесты</a>
-      <a href="/results" class="link nav__link">Результаты</a>
+      <router-link to="/company" active-class="nav__link_active" class="link nav__link">Компании</router-link>
+      <router-link to="/block" active-class="nav__link_active" class="link nav__link">Блоки</router-link>
+      <router-link to="/test" active-class="nav__link_active" class="link nav__link">Тесты</router-link>
+      <router-link to="/results" active-class="nav__link_active" class="link nav__link">Результаты</router-link>
     </nav>
   </article>
 </template>
@@ -22,9 +22,10 @@ export default {
 
 <style scoped>
 .side_bar {
+  position: sticky;
+  top: 0;
   font-size: 1.5625rem;
-  max-width: max-content;
-  min-height: 100vh;
+  height: 100vh;
   padding: .875rem;
   background: linear-gradient(140.62deg, rgba(255, 255, 255, 0.25) 2.81%, rgba(255, 255, 255, 0.1) 100.82%);
   box-shadow: 0 4px 52px rgba(143, 0, 255, 0.11);
@@ -66,5 +67,11 @@ export default {
   padding: 1.125rem 2rem;
   display: grid;
   grid-gap: 1rem;
+}
+.nav__link {
+  font-weight: 400;
+}
+.nav__link_active {
+  font-weight: 500;
 }
 </style>

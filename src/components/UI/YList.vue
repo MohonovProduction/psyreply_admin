@@ -1,31 +1,15 @@
-<!--<template>
-<div class="YList">
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-  <div class="list_item">
-    <div class="elipce"></div>
-    <div class="name">Name</div>
-    <div class="options"><img src="@/assets/img/options.svg"></div>
-  </div>
-</div>
-</template>-->
-
 <template>
   <ul class="list">
     <y-list-item
       v-for="item in items"
       :key="`${item.id}${item[keyOfName]}`"
-      @select="$emit('select', item.name)"
-      :active="item.active">
-      {{ item[keyOfName] }}
+      :selectable="selectable"
+      :editable="editable"
+      :active="item.active"
+      @select="$emit('select', item)"
+      @edit="$emit('edit', item)"
+    >
+      {{item.id}} {{item[keyOfName]}}
     </y-list-item>
   </ul>
 </template>
@@ -45,6 +29,14 @@ export default {
     keyOfName: {
       type: String,
       default: name
+    },
+    selectable: {
+      type: Boolean,
+      default: false
+    },
+    editable: {
+      type: Boolean,
+      default: false
     }
   }
 }

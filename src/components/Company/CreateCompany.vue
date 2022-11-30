@@ -9,7 +9,13 @@
         v-model="company.name"
         placeholder="Название компании"
     />
-    <y-list @select="selectBlock" v-if="blocks.length > 0" key-of-name="name" :items="blocks" />
+    <y-list
+      @select="selectBlock"
+      v-if="blocks.length > 0"
+      key-of-name="name"
+      :items="blocks"
+      :selectable="true"
+    />
     <y-cool-button @click="createCompany">Создать компанию</y-cool-button>
   </y-modal>
 </template>
@@ -59,11 +65,12 @@ export default {
       } else {
         return this.errorMessage('Слишком короткоее название')
       }
-      if (blocks.length > 0) body.inputBlocks = blocks
+      if (blocks.length > 0) body.company.inputBlocks = blocks
       company.create('', body)
         .then(res => {
           console.log(res)
           alert('компания создана')
+          this.$emit('close')
         })
     },
     errorMessage(err) {

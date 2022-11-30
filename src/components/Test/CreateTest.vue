@@ -7,7 +7,7 @@
 
       <article class="main"> <!-- We can use main единожды !-->
         <div class="main__input_coins">
-          <y-input v-model="newTest.title" placeholder="Название теста..."/>
+          <y-input v-model="test.title" placeholder="Название теста..."/>
           <div class="coins">
             <img src="@/assets/img/coins.svg" alt="">
             <div class="count">200</div>
@@ -18,133 +18,152 @@
           <div class="type__test">
             <div class="type__test__title">Тип теста</div>
             <y-mini-button
-              v-for="type in types"
-              :key="`${type.name}${type.id}`"
-              @click="selectType(type.id)"
-            >{{type.name}}</y-mini-button>
+              v-for="type of questionTypes"
+              :key="`${type.id}${type.name}`"
+              @click="this.test.type = type.id"
+            >
+              {{ type.name }}
+            </y-mini-button>
           </div>
           <div class="type__test">
             <div class="type__test__title">Тип метрики</div>
             <y-mini-button
-              v-for="metric in metrics"
-              :key="`${metric.name}${metric.id}`"
-              @click="selectMetric(metric.id)"
               class="type__test__type"
-            >{{metric.name}}</y-mini-button>
+              v-for="metric of metrics"
+              :key="`${metric.id}${metric.name}`"
+              @click="this.test.metric = metric.id"
+            >
+              {{ metric.name }}
+            </y-mini-button>
+          </div>
+          <div class="type__test">
+            <div class="type__test__title">Формула</div>
+            <y-input v-model="test.formula" />
           </div>
         </div>
       </article>
 
-      <hr/>
-
-      <section class="questions">
+      <section v-if="test.metric > 0 && test.type > 0" class="questions">
+        <hr/>
         <div class="header__plus">
           <h2 class="heading">Вопросы</h2>
           <button @click="addQuestion" class="plus">+</button>
         </div>
 
-        <y-test-type1 :id="1" />
-        <y-test-type2 @click="this.window='AddAnswers'"/>
+        <template v-if="test.questions.length > 0">
 
-        <div class="questions__list">
-          <div class="state_1" v-if="newTest.questions.length === 0">Здесь будет отображаться список вопросов. <span
-            @click="this.window
-          ='newtest'">Начните с создание нового вопроса</span></div>
-          <div v-else>
-            <y-test-type1
-              v-for="test in newTest.questions"
-              :test="test"
+          <template v-for="(question, id) in test.questions" :key="`${id}${question.id}`">
+            <question
+              :id="question.id"
+              :relative-id="id"
+              :type="test.type"
+              @give-data="saveQuestionData"
+              @remove="removeQuestion"
             />
+          </template>
+
+          <y-cool-button @click="saveTest">Сохранить тест</y-cool-button>
+        </template>
+
+        <div v-else class="questions__list">
+          <div class="state_1">Здесь будет отображаться список вопросов.
+            <span>Начните с создание нового вопроса</span>
           </div>
         </div>
 
+<!--        <hr>
+        <y-test-type1 />
+        <hr>
+        <y-test-type2 />
+        <hr>-->
       </section>
   </y-modal>
-  <add-answers
-  v-if="window==='AddAnswers'"
-  ></add-answers>
 </template>
 
 <script>
 import AddAnswers from "@/components/Test/AddAnswers";
+import Question from '@/components/Test/Question';
 
-class Answer {
-  id = null
-  title = null
-  value = null //count of balls
-
-  constructor(id, title, value) {
-    this.id = id
-    this.title = title
-    this.value = value
-  }
-
-}
-
-class Question {
-  title = null
-  metric = null
-  coins = null
-  answer = null
-  formula = null
-
-  constructor(title = null, metric = null, coins = null, answer = null, formula = null) {
-    this.title = title
-    this.metric = metric
-    this.coins = coins
-    this.answer = answer
-    this.formula = formula
-  }
-
-  checkFormula(formula) {
-
-  }
-}
-
-import YMiniButton from "@/components/UI/YMiniButton";
-import YTestType1 from "@/components/UI/YTestType1";
 import Metric from '@/api/admin/Metric';
 import QuestionType from '@/api/admin/QuestionType';
+import Test from '@/api/admin/Test'
+
 export default {
   name: "CreateTest",
-  components: {AddAnswers, YTestType1, YMiniButton},
+  components: {
+    AddAnswers, Question
+  },
+  emits: ['giveData', 'remove'],
   data(){
-    return{
-      types: [],
+    return {
+      questionTypes: [],
       metrics: [],
-      window:"default",
-      newTest: {
-        type: null,
+      questions: 0,
+      formula: null,
+      test: {
+        type: null, //change to null
         title: null,
         formula: null,
-        metric: null,
-        questions: []
-      }
+        metric: null, //change to null
+        questions: [],
+      },
     }
   },
   created() {
     const metric = new Metric
     metric.getOne()
       .then(res => {
-        console.log(res)
-        this.metrics = res
+        if (res.ok) {
+          res.json().then(r => this.metrics = r)
+        } else {
+          alert('Произошла ошибка')
+        }
       })
     const types = new QuestionType
     types.getOne()
       .then(res => {
-        console.log(res)
-        this.types = res
+        if (res.ok) {
+          res.json().then(r => this.questionTypes = r)
+        } else {
+          alert('Произошла ошибка')
+        }
       })
   },
   methods: {
-    selectType(id) {
-      this.newTest.type = id
-    },
-    selectMetric(id) {
-      this.newTest.metric = id
-    },
     addQuestion() {
-      this.newTest.questions.push(new Question())
+      const question = { id: this.questions }
+      this.test.questions.push(question)
+      this.questions++
+    },
+    saveQuestionData(n) {
+      this.test.questions[n.relative_id] = n
+    },
+    removeQuestion(n) {
+      // console.log(n)
+      alert(`К сожалению не удалось удалть блок ${n}, пожалуйста, проверьте подключение к интернету`)
+      // let arr = this.test.questions
+      // const question = arr.filter(el => el.id === n)
+      // arr.splice(question.relativeId, 1)
+      // this.test.questions = []
+      // arr.forEach(el => this.test.questions.push({ ...el }))
+      // console.log(this.test.questions)
+    },
+    saveTest() {
+      const test = new Test()
+
+      const body = this.test
+      body.questions.forEach(el => delete el.id)
+
+      console.log(body.type = 1)
+
+      test.create('', body)
+        .then(res => {
+          if (res.ok) {
+            alert('Тест успешно сохранён')
+          } else {
+            alert(res.msg())
+          }
+        })
     }
   }
 }
@@ -192,15 +211,6 @@ export default {
 .type__test__type:last-child {
   margin: 0;
 }
-hr {
-  margin-top: 30px;
-  margin-bottom: 30px;
-  min-width: 30vw;
-  border-left: 0px solid white;
-  border-right: 0px solid white;
-  border-bottom: 0px solid white;
-  border-top: 1px solid rgba(255, 255, 255, 0.52);
-}
 .plus{
   margin-left:10px ;
   background: rgba(255, 255, 255, 0.17);
@@ -238,8 +248,14 @@ hr {
   cursor: pointer;
 }
 
-
-
-
+hr {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  min-width: 30vw;
+  border-left: 0px solid white;
+  border-right: 0px solid white;
+  border-bottom: 0px solid white;
+  border-top: 1px solid rgba(255, 255, 255, 0.52);
+}
 
 </style>

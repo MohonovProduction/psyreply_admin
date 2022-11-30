@@ -4,16 +4,53 @@
       <y-left-arrow-button @click="$emit('close')" />
       <h1 class="heading">Список тестов</h1>
     </header>
-    <y-list />
+    <y-list
+      v-if="block.tests.length > 0"
+      key-of-name="title"
+      :items="block.tests"
+      :selectable="true"
+      @select="selectTest"
+    />
     <y-cool-button>Сохранить блок</y-cool-button>
   </y-modal>
 </template>
 
 <script>
-import YModal from "@/components/UI/YModal";
+import Block from '@/api/admin/Block';
+
 export default {
   name: "EditBlock",
-  components: {YModal}
+  props: ['id'],
+  data() {
+    return {
+      block: {
+        tests: []
+      }
+    }
+  },
+  created() {
+    const block = new Block()
+    block.get(this.id)
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.block = r)
+        } else {
+          alert(res.msg())
+        }
+      })
+  },
+  methods: {
+    selectTest(n) {
+      console.log(n)
+      let test = this.block.tests.filter(el => el.id === n.id)
+      test = test[0]
+      if ('active' in test) {
+        test.active = !test.active
+      } else {
+        test['active'] = true
+      }
+    }
+  }
 }
 </script>
 

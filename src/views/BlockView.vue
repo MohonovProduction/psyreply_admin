@@ -11,13 +11,19 @@
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
 <!--        U can add "items" props to list component. It must be array -->
-        <y-list  @click="this.window = 'editBlock'" />
+        <y-list
+          key-of-name="name"
+          :editable="true"
+          @edit="editBlock"
+          :items="blocks"
+        />
       </y-modal>
       <create-block
         v-if="window === 'createBlock'"
         @close="this.window = 'main'"
       />
       <edit-block
+        :id="editBlockId"
         v-if="window === 'editBlock'"
         @close="this.window = 'main'"
       />
@@ -29,6 +35,8 @@
 import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 
+import Block from '@/api/admin/Block';
+
 export default {
   name: "BlockView",
   components: {
@@ -37,14 +45,26 @@ export default {
   data() {
     return {
       window: 'main',
+      blocks: [],
+      editBlockId: null,
     }
+  },
+  created() {
+    const block = new Block()
+    block.getAll({})
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => this.blocks = r)
+        }
+      })
   },
   methods: {
     createBlock() {
 
     },
-    editblock(){
-
+    editBlock(n){
+      this.window = 'editBlock'
+      this.editBlockId = n.id
     },
     selectHandle(n) {
       console.log(n)

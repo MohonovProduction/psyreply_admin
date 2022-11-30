@@ -15,7 +15,7 @@
   --light-opacity: hsla(0, 0%, 100%, 0.27);
 
   font-family: var(--font-rubik);
-  font-size: calc(1vw + .2rem);
+  font-size: calc(.5vw + .5rem);
   color: var(--light);
 
   box-sizing: border-box;
@@ -42,5 +42,9 @@
 .link:hover,
 .link:active {
   color: var(--light);
+}
+
+#app {
+  position: relative;
 }
 </style>

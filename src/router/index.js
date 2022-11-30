@@ -27,8 +27,6 @@ const routes = [
     name: 'results',
     component: () => import('@/views/ResultsView')
   }
-
-
 ]
 
 const router = createRouter({
