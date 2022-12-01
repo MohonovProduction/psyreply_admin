@@ -10,10 +10,11 @@
       </header>
       <y-list
         key-of-name="name"
-        :editable="true"
+        :selectable="true"
         :items="company.blocks"
-        @edit="removeBlock"
+        @select="selectRemoveBlock"
       />
+      <y-cool-button @click="removeBlock">Удалить блок из {{ company.name }}</y-cool-button>
     </y-modal>
     <y-modal class="block">
       <header>
@@ -23,9 +24,10 @@
         v-if="blocks.length > 0"
         key-of-name="name"
         :items="blocks"
-        :editable="true"
-        @edit="addBlock"
+        :selectable="true"
+        @select="selectAddBlock"
       />
+      <y-cool-button @click="addBlock">Добавить блок в {{ company.name }}</y-cool-button>
     </y-modal>
   </y-modal>
 </template>
@@ -33,14 +35,11 @@
 <script>
 import Company from '@/api/admin/Company';
 import Block from '@/api/admin/Block';
-
-function getCompany() {
-
-}
+import YCoolButton from '@/components/UI/YCoolButton';
 
 export default {
   name: "EditCompany",
-  components: {},
+  components: {YCoolButton},
   props: {
     companyId: Number
   },
@@ -82,31 +81,63 @@ export default {
       })
   },
   methods: {
-    addBlock(n) {
-      console.log(n)
-      const block = new Block(n.id)
-      block.create(`${n.id}/copy/${this.companyId}`)
+    selectAddBlock(n) {
+      this.blocks.forEach(el => el['active'] = false)
+      let block = this.blocks.filter(el => el.id === n.id)
+      block = block[0]
+      if ('active' in block) {
+        block.active = !block.active
+      } else {
+        block['active'] = true
+      }
+    },
+    selectRemoveBlock(n) {
+      this.company.blocks.forEach(el => el['active'] = false)
+      let block = this.company.blocks.filter(el => el.id === n.id)
+      block = block[0]
+      if ('active' in block) {
+        block.active = !block.active
+      } else {
+        block['active'] = true
+      }
+    },
+    addBlock() {
+      const blockRemove = this.blocks.filter(el => el.active)
+      if (blockRemove.length === 0) {
+        return alert('Выберите блок для добавления')
+      }
+      const blockId= blockRemove[0].id
+      const block = new Block()
+      block.create(`${blockId}/copy/${this.companyId}`)
         .then(res => {
           if (res.ok) {
             console.log(res)
             alert('Блок успешно доавлен')
-            this.updateComponent()
+            this.update()
+          } else {
+            alert(res.msg())
           }
         })
     },
-    removeBlock(n) {
-      console.log(n)
-      const block = new Block(n.id)
-      block.remove(n.id)
+    removeBlock() {
+      const blockRemove = this.company.blocks.filter(el => el.active)
+      if (blockRemove.length === 0) {
+        return alert('Выберите блок для удаления')
+      }
+      const blockId= blockRemove[0].id
+      const block = new Block()
+      block.remove(blockId)
         .then(res => {
           if (res.ok) {
             console.log(res)
             alert('Блок удалён')
-            this.updateComponent()
+            this.update()
+          } else {
+            alert(res.msg())
           }
         })
     },
-    updateComponent() {
+    update() {
       const block = new Block()
       block.getAll({ filters: { "company_id": this.companyId }})
         .then(res => {
