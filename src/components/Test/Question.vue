@@ -1,6 +1,6 @@
 <template>
   <question-type1
-    v-if="type === 1"
+    v-if="type === 1 || type === 3 || type === 4 || type === 5"
     :question-id="questionId"
     @remove="$emit('remove')"
   />
