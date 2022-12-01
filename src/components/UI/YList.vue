@@ -9,7 +9,7 @@
       @select="$emit('select', item)"
       @edit="$emit('edit', item)"
     >
-      {{item.id}} {{item[keyOfName]}}
+      {{item[keyOfName]}}
     </y-list-item>
   </ul>
 </template>

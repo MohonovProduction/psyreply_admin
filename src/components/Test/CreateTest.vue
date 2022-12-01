@@ -1,8 +1,8 @@
 <template>
   <y-modal class="modal">
       <header class="header">
-        <y-left-arrow-button @click="close" />
-        <h1 class="heading">Новый тест</h1>
+        <y-left-arrow-button v-if="testId === -1" @click="close" />
+        <h1 class="heading">{{ title }}</h1>
       </header>
 
       <article class="main"> <!-- We can use main единожды !-->
@@ -10,7 +10,7 @@
           <y-input v-model="test.title" placeholder="Название теста..."/>
           <div class="coins">
             <img src="@/assets/img/coins.svg" alt="">
-            <div class="count">200</div>
+            <div class="count">{{ coins }}</div>
           </div>
         </div>
 
@@ -21,6 +21,7 @@
               class="type__test__type"
               v-for="type of questionTypes"
               :key="`${type.id}${type.name}`"
+              :active="type.id === test.type"
               @click="selectLabel('type', type.id)"
             >
               {{ type.name }}
@@ -32,6 +33,7 @@
               class="type__test__type"
               v-for="metric of metrics"
               :key="`${metric.id}${metric.name}`"
+              :active="metric.id === test.metric"
               @click="selectLabel('metric', metric.id)"
             >
               {{ metric.name }}
@@ -86,7 +88,46 @@ import Question from '@/components/Test/Question';
 import Metric from '@/api/admin/Metric';
 import QuestionType from '@/api/admin/QuestionType';
 import Test from '@/api/admin/Test'
-import question from '@/components/Test/Question';
+
+function update(data) {
+  if (data.testId !== -1) {
+    const test = new Test()
+    test.get(data.testId)
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => {
+            data.test.type = r.type.id
+            data.test.title = r.title
+            data.test.formula = r.formula.split('').slice(1,r.formula.length-1).join('')
+            data.test.metric = r.metric.id
+            data.$store.commit('fillQuestions', r.questions)
+          })
+        } else {
+          alert(res.msg())
+          console.log(res)
+        }
+      })
+  }
+
+  const metric = new Metric
+  metric.getOne()
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.metrics = r)
+      } else {
+        alert('Произошла ошибка')
+      }
+    })
+  const types = new QuestionType
+  types.getOne()
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.questionTypes = r)
+      } else {
+        alert('Произошла ошибка')
+      }
+    })
+}
 
 export default {
   name: "CreateTest",
@@ -98,6 +139,10 @@ export default {
     testId: {
       type: Number,
       default: -1
+    },
+    title: {
+      type: String,
+      default: 'Новый тест'
     }
   },
   data(){
@@ -112,44 +157,8 @@ export default {
       },
     }
   },
-  mounted() {
-    if (this.testId !== -1) {
-      const test = new Test()
-      test.get(this.testId)
-        .then(res => {
-          if (res.ok) {
-            res.json().then(r => {
-              this.test.type = r.type.id
-              this.test.title = r.title
-              this.test.formula = r.formula
-              this.test.metric = r.metric.id
-              this.$store.commit('fillQuestions', r.questions)
-            })
-          } else {
-            alert(res.msg())
-            console.log(res)
-          }
-        })
-    }
-
-    const metric = new Metric
-    metric.getOne()
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.metrics = r)
-        } else {
-          alert('Произошла ошибка')
-        }
-      })
-    const types = new QuestionType
-    types.getOne()
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.questionTypes = r)
-        } else {
-          alert('Произошла ошибка')
-        }
-      })
+  created() {
+    update(this)
   },
   methods: {
     close() {
@@ -157,22 +166,7 @@ export default {
       this.$store.commit('clearNewTest')
     },
     update() {
-      const test = new Test()
-      test.get(this.testId)
-        .then(res => {
-          if (res.ok) {
-            res.json().then(r => {
-              this.test.type = r.type.id
-              this.test.title = r.title
-              this.test.formula = r.formula
-              this.test.metric = r.metric.id
-              this.$store.commit('fillQuestions', r.questions)
-            })
-          } else {
-            alert(res.msg())
-            console.log(res)
-          }
-        })
+      update(this)
     },
     selectLabel(type, id) {
       if (this.questions.length > 0 && type === 'type') {
@@ -218,21 +212,35 @@ export default {
     saveTest() {
       const test = new Test()
 
-      const body = this.test
+      const body = JSON.parse(JSON.stringify(this.test))
+
+      const formula = body.formula
+
+      if (test.shlypaMarkupValidation(`+${formula}`)) {
+        body.formula = `+${formula}`
+      } else {
+        return this.$store.commit('openErrorPopup', 'Ошибка в формуле')
+      }
 
       body.questions = this.questions
-      console.log(body)
+
+      let flag = false
+      body.questions.map((el, id) => {
+        if (el.coins > 99099099) {
+          this.$store.commit('openErrorPopup', `Слишком большое число монет в ${id} вопросе. Максимальное количество 99099099`)
+          flag = true
+        }
+      })
+      if (flag) {
+        return
+      }
 
       if (this.testId !== -1) {
         test.update(this.testId, body)
           .then(res => {
             if (res.ok) {
-              alert('Тест успешно изменён')
+              this.$store.commit('openPopup', 'Тест успешно изменён')
               this.$store.commit('clearNewTest')
-              this.test.type = null
-              this.test.formula = null
-              this.test.metric = null
-              this.test.title = null
               this.update()
             } else {
               alert(res.msg())
@@ -242,12 +250,9 @@ export default {
         test.create('', body)
           .then(res => {
             if (res.ok) {
-              alert('Тест успешно сохранён')
+              this.$store.commit('openPopup', 'Тест успешно сохранён')
               this.$store.commit('clearNewTest')
-              this.test.type = null
-              this.test.formula = null
-              this.test.metric = null
-              this.test.title = null
+              this.$emit('close')
             } else {
               alert(res.msg())
             }
@@ -262,6 +267,11 @@ export default {
     questions() {
       return this.$store.getters.questions
     },
+    coins() {
+      let coins = 0
+      this.questions.map(el => coins += Number(el.coins))
+      return coins
+    }
   }
 }
 </script>

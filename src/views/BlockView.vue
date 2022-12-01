@@ -6,7 +6,6 @@
         <header class="header">
           <div class="header__select">
             <div class="heading header__heading">Блоки</div>
-            <y-select @select="selectHandle" />
           </div>
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
@@ -59,16 +58,10 @@ export default {
       })
   },
   methods: {
-    createBlock() {
-
-    },
     editBlock(n){
       this.window = 'editBlock'
       this.editBlockId = n.id
     },
-    selectHandle(n) {
-      console.log(n)
-    }
   }
 }
 </script>

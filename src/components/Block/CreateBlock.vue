@@ -5,7 +5,6 @@
       <h1 class="heading">Новый блок</h1>
       <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
     </header>
-    <y-input v-model="block.name" placeholder="Название блока" />
     <y-input
       placeholder="Название теста..."
     />

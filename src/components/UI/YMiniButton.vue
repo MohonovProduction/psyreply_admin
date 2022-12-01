@@ -1,12 +1,15 @@
 <template>
-  <button class="button" type="submit"  >
+  <button class="button" :class="{ 'button_active': active }">
     <slot></slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: "YMiniButton"
+  name: "YMiniButton",
+  props: {
+    active: Boolean
+  }
 }
 </script>
 
@@ -24,6 +27,9 @@ export default {
 }
 .button:hover {
   cursor: pointer;
+}
+.button_active {
+  background: linear-gradient(200.42deg, #B275FF 13.57%, #DD7EFF 98.35%);
 }
 
 </style>

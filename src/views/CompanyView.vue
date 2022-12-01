@@ -6,7 +6,6 @@
         <header class="header">
           <div class="header__select">
             <div class="heading header__heading">Компании</div>
-            <y-select @select="selectHandle" />
           </div>
           <y-button :plus="true" @click="this.window ='createCompany'">Новая компания</y-button>
         </header>
