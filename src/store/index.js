@@ -2,6 +2,16 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
+    app: {
+      popupError: {
+        show: false,
+        message: null
+      },
+      popup: {
+        show: false,
+        message: null
+      }
+    },
     newTest: {
       questionsCount: 0,
       questions: []
@@ -16,6 +26,12 @@ export default createStore({
     },
     test: (state) => {
       return state.newTest
+    },
+    popupError(state) {
+      return state.app.popupError
+    },
+    popup(state) {
+      return state.app.popup
     }
   },
   mutations: {
@@ -55,7 +71,23 @@ export default createStore({
     },
     fillTest(state, test) {
       state.newTest = test
-    }
+    },
+    openErrorPopup(state, message) {
+      state.app.popupError.show = true
+      state.app.popupError.message = message
+    },
+    closeErrorPopup(state) {
+      state.app.popupError.show = false
+      state.app.popupError.message = ''
+    },
+    openPopup(state, message) {
+      state.app.popup.show = true
+      state.app.popup.message = message
+      setTimeout(() => {
+        state.app.popup.show = false
+        state.app.popup.message = ''
+      }, 3000)
+    },
   },
   actions: {
   },

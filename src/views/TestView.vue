@@ -18,11 +18,11 @@
         />
       </y-modal>
       <create-test
-          @close="window = 'main'"
+          @close="close('main')"
           v-if="window === 'createTest'"
       />
       <edit-test
-        @close="window = 'main'"
+        @close="close('main')"
         v-if="window === 'editTest'"
         :id="editTestId"
       />
@@ -35,6 +35,16 @@ import CreateTest from "@/components/Test/CreateTest";
 import EditTest from '@/components/Test/EditTest';
 
 import Test from '@/api/admin/Test'
+
+function update(data) {
+  const test = new Test()
+  test.getAll({ filters: {  } })
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.tests = r)
+      }
+    })
+}
 
 export default {
   name: "TestView",
@@ -49,18 +59,17 @@ export default {
     }
   },
   created() {
-    const test = new Test()
-    test.getAll({ filters: {  } })
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.tests = r)
-        }
-      })
+    update(this)
   },
   methods: {
     editTest(n) {
       this.editTestId = n.id
       this.window = 'editTest'
+    },
+    close(toWindow) {
+      this.window = toWindow
+      this.$store.commit('clearNewTest')
+      update(this)
     }
   }
 }

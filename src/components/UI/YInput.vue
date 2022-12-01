@@ -20,7 +20,7 @@ export default {
       type: String,
       default: 'text'
     },
-    modelValue: String
+    modelValue: [String, Number]
   },
 }
 </script>

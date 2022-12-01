@@ -1,8 +1,15 @@
 <template>
   <router-view/>
+  <y-popup-error />
+  <y-popup />
 </template>
 
 <script>
+export default {
+  computed: {
+
+  }
+}
 </script>
 
 <style>

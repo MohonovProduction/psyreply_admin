@@ -2,14 +2,14 @@
   <y-modal class="modal">
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
-      <h1 class="heading">Редактирование блока</h1>
+      <h1 class="heading">Редактирование: {{ block.name }}</h1>
     </header>
 
     <y-modal>
       <header class="header">
         <h2 class="heading">Изменение названия</h2>
       </header>
-      <y-input v-model="block.name" />
+      <y-input v-model.trim="block.name" />
       <y-cool-button @click="updateBlock">Сохранить новое название</y-cool-button>
     </y-modal>
 
@@ -145,11 +145,10 @@ export default {
       test.removeFromBlock(removeTest[0].id, this.id)
         .then(res => {
           if (res.ok) {
-            alert('Тест успешно удалён из блока')
+            this.$store.commit('openPopup', `${removeTest[0].title} успешно удалён из ${this.block.name}`)
             this.update()
           } else {
-            alert(res.msg())
-            console.log(res)
+            this.$store.commit('closeErrorPopup', res.msg())
           }
         })
     },
@@ -159,21 +158,24 @@ export default {
       const addTest = this.tests.filter(el => el.active)
 
       if (addTest.length === 0) {
-        alert('Пожалуйста, выберите тест для добавления')
+        return this.$store.commit('openErrorPopup', 'Выберите тест для добавления')
       }
 
       test.addToBlock(addTest[0].id, this.id)
         .then(res => {
           if (res.ok) {
-            alert('Тест успешно добавлен в блок блока')
+            this.$store.commit('openPopup', `${addTest[0].title} добавлен в ${this.block.name}`)
             this.update()
           } else {
-            alert(res.msg())
-            console.log(res)
+            this.$store.commit('closeErrorPopup', res.msg())
           }
         })
     },
     updateBlock() {
+      if (this.block.name.length < 1) {
+        return this.$store.commit('openErrorPopup', 'Название слишком короткое')
+      }
+
       const block = new Block()
       const body = {
         name: this.block.name
@@ -181,11 +183,10 @@ export default {
       block.update(this.id, body)
         .then(res=> {
           if (res.ok) {
-            alert('Название блока успешно изменено')
+            this.$store.commit('openPopup', 'Название блока успешно изменено')
             this.update()
           } else {
-            alert(res.msg())
-            console.log(res)
+            this.$store.commit('closeErrorPopup', res.msg())
           }
         })
     },

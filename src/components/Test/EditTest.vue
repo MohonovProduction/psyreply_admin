@@ -4,6 +4,12 @@
       <y-left-arrow-button @click="close" />
       <h1>Редактирование: {{test.title}}</h1>
     </header>
+
+    <create-test
+      :test-id="id"
+      :title="test.title"
+    />
+
     <y-modal class="block" v-if="blocks.length > 0">
       <header>
         <h2 class="heading">Добавить в блок</h2>
@@ -16,10 +22,6 @@
       />
       <y-cool-button @click="addToBlock">Добавить в блок</y-cool-button>
     </y-modal>
-
-    <create-test
-      :test-id="id"
-    />
 
     <y-modal class="block">
       <h2 class="heading">Опасная зона</h2>
@@ -70,7 +72,9 @@ export default {
       })
   },
   methods: {
-    close() { window.location.reload() },
+    close() {
+      this.$emit('close')
+    },
     selectBlocks(n) {
       console.log(n)
       this.blocks.forEach(el => el['active'] = false)

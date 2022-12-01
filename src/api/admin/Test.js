@@ -12,4 +12,8 @@ export default class Test extends Request {
   removeFromBlock(testId, blockId) {
     return this.create(`${testId}/remove/${blockId}`, {})
   }
+
+  shlypaMarkupValidation(string) {
+    return /^(\+((\$\d+)|(\(((\d+)|(\$\d+))[+*-]\$\d+\))|(\(\-?\$\d+\))))+$/.test(string)
+  }
 }

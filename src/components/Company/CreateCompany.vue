@@ -91,9 +91,13 @@ export default {
       if (blocks.length > 0) body.company.inputBlocks = blocks
       company.create('', body)
         .then(res => {
-          console.log(res)
-          alert('компания создана')
-          this.$emit('close')
+          if (res.ok) {
+            alert('компания создана')
+            this.$emit('close')
+          } else {
+            alert(res.msg())
+            console.log(res)
+          }
         })
     },
   }
