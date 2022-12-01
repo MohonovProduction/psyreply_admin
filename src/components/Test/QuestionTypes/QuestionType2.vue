@@ -1,6 +1,6 @@
 <template>
   <article class="question">
-    <span class="question__id">{{relativeId+1}}</span>
+    <span class="question__id">{{listId}}</span>
     <y-input @input="giveData" v-model="question.title" />
     <div class="question__coins">
       <label class="label">Баллы “Да”</label>
@@ -17,31 +17,22 @@
 <script>
 export default {
   name: "QuestionType2",
-  props: [ 'id', 'relativeId'],
-  data() {
-    return {
-      question: {
-        title: null,
-        picture: null,
-        answers: [
-          {
-            id: 1,
-            title: 'Да',
-            value: null
-          },
-          {
-            id: 2,
-            title: 'Нет',
-            value: null
-          }
-        ],
-        coins: null
-      },
-    }
-  },
+  props: ['questionId'],
   methods: {
     giveData() {
-      this.$emit('giveData', this.question)
+      this.$store.commit('editQuestion', {
+        questionId: this.questionId,
+        question: this.question
+      })
+    },
+  },
+  computed: {
+    question() {
+      return this.$store.getters.question(this.questionId)
+    },
+    listId() {
+      const listId = this.questionId + 1
+      return listId
     },
   }
 }
