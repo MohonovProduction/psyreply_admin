@@ -36,6 +36,28 @@ import CreateTest from '@/components/Test/CreateTest';
 import Test from '@/api/admin/Test';
 import Block from '@/api/admin/Block';
 
+function update(data) {
+  const test = new Test()
+  test.get(data.id)
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.test = r)
+      } else {
+        alert(res.msg())
+      }
+    })
+
+  const block = new Block()
+  block.getAll({ filter: {company_id: null} })
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.blocks = r)
+      } else {
+        alert(res.msg())
+      }
+    })
+}
+
 export default {
   name: "EditTest",
   components: {
@@ -51,33 +73,13 @@ export default {
     }
   },
   created() {
-    const test = new Test()
-    test.get(this.id)
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.test = r)
-        } else {
-          alert(res.msg())
-        }
-      })
-
-    const block = new Block()
-    block.getAll({ filter: {company_id: null} })
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.blocks = r)
-        } else {
-          alert(res.msg())
-        }
-      })
+    update(this)
   },
   methods: {
     close() {
       this.$emit('close')
     },
     selectBlocks(n) {
-      console.log(n)
-      this.blocks.forEach(el => el['active'] = false)
       let block = this.blocks.filter(el => el.id === n.id)
       block = block[0]
       if ('active' in block) {
@@ -87,23 +89,32 @@ export default {
       }
     },
     addToBlock() {
-      const block = this.blocks.filter(el => el.active)
-      if (block.length === 0) {
-        return alert('Выберите блок, пожалуйста')
+      const blocks = this.blocks.filter(el => el.active)
+
+      if (blocks.length === 0) {
+        return alert('Выберите блоки, пожалуйста')
       }
+
+      const body = {
+        tests: [this.id]
+      }
+
       const test = new Test()
-      test.addToBlock(this.test.id, block[0].id)
-        .then(res => {
-          if (res.ok) {
-            alert(`Тест ${this.test.title} успешно добавлен в блок ${block[0].name}`)
-          } else {
-            if (res.err.status === 409) {
-              alert('Тест уже добавлен в блок')
+      for (let block of blocks) {
+        test.addToBlock(block.id, body)
+          .then(res => {
+            if (res.ok) {
+              alert(`Тест ${this.test.title} успешно добавлен в блок ${blocks[0].name}`)
+              block.active = false
             } else {
-              alert(res.msg())
+              if (res.err.status === 409) {
+                alert('Тест уже добавлен в блок')
+              } else {
+                alert(res.msg())
+              }
             }
-          }
-        })
+          })
+      }
     },
     removeTest() {
       const test = new Test()

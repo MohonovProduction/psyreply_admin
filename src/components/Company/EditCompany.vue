@@ -121,7 +121,7 @@ export default {
         .then(res => {
           if (res.ok) {
             console.log(res)
-            alert('Блок успешно доавлен')
+            this.$store.commit('openPopup', 'Блоки добавлены')
             this.update()
           } else {
             alert(res.msg())
@@ -145,16 +145,14 @@ export default {
         .then(res => {
           if (res.ok) {
             console.log(res)
-            alert('Блок удалён')
+            this.$store.commit('openPopup', 'Блоки удалены')
             this.update()
           } else {
             alert(res.msg())
           }
         })
     },
-    update() {
-      update(this)
-    }
+    update() { update(this) }
   }
 }
 </script>
