@@ -98,7 +98,7 @@ function update(data) {
           res.json().then(r => {
             data.test.type = r.type.id
             data.test.title = r.title
-            data.test.formula = r.formula.split('').slice(1,r.formula.length-1).join('')
+            data.test.formula = r.formula.split('').slice(1,r.formula.length).join('')
             data.test.metric = r.metric.id
             data.$store.commit('fillQuestions', r.questions)
           })
@@ -178,33 +178,31 @@ export default {
     addQuestion() {
       let question = {}
 
-      switch (this.test.type) {
-        case 1:
-          question = {
-            title: null,
-            picture: null,
-            answers: [],
-            coins: null
-          }
-          break
-        case 2:
-          question = {
-            title: null,
-            picture: null,
-            answers: [
-              {
-                id: 1,
-                title: 'Да',
-                value: null
-              },
-              {
-                id: 2,
-                title: 'Нет',
-                value: null
-              }
-            ],
-            coins: null
-          }
+      if (this.test.type === 2) {
+        question = {
+          title: null,
+          picture: null,
+          answers: [],
+          coins: null
+        }
+      } else {
+        question = {
+          title: null,
+          picture: null,
+          answers: [
+            {
+              id: 1,
+              title: 'Да',
+              value: null
+            },
+            {
+              id: 2,
+              title: 'Нет',
+              value: null
+            }
+          ],
+          coins: null
+        }
       }
 
       this.$store.commit('addQuestion', question)
