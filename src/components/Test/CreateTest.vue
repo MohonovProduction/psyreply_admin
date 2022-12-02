@@ -178,7 +178,7 @@ export default {
     addQuestion() {
       let question = {}
 
-      if (this.test.type === 2) {
+      if (this.test.type !== 2) {
         question = {
           title: null,
           picture: null,
@@ -208,6 +208,10 @@ export default {
       this.$store.commit('addQuestion', question)
     },
     saveTest() {
+      if (this.test.title.length < 4) {
+        this.$store.commit('openErrorPopup', 'Слишком короткое название')
+      }
+
       const test = new Test()
 
       const body = JSON.parse(JSON.stringify(this.test))
