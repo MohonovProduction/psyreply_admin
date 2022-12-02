@@ -53,6 +53,29 @@ import Block from '@/api/admin/Block';
 import YCoolButton from '@/components/UI/YCoolButton';
 import Test from '@/api/admin/Test';
 
+function update(data) {
+  const block = new Block()
+  block.get(data.id)
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.block = r)
+      } else {
+        alert(res.msg())
+      }
+    })
+
+  const test = new Test()
+  test.getAll({ filters: { "except_block": data.id } })
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.tests = r)
+      } else {
+        alert(res.msg())
+        console.log(res)
+      }
+    })
+}
+
 export default {
   name: "EditBlock",
   components: {YCoolButton},
@@ -67,53 +90,15 @@ export default {
     }
   },
   created() {
-    const block = new Block()
-    block.get(this.id)
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.block = r)
-        } else {
-          alert(res.msg())
-        }
-      })
-
-    const test = new Test()
-    test.getAll({ filters: {  } })
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.tests = r)
-        } else {
-          alert(res.msg())
-          console.log(res)
-        }
-      })
+    update(this)
   },
   methods: {
     update() {
-      const block = new Block()
-      block.get(this.id)
-        .then(res => {
-          if (res.ok) {
-            res.json().then(r => this.block = r)
-          } else {
-            alert(res.msg())
-          }
-        })
-
-      const test = new Test()
-      test.getAll({ filters: {  } })
-        .then(res => {
-          if (res.ok) {
-            res.json().then(r => this.tests = r)
-          } else {
-            alert(res.msg())
-            console.log(res)
-          }
-        })
+      update(this)
     },
     selectAddTest(n) {
       console.log(n)
-      this.block.tests.forEach(el => el.active = false)
+      //this.block.tests.forEach(el => el.active = false)
       let test = this.block.tests.filter(el => el.id === n.id)
       test = test[0]
       if ('active' in test) {
@@ -124,7 +109,7 @@ export default {
     },
     selectRemoveTest(n) {
       console.log(n)
-      this.tests.forEach(el => el.active = false)
+      //this.tests.forEach(el => el.active = false)
       let test = this.tests.filter(el => el.id === n.id)
       test = test[0]
       if ('active' in test) {
@@ -136,16 +121,22 @@ export default {
     removeTests() {
       const test = new Test()
 
-      const removeTest = this.block.tests.filter(el => el.active)
+      const removeTests = this.block.tests.filter(el => el.active)
 
-      if (removeTest.length === 0) {
-        alert('Пожалуйста, выберите тест для удаления')
+      if (removeTests.length === 0) {
+        return this.$store.commit('openErrorPopup', 'Выберите тест для добавления')
       }
 
-      test.removeFromBlock(removeTest[0].id, this.id)
+      const body = {
+        tests: []
+      }
+
+      removeTests.forEach(el => body.tests.push(el.id))
+
+      test.removeFromBlock(this.id, body)
         .then(res => {
           if (res.ok) {
-            this.$store.commit('openPopup', `${removeTest[0].title} успешно удалён из ${this.block.name}`)
+            this.$store.commit('openPopup', `Тесты успешно удалены из ${this.block.name}`)
             this.update()
           } else {
             this.$store.commit('closeErrorPopup', res.msg())
@@ -155,19 +146,25 @@ export default {
     addTests() {
       const test = new Test()
 
-      const addTest = this.tests.filter(el => el.active)
+      const addTests = this.tests.filter(el => el.active)
 
-      if (addTest.length === 0) {
+      if (addTests.length === 0) {
         return this.$store.commit('openErrorPopup', 'Выберите тест для добавления')
       }
 
-      test.addToBlock(addTest[0].id, this.id)
+      const body = {
+        tests: []
+      }
+
+      addTests.forEach(el => body.tests.push(el.id))
+
+      test.addToBlock(this.id, body)
         .then(res => {
           if (res.ok) {
-            this.$store.commit('openPopup', `${addTest[0].title} добавлен в ${this.block.name}`)
+            this.$store.commit('openPopup', `Тесты добавлены в ${this.block.name}`)
             this.update()
           } else {
-            this.$store.commit('closeErrorPopup', res.msg())
+            this.$store.commit('openErrorPopup', res.msg())
           }
         })
     },

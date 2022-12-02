@@ -27,7 +27,7 @@
         :selectable="true"
         @select="selectAddBlock"
       />
-      <y-cool-button @click="addBlock">Добавить блок в {{ company.name }}</y-cool-button>
+      <y-cool-button @click="addBlocks">Добавить блок в {{ company.name }}</y-cool-button>
     </y-modal>
   </y-modal>
 </template>
@@ -101,11 +101,13 @@ export default {
         block['active'] = true
       }
     },
-    addBlock() {
+    addBlocks() {
       const blockRemove = this.blocks.filter(el => el.active)
+
       if (blockRemove.length === 0) {
-        return alert('Выберите блок для добавления')
+        return this.$store.commit('openErrorPopup', 'Выберите блок для добавления')
       }
+
       const blockId= blockRemove[0].id
       const block = new Block()
       block.create(`${blockId}/copy/${this.companyId}`)

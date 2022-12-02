@@ -13,10 +13,10 @@ Admin.auth = async function(email, password) {
         'Content-Type': 'application/json',
         'Connection': 'keep-alive'
       },
-      body: {
+      body: JSON.stringify({
         email,
         password
-      }
+      })
     })
       .then(async res => {
         resolve(res)
@@ -29,19 +29,21 @@ Admin.auth = async function(email, password) {
 
 Admin.authCode = async function(code) {
   return new Promise((resolve, reject) => {
-    fetch(`${config.host}/auth/code`, {
+    fetch(`${req.host}/auth/code`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Connection': 'keep-alive'
       },
-      body: {
+      body: JSON.stringify({
         code
-      }
+      })
     })
       .then(async res => {
-        const token = await res.json()
-        //localStorage.setItem('token', token.token)
+        const token = await res.json().then(r => {
+          localStorage.setItem('token', r.token)
+        })
+        resolve(res)
       })
       .catch(err => {
         resolve(err)

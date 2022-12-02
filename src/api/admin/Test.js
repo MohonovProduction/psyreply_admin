@@ -5,12 +5,12 @@ export default class Test extends Request {
     super('test', id);
   }
 
-  addToBlock(testId, blockId) {
-    return this.create(`${testId}/move/${blockId}`, {})
+  addToBlock(blockId, body) {
+    return this.create(`move/${blockId}`, body)
   }
 
-  removeFromBlock(testId, blockId) {
-    return this.create(`${testId}/remove/${blockId}`, {})
+  removeFromBlock(blockId, body) {
+    return this.create(`remove/${blockId}`, body)
   }
 
   shlypaMarkupValidation(string) {
