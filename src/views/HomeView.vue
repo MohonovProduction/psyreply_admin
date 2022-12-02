@@ -16,6 +16,7 @@
 
 <script>
 import Admin from '@/api/admin/Auth'
+import router from '@/router';
 
 export default {
   name: 'HomeView',
@@ -28,8 +29,11 @@ export default {
     firstStep(formData) {
       Admin.auth(formData.email, formData.password)
         .then(res => {
-          console.log(res)
-          this.step = 1
+          if (res.ok) {
+            this.step = 1
+          } else {
+            this.$store.commit('openErrorPopup', 'Неверный логин или пароль, чайка')
+          }
         })
       console.log(formData)
     },
@@ -37,7 +41,12 @@ export default {
       Admin.authCode(formData.code)
         .then(res => {
           console.log(res)
-          this.$router.push('/block')
+          if (res.ok) {
+            console.log(res)
+            router.push('/company')
+          } else {
+            this.$store.commit('openErrorPopup', 'Неверный код')
+          }
         })
     }
   }

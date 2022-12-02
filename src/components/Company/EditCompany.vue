@@ -27,7 +27,7 @@
         :selectable="true"
         @select="selectAddBlock"
       />
-      <y-cool-button @click="addBlock">Добавить блок в {{ company.name }}</y-cool-button>
+      <y-cool-button @click="addBlocks">Добавить блок в {{ company.name }}</y-cool-button>
     </y-modal>
   </y-modal>
 </template>
@@ -36,6 +36,32 @@
 import Company from '@/api/admin/Company';
 import Block from '@/api/admin/Block';
 import YCoolButton from '@/components/UI/YCoolButton';
+
+function update(data) {
+  const company = new Company()
+  company.get(data.companyId)
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => {
+          for (let key in r) data.company[key] = r[key]
+        })
+      }
+    })
+
+  const block = new Block()
+  block.getAll({ filters: { "company_id": null }})
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.blocks = r)
+      }
+    })
+  block.getAll({ filters: { "company_id": data.companyId }})
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.company.blocks = r)
+      }
+    })
+}
 
 export default {
   name: "EditCompany",
@@ -56,33 +82,10 @@ export default {
     }
   },
   created() {
-    const company = new Company()
-    company.get(this.companyId)
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => {
-            for (let key in r) this.company[key] = r[key]
-          })
-        }
-      })
-
-    const block = new Block()
-    block.getAll({ filters: { "company_id": null }})
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.blocks = r)
-        }
-      })
-    block.getAll({ filters: { "company_id": this.companyId }})
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.company.blocks = r)
-        }
-      })
+    update(this)
   },
   methods: {
     selectAddBlock(n) {
-      this.blocks.forEach(el => el['active'] = false)
       let block = this.blocks.filter(el => el.id === n.id)
       block = block[0]
       if ('active' in block) {
@@ -92,7 +95,6 @@ export default {
       }
     },
     selectRemoveBlock(n) {
-      this.company.blocks.forEach(el => el['active'] = false)
       let block = this.company.blocks.filter(el => el.id === n.id)
       block = block[0]
       if ('active' in block) {
@@ -101,18 +103,25 @@ export default {
         block['active'] = true
       }
     },
-    addBlock() {
+    addBlocks() {
       const blockRemove = this.blocks.filter(el => el.active)
+
       if (blockRemove.length === 0) {
-        return alert('Выберите блок для добавления')
+        return this.$store.commit('openErrorPopup', 'Выберите блок для добавления')
       }
-      const blockId= blockRemove[0].id
+
+      const body = {
+        blocks: []
+      }
+
+      blockRemove.forEach(el => body.blocks.push(el.id))
+
       const block = new Block()
-      block.create(`${blockId}/copy/${this.companyId}`)
+      block.create(`copy/${this.companyId}`, body)
         .then(res => {
           if (res.ok) {
             console.log(res)
-            alert('Блок успешно доавлен')
+            this.$store.commit('openPopup', 'Блоки добавлены')
             this.update()
           } else {
             alert(res.msg())
@@ -124,28 +133,26 @@ export default {
       if (blockRemove.length === 0) {
         return alert('Выберите блок для удаления')
       }
-      const blockId= blockRemove[0].id
+
+      const body = {
+        blocks: []
+      }
+
+      blockRemove.forEach(el => body.blocks.push(el.id))
+
       const block = new Block()
-      block.remove(blockId)
+      block.remove(body)
         .then(res => {
           if (res.ok) {
             console.log(res)
-            alert('Блок удалён')
+            this.$store.commit('openPopup', 'Блоки удалены')
             this.update()
           } else {
             alert(res.msg())
           }
         })
     },
-    update() {
-      const block = new Block()
-      block.getAll({ filters: { "company_id": this.companyId }})
-        .then(res => {
-          if (res.ok) {
-            res.json().then(r => this.company.blocks = r)
-          }
-        })
-    }
+    update() { update(this) }
   }
 }
 </script>

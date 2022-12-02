@@ -5,7 +5,11 @@ export default class Block extends Request {
     super('block', id);
   }
 
-  copyToCompany(blockId, companyId) {
-    return this.create(`block/${blockId}/copy/${companyId}`, {})
+  copyToCompany(companyId, body) {
+    return this.create(`copy/${companyId}`, body)
+  }
+
+  remove(body) {
+    return this.execute(`block`, 'DELETE', body,(res) => res, (err) => err)
   }
 }

@@ -6,7 +6,8 @@
       <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
     </header>
     <y-input
-      placeholder="Название теста..."
+      v-model.trim="block.name"
+      placeholder="Название блока"
     />
     <y-list
       :items="tests"

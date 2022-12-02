@@ -5,27 +5,32 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('@/views/HomeView')
+    component: () => import('@/views/HomeView'),
+    meta: { requiresAuth: false }
   },
   {
     path: '/block',
     name: 'block',
-    component: () => import('@/views/BlockView')
+    component: () => import('@/views/BlockView'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/test',
     name: 'test',
-    component: () => import('@/views/TestView')
+    component: () => import('@/views/TestView'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/company',
     name: 'company',
-    component: () => import('@/views/CompanyView')
+    component: () => import('@/views/CompanyView'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/results',
     name: 'results',
-    component: () => import('@/views/ResultsView')
+    component: () => import('@/views/ResultsView'),
+    meta: { requiresAuth: true }
   }
 ]
 

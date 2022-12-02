@@ -98,7 +98,7 @@ function update(data) {
           res.json().then(r => {
             data.test.type = r.type.id
             data.test.title = r.title
-            data.test.formula = r.formula.split('').slice(1,r.formula.length-1).join('')
+            data.test.formula = r.formula.split('').slice(1,r.formula.length).join('')
             data.test.metric = r.metric.id
             data.$store.commit('fillQuestions', r.questions)
           })
@@ -170,7 +170,7 @@ export default {
     },
     selectLabel(type, id) {
       if (this.questions.length > 0 && type === 'type') {
-        alert('Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
+        this.$store.commit('openErrorPopup', 'Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
         return
       }
       this.test[type] = id
@@ -178,38 +178,40 @@ export default {
     addQuestion() {
       let question = {}
 
-      switch (this.test.type) {
-        case 1:
-          question = {
-            title: null,
-            picture: null,
-            answers: [],
-            coins: null
-          }
-          break
-        case 2:
-          question = {
-            title: null,
-            picture: null,
-            answers: [
-              {
-                id: 1,
-                title: 'Да',
-                value: null
-              },
-              {
-                id: 2,
-                title: 'Нет',
-                value: null
-              }
-            ],
-            coins: null
-          }
+      if (this.test.type !== 2) {
+        question = {
+          title: null,
+          picture: null,
+          answers: [],
+          coins: null
+        }
+      } else {
+        question = {
+          title: null,
+          picture: null,
+          answers: [
+            {
+              id: 1,
+              title: 'Да',
+              value: null
+            },
+            {
+              id: 2,
+              title: 'Нет',
+              value: null
+            }
+          ],
+          coins: null
+        }
       }
 
       this.$store.commit('addQuestion', question)
     },
     saveTest() {
+      if (this.test.title.length < 4) {
+        this.$store.commit('openErrorPopup', 'Слишком короткое название')
+      }
+
       const test = new Test()
 
       const body = JSON.parse(JSON.stringify(this.test))

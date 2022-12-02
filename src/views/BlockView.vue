@@ -50,7 +50,7 @@ export default {
   },
   created() {
     const block = new Block()
-    block.getAll({})
+    block.getAll({ filters: {}   })
       .then(res => {
         if (res.ok) {
           res.json().then(r => this.blocks = r)
