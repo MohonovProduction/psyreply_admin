@@ -190,7 +190,11 @@ export default {
     removeBlock() {
       const block = new Block()
 
-      block.remove(this.id)
+      const body = {
+        blocks: [this.id]
+      }
+
+      block.remove(body)
         .then(res => {
           if (res.ok) {
             alert('Блок успешно удалён')
