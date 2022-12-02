@@ -48,7 +48,7 @@ function update(data) {
     })
 
   const block = new Block()
-  block.getAll({ filter: {company_id: null} })
+  block.getAll({ filters: {exclude_test: data.id} })
     .then(res => {
       if (res.ok) {
         res.json().then(r => data.blocks = r)
