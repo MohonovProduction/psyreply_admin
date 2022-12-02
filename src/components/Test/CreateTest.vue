@@ -170,7 +170,7 @@ export default {
     },
     selectLabel(type, id) {
       if (this.questions.length > 0 && type === 'type') {
-        alert('Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
+        this.$store.commit('openErrorPopup', 'Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
         return
       }
       this.test[type] = id
