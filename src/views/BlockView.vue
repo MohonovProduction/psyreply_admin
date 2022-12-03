@@ -6,14 +6,14 @@
         <header class="header">
           <div class="header__select">
             <div class="heading header__heading">Блоки</div>
-<!--            <y-select-->
-<!--              :selects="companies"-->
-<!--              @select="selectCompany"-->
-<!--            />-->
-            <select v-model="filter" @change="updateBlocksList">
-              <option :value="null">Без фильтра</option>
-              <option v-for="company of companies" :value="company.id">{{company.name}}</option>
-            </select>
+<!--            <select style="color: white" v-model="filter" @change="updateBlocksList">
+              <option style="color: black" :value="null">Без фильтра</option>
+              <option style="color: black" v-for="company of companies" :value="company.id">{{company.name}}</option>
+            </select>-->
+            <y-select
+              :selects="companies"
+              @select="updateBlocksList"
+            />
           </div>
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
@@ -53,14 +53,6 @@ function update(data) {
         res.json().then(r => data.blocks = r)
       }
     })
-
-  const company = new Company()
-  company.getAllCompanies()
-    .then(res => {
-      if (res.ok) {
-        res.json().then(r => data.companies = r)
-      }
-    })
 }
 
 export default {
@@ -79,22 +71,41 @@ export default {
   },
   created() {
     update(this)
+    const company = new Company()
+    this.companies.push({ })
+    this.companies.forEach(el => el['active'] = false)
+    this.companies[0]['name'] = 'Все компании'
+    this.companies[0]['id'] = null
+    this.companies[0]['active'] = true
+    company.getAllCompanies()
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => {
+            r.forEach(el => {
+              el.active = false
+              this.companies.push(el)
+            })
+          })
+        }
+      })
   },
   methods: {
     editBlock(n){
       this.window = 'editBlock'
       this.editBlockId = n.id
     },
-    updateBlocksList() {
+    updateBlocksList(n) {
+      this.companies.map(el => {
+        el.active = el.id === n.id;
+      })
+      const select = this.companies.filter(el => el.active)
+      this.filter = select[0].id
       update(this)
     },
     close() {
       this.window = 'main'
       update(this)
     },
-    selectCompany(n) {
-      console.log(n)
-    }
   }
 }
 </script>
