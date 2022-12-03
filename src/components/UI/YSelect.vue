@@ -1,12 +1,12 @@
 <template>
-  <article class="select">
+  <article class="select" v-if="selects.length > 0">
     <button class="button select__button" @click="list.show = !list.show">
       {{activeSelect[0].name}}
       <img class="button__icon" src="@/assets/img/select_arrow.svg">
     </button>
     <ul v-if="list.show" class="select__list">
       <li v-for="el in notActiveSelects">
-        <button @click="select(el.data)" class="list__item button_active">{{el.name}}</button>
+        <button @click="select(el)" class="list__item button_active">{{el.name}}</button>
       </li>
     </ul>
   </article>
@@ -19,21 +19,8 @@ export default {
     selects: {
       type: Array,
       default: [
-        {
-          name: 'Test',
-          data: 'test',
-          active: true
-        },
-        {
-          name: 'Test1',
-          data: 'test1',
-          active: false,
-        },
-        {
-          name: 'Test2',
-          data: 'test2',
-          active: false
-        }
+        { name: undefined, active: true },
+        { name: undefined, active: false }
       ]
     }
   },

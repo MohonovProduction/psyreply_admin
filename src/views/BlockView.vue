@@ -6,6 +6,14 @@
         <header class="header">
           <div class="header__select">
             <div class="heading header__heading">Блоки</div>
+<!--            <y-select-->
+<!--              :selects="companies"-->
+<!--              @select="selectCompany"-->
+<!--            />-->
+            <select v-model="filter" @change="updateBlocksList">
+              <option :value="null">Без фильтра</option>
+              <option v-for="company of companies" :value="company.id">{{company.name}}</option>
+            </select>
           </div>
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
@@ -19,12 +27,12 @@
       </y-modal>
       <create-block
         v-if="window === 'createBlock'"
-        @close="this.window = 'main'"
+        @close="close"
       />
       <edit-block
         :id="editBlockId"
         v-if="window === 'editBlock'"
-        @close="this.window = 'main'"
+        @close="close"
       />
     </main>
   </div>
@@ -35,6 +43,25 @@ import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 
 import Block from '@/api/admin/Block';
+import Company from '@/api/admin/Company';
+
+function update(data) {
+  const block = new Block()
+  block.getAll({filters: { company_id: data.filter }})
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.blocks = r)
+      }
+    })
+
+  const company = new Company()
+  company.getAllCompanies()
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.companies = r)
+      }
+    })
+}
 
 export default {
   name: "BlockView",
@@ -46,22 +73,28 @@ export default {
       window: 'main',
       blocks: [],
       editBlockId: null,
+      companies: [],
+      filter: null
     }
   },
   created() {
-    const block = new Block()
-    block.getAll({ filters: {}   })
-      .then(res => {
-        if (res.ok) {
-          res.json().then(r => this.blocks = r)
-        }
-      })
+    update(this)
   },
   methods: {
     editBlock(n){
       this.window = 'editBlock'
       this.editBlockId = n.id
     },
+    updateBlocksList() {
+      update(this)
+    },
+    close() {
+      this.window = 'main'
+      update(this)
+    },
+    selectCompany(n) {
+      console.log(n)
+    }
   }
 }
 </script>
