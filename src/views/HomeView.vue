@@ -53,7 +53,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .form__reply__logo{
   margin-bottom: 5%;
 }
