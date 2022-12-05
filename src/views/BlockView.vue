@@ -6,6 +6,14 @@
         <header class="header">
           <div class="header__select">
             <div class="heading header__heading">Блоки</div>
+<!--            <select style="color: white" v-model="filter" @change="updateBlocksList">
+              <option style="color: black" :value="null">Без фильтра</option>
+              <option style="color: black" v-for="company of companies" :value="company.id">{{company.name}}</option>
+            </select>-->
+            <y-select
+              :selects="companies"
+              @select="updateBlocksList"
+            />
           </div>
           <y-button :plus="true" @click="this.window ='createBlock'">Новый блок</y-button>
         </header>
@@ -19,12 +27,12 @@
       </y-modal>
       <create-block
         v-if="window === 'createBlock'"
-        @close="this.window = 'main'"
+        @close="close"
       />
       <edit-block
         :id="editBlockId"
         v-if="window === 'editBlock'"
-        @close="this.window = 'main'"
+        @close="close"
       />
     </main>
   </div>
@@ -35,6 +43,17 @@ import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 
 import Block from '@/api/admin/Block';
+import Company from '@/api/admin/Company';
+
+function update(data) {
+  const block = new Block()
+  block.getAll({filters: { company_id: data.filter }})
+    .then(res => {
+      if (res.ok) {
+        res.json().then(r => data.blocks = r)
+      }
+    })
+}
 
 export default {
   name: "BlockView",
@@ -46,14 +65,27 @@ export default {
       window: 'main',
       blocks: [],
       editBlockId: null,
+      companies: [],
+      filter: null
     }
   },
   created() {
-    const block = new Block()
-    block.getAll({ filters: {}   })
+    update(this)
+    const company = new Company()
+    this.companies.push({ })
+    this.companies.forEach(el => el['active'] = false)
+    this.companies[0]['name'] = 'Все компании'
+    this.companies[0]['id'] = null
+    this.companies[0]['active'] = true
+    company.getAllCompanies()
       .then(res => {
         if (res.ok) {
-          res.json().then(r => this.blocks = r)
+          res.json().then(r => {
+            r.forEach(el => {
+              el.active = false
+              this.companies.push(el)
+            })
+          })
         }
       })
   },
@@ -61,6 +93,18 @@ export default {
     editBlock(n){
       this.window = 'editBlock'
       this.editBlockId = n.id
+    },
+    updateBlocksList(n) {
+      this.companies.map(el => {
+        el.active = el.id === n.id;
+      })
+      const select = this.companies.filter(el => el.active)
+      this.filter = select[0].id
+      update(this)
+    },
+    close() {
+      this.window = 'main'
+      update(this)
     },
   }
 }

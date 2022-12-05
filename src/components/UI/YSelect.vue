@@ -1,12 +1,12 @@
 <template>
-  <article class="select">
-    <button class="button select__button" @click="list.show = !list.show">
-      {{activeSelect[0].name}}
+  <article class="select" v-if="selects.length > 0">
+    <button class="button select__button" @click="open">
+      {{activeSelect}}
       <img class="button__icon" src="@/assets/img/select_arrow.svg">
     </button>
     <ul v-if="list.show" class="select__list">
-      <li v-for="el in notActiveSelects">
-        <button @click="select(el.data)" class="list__item button_active">{{el.name}}</button>
+      <li v-for="el in notActiveSelects" :key="`${el}`" @click="select(el)">
+        <button class="list__item button_active">{{el.name}}</button>
       </li>
     </ul>
   </article>
@@ -18,23 +18,7 @@ export default {
   props: {
     selects: {
       type: Array,
-      default: [
-        {
-          name: 'Test',
-          data: 'test',
-          active: true
-        },
-        {
-          name: 'Test1',
-          data: 'test1',
-          active: false,
-        },
-        {
-          name: 'Test2',
-          data: 'test2',
-          active: false
-        }
-      ]
+      default: []
     }
   },
   data() {
@@ -45,16 +29,39 @@ export default {
     }
   },
   methods: {
-    select(data) {
-      this.$emit('select', data)
+    select(el) {
+      this.$emit('select', el)
+      this.list.show = false
+    },
+    open() {
+      this.list.show = !this.list.show
     }
   },
   computed: {
     activeSelect() {
-      return this.selects.filter(el => el.active)
+      if (this.selects.length > 0) {
+        const el = this.selects.filter(el => el.active)
+        if (el.length > 0) {
+          return el[0].name
+        } else {
+          return 'Undefined'
+        }
+      } else {
+        return 'Undefined'
+      }
     },
     notActiveSelects() {
-      return this.selects.filter(el => !el.active)
+      if (this.selects.length > 0) {
+        const el = this.selects.filter(el => !el.active)
+
+        if (el.length > 0) {
+          return el
+        } else {
+          return [{name:'Undefined'}]
+        }
+      } else {
+        return [{name:'Undefined'}]
+      }
     }
   }
 }

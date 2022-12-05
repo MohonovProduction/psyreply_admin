@@ -94,7 +94,7 @@ export default {
   display: grid;
   grid-template-columns: auto min-content;
 }
-.header__heading{
+.header__heading {
   margin-right: 0.5rem;
 
   font-size:2rem;
