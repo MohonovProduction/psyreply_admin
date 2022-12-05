@@ -14,11 +14,14 @@
             <y-select/>
             <y-date/>
           </div>
-
         </header>
-        <y-results-list>
+        <y-results-list v-if="results==='true'">
+          <y-results-list-item/>
           <y-results-list-item/>
         </y-results-list>
+        <p class="new__results" v-if="results==='false'">
+          Здесь будут отображаться результаты компаний. Для начала, укажите компанию, либо дату
+        </p>
       </y-modal>
       <y-modal v-if="window==='dashboard'">
           <y-dashboard/>
@@ -55,7 +58,8 @@ export default {
   },
   data() {
     return {
-      window: 'dashboard',
+      window: 'main',
+      results:'true'
 
     }
   }}
@@ -105,5 +109,12 @@ export default {
   align-items: center;
   justify-content: left;
 }
+.new__results{
+  text-align: center;
+  align-items: center;
+  font-size: 2rem;
+
+}
+
 
 </style>
