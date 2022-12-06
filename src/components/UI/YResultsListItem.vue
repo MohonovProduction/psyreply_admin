@@ -9,9 +9,12 @@
   <div class="id">{{ id }}</div>
   <div class="line"></div>
   <div class="date">{{ formattedDate }}</div>
+  <div class="line"></div>
+  <div class="valid">Valid</div>
+<!--  <div class="invalid" v-if="valid==='false'">Invalid</div>-->
   <div class="dashboard__button">
     <img src="@/assets/img/dash.svg" alt="">
-    <div class="title">Дашборд</div>
+<!--    <div class="title">Дашборд</div>-->
   </div>
 </li>
 </template>
@@ -49,7 +52,7 @@ export default {
 <style scoped>
 .results__item{
   display: grid;
-  grid-template-columns: 1fr 1fr 0.5fr 1fr 0.5fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 0.5fr 1fr 0.5fr 1fr 0.5fr 1fr  1fr;
   align-items: center;
   background: rgba(255, 255, 255, 0.17);
   border-radius: 14px;
@@ -92,6 +95,12 @@ background-color: rgba(255, 255, 255, 0.36);
   width: 2px;
   justify-self: center;
 
+}
+.valid{
+  color:rgba(0, 255, 25, 1);
+}
+.invalid{
+color: rgba(255, 46, 0, 1);
 }
 .username{
   justify-self: center;

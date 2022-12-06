@@ -17,6 +17,10 @@
       <div class="id">{{ block.user_id || 'no user id' }}</div>
       <div class="line"></div>
       <div class="date">{{ formattedDate }}</div>
+      <div class="line"></div>
+      <div class="passage">
+        <p>Время прохождения: </p> <p class="passage__user passage__user_bad">00:14:50</p><span class="slash"> / </span><p class="passage__test">00:15:00</p>
+      </div>
     </div>
     <hr>
     <div class="results__button">
@@ -28,7 +32,10 @@
           v-model.number="metric.value"
         />
       </y-results-tabel>
-
+        <div class="results__valid">
+          <div class="elipce"></div>
+          <p>Результаты валидны</p>
+        </div>
       <y-cool-button @click="updateBlock"><h1>Сохранить изменения</h1></y-cool-button>
     </div>
 
@@ -123,6 +130,10 @@ export default {
   justify-self: center;
 
 }
+.slash{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 
 table{
   width: 100%;
@@ -141,8 +152,34 @@ hr {
 }
 .results__button{
   display: grid;
-  grid-template-rows: 1fr 4rem;
-  grid-gap: 4rem;
+  grid-template-rows: 1fr 1rem 4rem;
+  grid-gap: 3rem;
+}
+.passage{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+}
+.passage__user{
+  margin-left: 0.5rem;
+  color: rgba(0, 255, 25, 0.66);
+
+}
+/*.passage__user_bad{*/
+/*  color:red;*/
+/*}*/
+
+.elipce{
+  background: linear-gradient(200.42deg, #38F9D7 13.57%, #43E97B 98.35%);
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+}
+.results__valid{
+  display: flex;
+  align-items: center;
 }
 
 </style>

@@ -3,7 +3,9 @@
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
       <h1 class="heading">Новый блок</h1>
+      <y-input type="time"/>
       <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
+
     </header>
     <y-input
       v-model.trim="block.name"
@@ -100,9 +102,10 @@ export default {
 }
 .header {
   display: grid;
-  grid-template-columns: auto 1fr min-content;
+  grid-template-columns: auto 1fr 10rem min-content;
   grid-gap: 2rem;
   justify-content: start;
   align-items: center;
+
 }
 </style>
