@@ -61,7 +61,7 @@ export default {
 .picker {
   display: none;
   position: absolute;
-  top: calc(100% + .1em);
+  top: calc(100% + .2em);
   right: 0;
   padding: .3em;
   backdrop-filter: blur(10px);

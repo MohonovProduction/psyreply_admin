@@ -56,7 +56,7 @@ export default {
       results.update(this.block.id, body)
         .then(res => {
           if (res.ok) {
-            this.$emit('close')
+            this.$store.commit('openPopup', 'Данные сохранены')
           } else {
             this.$store.commit('openErrorPopup', res.msg())
           }
