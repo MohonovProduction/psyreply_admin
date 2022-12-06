@@ -1,25 +1,37 @@
 <template>
   <div class="wrapper">
     <y-left-side-bar />
-<!--    <y-popup/>-->
 
     <main class="main">
 
       <y-modal v-if="window === 'main'" class="main__modal">
         <header class="header">
           <div class="header__select">
-            <div class="heading header__heading">Результаты</div>
+            <div v-if="blocks.length === 0" class="heading header__heading">Результаты</div>
+            <y-select
+              v-else
+              font-size="2"
+              :selects="blocks"
+              @select="updateBlocksSelect"
+            />
           </div>
           <div class="company__date__select">
-            <y-select/>
+            <y-select
+              :selects="companies"
+              @select="updateCompaniesSelect"
+            />
             <y-date/>
           </div>
         </header>
-        <y-results-list v-if="results==='true'">
-          <y-results-list-item/>
-          <y-results-list-item/>
+        <y-results-list v-if="results.length > 0">
+          <y-results-list-item
+            v-for="result in results"
+            :name="result.block_title"
+            :user_id="result.user_id"
+            :date="result.createdAt"
+          />
         </y-results-list>
-        <p class="new__results" v-if="results==='false'">
+        <p class="new__results" v-else>
           Здесь будут отображаться результаты компаний. Для начала, укажите компанию, либо дату
         </p>
       </y-modal>
@@ -35,7 +47,6 @@
 import CreateBlock from '@/components/Block/CreateBlock';
 import EditBlock from '@/components/Block/EditBlock';
 import CreateCompany from "@/components/Company/CreateCompany";
-import Company from '@/api/admin/Company';
 import YSelect from "@/components/UI/YSelect";
 import YDate from "@/components/UI/YDate";
 import YPopup from "@/components/UI/YPopup";
@@ -43,6 +54,25 @@ import YPopupError from "@/components/UI/YPopupError";
 import YResultsListItem from "@/components/UI/YResultsListItem";
 import YResultsList from "@/components/Results/YResultsList";
 import YDashboard from "@/components/Results/YDashboard";
+
+import Company from '@/api/admin/Company';
+import Results from '@/api/admin/Results';
+import Block from '@/api/admin/Block';
+import Test from '@/api/admin/Test';
+
+function update(data) {
+    const results = new Results()
+    results.getAll({ filters: data.filters })
+      .then(res => {
+        if(res.ok) {
+          res.json().then(r => {
+            data.results = r
+          })
+        } else {
+          data.$store.commit('openErrorPopup', 'Не удалось загрузить результаты')
+        }
+      })
+}
 
 export default {
   name: "RelultsView",
@@ -54,15 +84,84 @@ export default {
     YDate,
     YSelect,
     YDashboard,
-
+  },
+  created() {
+    update(this)
+    this.companies.push({ })
+    this.companies.forEach(el => el['active'] = false)
+    this.companies[0]['name'] = 'Все компании'
+    this.companies[0]['id'] = null
+    this.companies[0]['active'] = true
+    const company = new Company()
+    company.getAllCompanies()
+      .then(res => {
+        if (res.ok) {
+          res.json().then(r => {
+            r.forEach(el => {
+              el.active = false
+              this.companies.push(el)
+            })
+          })
+        }
+      })
   },
   data() {
     return {
       window: 'main',
-      results:'true'
-
+      results: [],
+      companies: [],
+      blocks: [],
+      filters: {
+        createdAt: null,
+        block_id: null,
+        company_id: null
+      },
     }
-  }}
+  },
+  methods: {
+    updateCompaniesSelect(n) {
+      this.companies.map(el => {
+        el.active = el.id === n.id;
+      })
+      const select = this.companies.filter(el => el.active)
+      this.filters.company_id = select[0].id
+
+      if (!(typeof this.filters.company_id === 'object')) {
+        const block = new Block()
+        this.blocks.push({ })
+        this.blocks.forEach(el => el['active'] = false)
+        this.blocks[0]['name'] = 'Все блоки'
+        this.blocks[0]['id'] = null
+        this.blocks[0]['active'] = true
+        block.getAll({ filters: { company_id: this.filters.company_id } })
+          .then(res => {
+            if (res.ok) {
+              res.json().then(r => {
+                this.blocks = r
+              })
+            } else {
+              this.$store.commit('openErrorPopup', 'Не удалось загрузить блоки компании')
+            }
+          })
+      } else {
+        this.filters.block_id = null
+        this.blocks = []
+      }
+
+      update(this)
+    },
+    updateBlocksSelect(n) {
+      this.blocks.map(el => {
+        el.active = el.id === n.id;
+      })
+
+      const select = this.companies.filter(el => el.active)
+      this.filters.block_id = select[0].id
+
+      update(this)
+    }
+  }
+}
 </script>
 
 <style scoped>

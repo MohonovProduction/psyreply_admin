@@ -1,6 +1,6 @@
 <template>
   <article class="select" v-if="selects.length > 0">
-    <button class="button select__button" @click="open">
+    <button class="button select__button" :style="{ 'font-size': `${fontSize}em` }" @click="open">
       {{activeSelect}}
       <img class="button__icon" src="@/assets/img/select_arrow.svg">
     </button>
@@ -19,6 +19,10 @@ export default {
     selects: {
       type: Array,
       default: []
+    },
+    fontSize: {
+      type: [String, Number],
+      default: 1
     }
   },
   data() {
@@ -86,6 +90,10 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
+  max-width: 210px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .button__icon{
   margin-left: 0.5rem;

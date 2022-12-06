@@ -15,7 +15,7 @@ export default createStore({
     newTest: {
       questionsCount: 0,
       questions: []
-    }
+    },
   },
   getters: {
     questions(state) {

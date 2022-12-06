@@ -1,14 +1,14 @@
 <template>
 <li class="results__item" >
   <div class="block__item">
-    <img src="@/assets/img/block.svg" alt="">
-    <div class="name" >Блок</div>
+    <img src="@/assets/img/block.svg" @click="$emit('edit', id)" alt="">
+    <div class="name" >{{ name }}</div>
   </div>
-  <div class="username">username</div>
+  <div class="username">{{ username }}</div>
   <div class="line"></div>
-  <div class="id">id1488</div>
+  <div class="id">{{ id }}</div>
   <div class="line"></div>
-  <div class="date">22/22/22</div>
+  <div class="date">{{ formattedDate }}</div>
   <div class="dashboard__button">
     <img src="@/assets/img/dash.svg" alt="">
     <div class="title">Дашборд</div>
@@ -19,7 +19,30 @@
 <script>
 export default {
   name: "YResultsListItem",
+  props: {
+    name: {
+      default: 'no name'
+    },
+    username: {
+      default: 'no username'
+    },
+    id: {
+      default: -1
+    },
+    date: {
+      default: '32/13/893'
+    }
+  },
+  computed: {
+    formattedDate() {
+      let date = new Date(this.date)
+      const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
 
+      return `${day}/${month}/${year}`
+    }
+  }
 }
 </script>
 
