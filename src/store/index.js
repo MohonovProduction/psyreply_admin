@@ -16,8 +16,14 @@ export default createStore({
       questionsCount: 0,
       questions: []
     },
+    results: {
+      editBlock: null
+    }
   },
   getters: {
+    editBlock(state) {
+      return state.results.editBlock
+    },
     questions(state) {
       return state.newTest.questions
     },
@@ -35,6 +41,12 @@ export default createStore({
     }
   },
   mutations: {
+    setEditBlock(state, block) {
+      state.results.editBlock = block
+    },
+    removeEditBlock(state) {
+      state.results.editBlock = null
+    },
     addQuestion(state, question) {
       question.id = state.newTest.questionsCount
       state.newTest.questions.push(question)

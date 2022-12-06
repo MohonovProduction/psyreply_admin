@@ -1,14 +1,20 @@
 <template>
   <div class="tabel__item">
-    <h2 class="item__metric">Метрика 1</h2>
+    <h2 class="item__metric">Метрика {{ id }}</h2>
     <h3 class="item__status">Текущее</h3>
-    <y-input type="text"/>
+    <y-input @input="changeValue" :value="value" type="text"/>
   </div>
 </template>
 
 <script>
 export default {
-  name: "YResultsTabelItem"
+  name: "YResultsTabelItem",
+  props: ['id', 'value'],
+  methods: {
+    changeValue(e) {
+      this.$emit('update:modelValue', e.target.value)
+    }
+  }
 }
 </script>
 

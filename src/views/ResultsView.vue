@@ -28,7 +28,9 @@
             v-for="result in results"
             :name="result.block_title"
             :user_id="result.user_id"
+            :username="result.username"
             :date="result.createdAt"
+            @edit="openEditWindow(result)"
           />
         </y-results-list>
         <p class="new__results" v-else>
@@ -36,7 +38,10 @@
         </p>
       </y-modal>
       <y-modal v-if="window==='dashboard'">
-          <y-dashboard/>
+          <y-dashboard
+            :block="editBlock"
+            @close="closeEditWindow"
+          />
       </y-modal>
 
     </main>
@@ -116,6 +121,7 @@ export default {
         block_id: null,
         company_id: null
       },
+      editBlock: null
     }
   },
   methods: {
@@ -158,6 +164,15 @@ export default {
       const select = this.companies.filter(el => el.active)
       this.filters.block_id = select[0].id
 
+      update(this)
+    },
+    openEditWindow(obj) {
+      this.$store.commit('setEditBlock', obj)
+      this.window = 'dashboard'
+    },
+    closeEditWindow() {
+      this.window = 'main'
+      this.$store.commit('removeEditBlock')
       update(this)
     }
   }

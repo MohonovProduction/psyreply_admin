@@ -2,8 +2,8 @@
   <div class="dashboard">
     <header class="header">
       <div class="header__select">
-        <y-left-arrow-button />
-        <h1 class="heading header__heading">Блок</h1>
+        <y-left-arrow-button @click="$emit('close')" />
+        <h1 class="heading header__heading">{{ block.block_title }}</h1>
       </div>
 
         <div class="dash__button">
@@ -12,24 +12,70 @@
         </div>
     </header>
     <div class="user">
-      <div class="username">username</div>
+      <div class="username">{{ block.username || 'no username' }}</div>
       <div class="line"></div>
-      <div class="id">id1488</div>
+      <div class="id">{{ block.user_id || 'no user id' }}</div>
       <div class="line"></div>
-      <div class="date">22/22/22</div>
+      <div class="date">{{ formattedDate }}</div>
     </div>
     <hr>
     <div class="results__button">
-      <y-results-tabel/>
-      <y-cool-button><h1>Сохранить изменения</h1></y-cool-button>
+      <y-results-tabel>
+        <y-results-tabel-item
+          v-for="metric of metrics"
+          :id="metric.metric_id"
+          :value="metric.value"
+          v-model.number="metric.value"
+        />
+      </y-results-tabel>
+
+      <y-cool-button @click="updateBlock"><h1>Сохранить изменения</h1></y-cool-button>
     </div>
 
   </div>
 </template>
 
 <script>
+import Results from '@/api/admin/Results';
+
 export default {
-  name: "YDashboard"
+  name: "YDashboard",
+  created() {
+    this.metrics = JSON.parse(this.block.data)
+  },
+  data() {
+    return {
+      metrics: []
+    }
+  },
+  methods: {
+    updateBlock() {
+      const body = this.metrics
+
+      const results = new Results()
+      results.update(this.block.id, body)
+        .then(res => {
+          if (res.ok) {
+            this.$emit('close')
+          } else {
+            this.$store.commit('openErrorPopup', res.msg())
+          }
+        })
+    }
+  },
+  computed: {
+    block() {
+      return this.$store.getters.editBlock
+    },
+    formattedDate() {
+      let date = new Date(this.block.createdAt)
+      const day = date.getDate()
+      const month = date.getMonth()
+      const year = date.getFullYear()
+
+      return `${day}/${month}/${year}`
+    },
+  }
 }
 </script>
 

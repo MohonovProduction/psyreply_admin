@@ -1,10 +1,6 @@
 <template>
   <div class="y-results-table">
-    <y-results-tabel-item/>
-    <y-results-tabel-item/>
-    <y-results-tabel-item/>
-    <y-results-tabel-item/>
-    <y-results-tabel-item/>
+    <slot></slot>
   </div>
 
 </template>
