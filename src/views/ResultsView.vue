@@ -20,7 +20,9 @@
               :selects="companies"
               @select="updateCompaniesSelect"
             />
-            <y-date/>
+            <y-date
+              @update-date="setDateFilter"
+            />
           </div>
         </header>
         <y-results-list v-if="results.length > 0">
@@ -173,6 +175,10 @@ export default {
     closeEditWindow() {
       this.window = 'main'
       this.$store.commit('removeEditBlock')
+      update(this)
+    },
+    setDateFilter(n) {
+      this.filters.createdAt = n
       update(this)
     }
   }

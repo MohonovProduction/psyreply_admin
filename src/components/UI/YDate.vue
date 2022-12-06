@@ -1,6 +1,18 @@
 <template>
   <div class="YDate">
-    <y-button><div class="date__img"><p class="date__title">Дата</p><img src="@/assets/img/cathedral.svg" alt=""></div></y-button>
+    <y-button @click="picker.show = !picker.show">
+      <div class="date__img">
+        <p class="date__title">Дата</p>
+        <img src="@/assets/img/cathedral.svg" alt="">
+      </div>
+    </y-button>
+    <y-modal class="picker" :class="{ 'picker_active': picker.show }">
+      <y-input class="picker__input" v-model="picker.day" /> /
+      <y-input class="picker__input" v-model="picker.month" /> /
+      <y-input class="picker__input" v-model="picker.year" />
+      <y-mini-button @click="selectDate">ok</y-mini-button>
+      <y-mini-button @click="clearDate">X</y-mini-button>
+    </y-modal>
   </div>
 </template>
 
@@ -8,11 +20,62 @@
 import YButton from "@/components/UI/YButton";
 export default {
   name: "YDate",
-  components: {YButton}
+  data() {
+    return {
+      picker: {
+        show: false,
+        day: null,
+        month: null,
+        year: null
+      }
+    }
+  },
+  created() {
+    const now = new Date()
+    this.picker.day = (now.getDay() < 10) ? `0${now.getDay()}` : now.getDay()
+    this.picker.month = (now.getMonth() < 10) ? `0${now.getMonth()}` : now.getMonth()
+    this.picker.year = now.getFullYear()
+  },
+  methods: {
+    selectDate() {
+      this.picker.show = false
+      const date = `${this.picker.year}-${this.picker.month}-${this.picker.day}`
+      this.$emit('updateDate', date)
+    },
+    clearDate() {
+      this.picker.show = false
+      const now = new Date()
+      this.picker.day = (now.getDay() < 10) ? `0${now.getDay()}` : now.getDay()
+      this.picker.month = (now.getMonth() < 10) ? `0${now.getMonth()}` : now.getMonth()
+      this.picker.year = now.getFullYear()
+      this.$emit('updateDate', null)
+    }
+  }
 }
 </script>
 
 <style scoped>
+.YDate {
+  position: relative;
+}
+.picker {
+  display: none;
+  position: absolute;
+  top: calc(100% + .1em);
+  right: 0;
+  padding: .3em;
+  backdrop-filter: blur(10px);
+}
+.picker__input {
+  padding: .3em;
+}
+.picker_active {
+  display: grid;
+  grid-template-columns: repeat(2, 3rem auto) 4rem auto auto;
+  align-items: center;
+  grid-gap: .2em;
+}
+
 .date__img{
   display: flex;
   flex-direction: row;
