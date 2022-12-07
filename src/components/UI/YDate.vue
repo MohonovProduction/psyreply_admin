@@ -2,8 +2,8 @@
   <div class="YDate">
     <y-button @click="picker.show = !picker.show">
       <div class="date__img">
+        {{ date }}
         <p class="date__title">Дата</p>
-        <img src="@/assets/img/cathedral.svg" alt="">
       </div>
     </y-button>
     <y-modal class="picker" :class="{ 'picker_active': picker.show }">
@@ -50,6 +50,11 @@ export default {
       this.picker.year = now.getFullYear()
       this.$emit('updateDate', null)
     }
+  },
+  computed: {
+    date() {
+      return `${this.picker.year}/${this.picker.month}/${this.picker.day}`
+    }
   }
 }
 </script>
@@ -77,11 +82,11 @@ export default {
 }
 
 .date__img{
-  display: flex;
-  flex-direction: row;
+  min-width: 11rem;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: auto min-content;
   align-items: center;
-  justify-content: center;
-
 }
 .date__title{
   margin-right:1rem ;
