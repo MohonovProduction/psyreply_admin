@@ -119,11 +119,7 @@ export default {
       results: [],
       companies: [],
       blocks: [],
-      filters: {
-        createdAt: null,
-        block_id: null,
-        company_id: null
-      },
+      filters: {},
       editBlock: null
     }
   },
@@ -133,9 +129,12 @@ export default {
         el.active = el.id === n.id;
       })
       const select = this.companies.filter(el => el.active)
-      this.filters.company_id = select[0].id
+      this.filters = {
+        company_id: select[0].id
+      }
 
       if (!(typeof this.filters.company_id === 'object')) {
+        this.blocks = []
         const block = new Block()
         this.blocks.push({ })
         this.blocks.forEach(el => el['active'] = false)
@@ -168,7 +167,11 @@ export default {
       })
 
       const select = this.blocks.filter(el => el.active)
-      this.filters.block_id = select[0].id
+      if (select[0].id) {
+        this.filters.block_id = select[0].id
+      } else {
+        delete this.filters.block_id
+      }
 
       update(this)
     },
@@ -184,6 +187,11 @@ export default {
     setDateFilter(n) {
       this.filters.createdAt = n
       update(this)
+    }
+  },
+  computed: {
+    answerMessage() {
+
     }
   }
 }

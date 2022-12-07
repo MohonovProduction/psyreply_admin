@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     date() {
-      return `${this.picker.year}/${this.picker.month}/${this.picker.day}`
+      return `${this.picker.day}/${this.picker.month}/${this.picker.year}`
     }
   }
 }
