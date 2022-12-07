@@ -90,7 +90,7 @@ export default {
   display: flex;
   flex-direction: row;
   align-items: center;
-  max-width: 210px;
+  max-width: min-content;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;

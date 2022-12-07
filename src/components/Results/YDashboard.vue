@@ -20,7 +20,7 @@
       <div class="line"></div>
       <div class="passage">
         <p>Время прохождения: </p>
-        <p class="passage__user" :class="{ 'passage__user_bad': !approved }">00:14
+        <p class="passage__user" :class="{ 'passage__user_bad': !block.approved }">00:14
         :50</p><span
         class="slash"> /
       </span><p class="passage__test">{{ formattedTime }}</p>
@@ -88,8 +88,8 @@ export default {
     },
     formattedDate() {
       let date = new Date(this.block.createdAt)
-      const day = date.getDate()
-      const month = date.getMonth() + 1
+      const day = (date.getDate() < 10) ? `0${date.getDate()}` : date.getDate()
+      const month = (date.getMonth() + 1 < 10) ? `0${date.getMonth() + 1}` : date.getMonth() + 1
       const year = date.getFullYear()
 
       return `${day}/${month}/${year}`
