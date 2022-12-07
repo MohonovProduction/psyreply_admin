@@ -7,10 +7,15 @@
 
     <y-modal>
       <header class="header">
-        <h2 class="heading">Изменение названия</h2>
+        <h2 class="heading">Изменение параметров {{ block.name }}</h2>
       </header>
       <y-input v-model.trim="block.name" />
-      <y-cool-button @click="updateBlock">Сохранить новое название</y-cool-button>
+      <y-modal class="time-picker">Время на прохождение -
+        <y-input v-model="newTime.hours" placeholder="чч" class="time-picker__input"/>:
+        <y-input v-model="newTime.minutes" placeholder="мм" class="time-picker__input"/>:
+        <y-input v-model="newTime.seconds" placeholder="сс" class="time-picker__input"/>
+      </y-modal>
+      <y-cool-button @click="updateBlock">Сохранить обновленный {{ block.name }}</y-cool-button>
     </y-modal>
 
     <y-modal v-if="block.tests.length > 0">
@@ -58,7 +63,17 @@ function update(data) {
   block.get(data.id)
     .then(res => {
       if (res.ok) {
-        res.json().then(r => data.block = r)
+        res.json().then(r => {
+          data.block = r
+
+          const hours = Math.floor(r.time / (60 * 60 * 1000))
+          r.time -= hours * 60 * 60 * 1000
+          const minutes = Math.floor(r.time / (60 * 1000))
+          r.time -= minutes * 60 * 1000
+          const seconds = Math.floor(r.time / 1000)
+
+          data.newTime = { hours, minutes, seconds }
+        })
       } else {
         alert(res.msg())
       }
@@ -85,7 +100,12 @@ export default {
     return {
       tests: [],
       block: {
-        tests: []
+        tests: [],
+      },
+      newTime: {
+        hours: null,
+        minutes: null,
+        seconds: null
       }
     }
   },
@@ -173,17 +193,24 @@ export default {
         return this.$store.commit('openErrorPopup', 'Название слишком короткое')
       }
 
+      let time = 0
+
+      time += this.newTime.hours * 60 * 60 * 1000
+      time += this.newTime.minutes * 60 * 1000
+      time += this.newTime.seconds * 1000
+
       const block = new Block()
       const body = {
-        name: this.block.name
+        name: this.block.name,
+        time
       }
       block.update(this.id, body)
         .then(res=> {
           if (res.ok) {
-            this.$store.commit('openPopup', 'Название блока успешно изменено')
+            this.$store.commit('openPopup', 'Блок успешно сохранен')
             this.update()
           } else {
-            this.$store.commit('closeErrorPopup', res.msg())
+            this.$store.commit('openErrorPopup', res.msg())
           }
         })
     },
@@ -220,5 +247,17 @@ export default {
   grid-gap: 2rem;
   justify-content: start;
   align-items: center;
+}
+.time-picker {
+  font-size: 1.2rem;
+  padding: .2rem 1rem;
+  display: grid;
+  grid-template-columns: min-content repeat(3, 2.3rem min-content);
+  align-items: center;
+  grid-gap: .1rem;
+  white-space: nowrap;
+}
+.time-picker__input {
+  padding: .1rem;
 }
 </style>

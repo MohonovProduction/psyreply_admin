@@ -74,7 +74,7 @@ export default {
     const company = new Company()
     this.companies.push({ })
     this.companies.forEach(el => el['active'] = false)
-    this.companies[0]['name'] = 'Все компании'
+    this.companies[0]['name'] = 'Шаблоны'
     this.companies[0]['id'] = null
     this.companies[0]['active'] = true
     company.getAllCompanies()

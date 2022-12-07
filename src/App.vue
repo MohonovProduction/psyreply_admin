@@ -1,6 +1,8 @@
 <template>
   <router-view/>
-  <y-popup-error />
+  <transition>
+    <y-popup-error />
+  </transition>
   <transition>
     <y-popup />
   </transition>
@@ -59,7 +61,7 @@ export default {
 
 .v-enter-active,
 .v-leave-active {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.15s ease;
 }
 
 .v-enter-from,
