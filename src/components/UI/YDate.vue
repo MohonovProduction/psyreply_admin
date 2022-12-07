@@ -32,8 +32,8 @@ export default {
   },
   created() {
     const now = new Date()
-    this.picker.day = (now.getDay() < 10) ? `0${now.getDay()}` : now.getDay()
-    this.picker.month = (now.getMonth() < 10) ? `0${now.getMonth()}` : now.getMonth()
+    this.picker.day = (now.getDate() < 10) ? `0${now.getDate()}` : now.getDate()
+    this.picker.month = (now.getMonth() + 1 < 10) ? `0${now.getMonth() + 1}` : now.getMonth() + 1
     this.picker.year = now.getFullYear()
   },
   methods: {
@@ -45,8 +45,8 @@ export default {
     clearDate() {
       this.picker.show = false
       const now = new Date()
-      this.picker.day = (now.getDay() < 10) ? `0${now.getDay()}` : now.getDay()
-      this.picker.month = (now.getMonth() < 10) ? `0${now.getMonth()}` : now.getMonth()
+      this.picker.day = (now.getDate() < 10) ? `0${now.getDate()}` : now.getDate()
+      this.picker.month = (now.getMonth() + 1 < 10) ? `0${now.getMonth() + 1}` : now.getMonth() + 1
       this.picker.year = now.getFullYear()
       this.$emit('updateDate', null)
     }

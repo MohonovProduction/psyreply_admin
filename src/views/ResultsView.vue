@@ -37,7 +37,7 @@
           />
         </y-results-list>
         <p class="new__results" v-else>
-          Здесь будут отображаться результаты компаний. Для начала, укажите компанию, либо дату
+          {{ answerMessage }}
         </p>
       </y-modal>
       <y-modal v-if="window==='dashboard'">
@@ -74,7 +74,8 @@ function update(data) {
       .then(res => {
         if(res.ok) {
           res.json().then(r => {
-            data.results = r
+            data.results = []
+            r.forEach(el => data.results.push(el))
           })
         } else {
           data.$store.commit('openErrorPopup', 'Не удалось загрузить результаты')
@@ -120,7 +121,8 @@ export default {
       companies: [],
       blocks: [],
       filters: {},
-      editBlock: null
+      editBlock: null,
+      haveResults: false
     }
   },
   methods: {
@@ -129,11 +131,17 @@ export default {
         el.active = el.id === n.id;
       })
       const select = this.companies.filter(el => el.active)
-      this.filters = {
-        company_id: select[0].id
+
+      if (select[0].id) {
+        this.filters = {
+          company_id: select[0].id
+        }
+      } else {
+        delete this.filters.company_id
       }
 
-      if (!(typeof this.filters.company_id === 'object')) {
+
+      if (this.filters.company_id) {
         this.blocks = []
         const block = new Block()
         this.blocks.push({ })
@@ -155,7 +163,7 @@ export default {
             }
           })
       } else {
-        this.filters.block_id = null
+        delete this.filters.block_id
         this.blocks = []
       }
 
@@ -167,6 +175,7 @@ export default {
       })
 
       const select = this.blocks.filter(el => el.active)
+      console.log(select)
       if (select[0].id) {
         this.filters.block_id = select[0].id
       } else {
@@ -185,13 +194,49 @@ export default {
       update(this)
     },
     setDateFilter(n) {
-      this.filters.createdAt = n
+      if (n) {
+        this.filters.createdAt = n
+      } else {
+        delete this.filters.createdAt
+      }
       update(this)
     }
   },
   computed: {
     answerMessage() {
+      const filters = this.filters
+      if ('createdAt' in filters && 'company_id' in filters && 'block_id' in filters) {
+        const company = this.companies.filter(el => el.active)
+        const block = this.blocks.filter(el => el.active)
+        const date = this.filters.createdAt.split('-')
 
+        const msg = `В компании ${company[0].name} в блоке ${block[0].name} за ${date[2]}/${date[1]}/${date[0]} ничего не найдено`
+        return msg
+      } else if ('block_id' in filters && 'company_id' in filters) {
+        const company = this.companies.filter(el => el.active)
+        const block = this.blocks.filter(el => el.active)
+
+        const msg = `В компании ${company[0].name} в блоке ${block[0].name} ничего не найдено`
+        return msg
+      } else if ('createdAt' in filters && 'company_id' in filters) {
+        const company = this.companies.filter(el => el.active)
+        const date = this.filters.createdAt.split('-')
+
+        const msg = `В компании ${company[0].name} за ${date[2]}/${date[1]}/${date[0]} ничего не найдено`
+        return msg
+      } else if ('company_id' in filters) {
+        const company = this.companies.filter(el => el.active)
+
+        const msg = `В компании ${company[0].name} ничего не найдено`
+        return msg
+      } else if ('createdAt' in filters) {
+        const date = this.filters.createdAt.split('-')
+
+        const msg = `За ${date[2]}/${date[1]}/${date[0]} ничего не найдено`
+        return msg
+      } else {
+        return 'Здесь будут отображаться результаты компаний. Для начала, укажите компанию, либо дату'
+      }
     }
   }
 }
