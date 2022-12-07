@@ -12,14 +12,18 @@
         </div>
     </header>
     <div class="user">
-      <div class="username">{{ block.username || 'no username' }}</div>
+      <div class="username">{{ block.user.login || 'no username' }}</div>
       <div class="line"></div>
-      <div class="id">{{ block.user_id || 'no user id' }}</div>
+      <div class="id">{{ block.user.jetBotId || 'no user id' }}</div>
       <div class="line"></div>
       <div class="date">{{ formattedDate }}</div>
       <div class="line"></div>
       <div class="passage">
-        <p>Время прохождения: </p> <p class="passage__user passage__user_bad">00:14:50</p><span class="slash"> / </span><p class="passage__test">00:15:00</p>
+        <p>Время прохождения: </p>
+        <p class="passage__user" :class="{ 'passage__user_bad': !approved }">00:14
+        :50</p><span
+        class="slash"> /
+      </span><p class="passage__test">{{ formattedTime }}</p>
       </div>
     </div>
     <hr>
@@ -33,7 +37,10 @@
         />
       </y-results-tabel>
         <div class="results__valid">
-          <div class="elipce"></div>
+          <div
+            @click="approved = !approved"
+            class="elipce"
+            :class="{ 'elipse__bad': !approved }"></div>
           <p>Результаты валидны</p>
         </div>
       <y-cool-button @click="updateBlock"><h1>Сохранить изменения</h1></y-cool-button>
@@ -49,15 +56,20 @@ export default {
   name: "YDashboard",
   created() {
     this.metrics = JSON.parse(this.block.data)
+    this.approved = this.block.approved
   },
   data() {
     return {
-      metrics: []
+      metrics: [],
+      approved: null
     }
   },
   methods: {
     updateBlock() {
-      const body = this.metrics
+      const body = {
+        newData: this.metrics,
+        approved: this.approved
+      }
 
       const results = new Results()
       results.update(this.block.id, body)
@@ -77,11 +89,14 @@ export default {
     formattedDate() {
       let date = new Date(this.block.createdAt)
       const day = date.getDate()
-      const month = date.getMonth()
+      const month = date.getMonth() + 1
       const year = date.getFullYear()
 
       return `${day}/${month}/${year}`
     },
+    formattedTime() {
+      return `${this.block.time_on_pass} ms`
+    }
   }
 }
 </script>
@@ -166,9 +181,9 @@ hr {
   color: rgba(0, 255, 25, 0.66);
 
 }
-/*.passage__user_bad{*/
-/*  color:red;*/
-/*}*/
+.passage__user_bad{
+  color:red;
+}
 
 .elipce{
   background: linear-gradient(200.42deg, #38F9D7 13.57%, #43E97B 98.35%);
@@ -176,6 +191,9 @@ hr {
   height: 0.7rem;
   border-radius: 50%;
   margin-right: 0.5rem;
+}
+.elipse__bad {
+  background: linear-gradient(200.42deg, #f93838 13.57%, #e94343 98.35%);
 }
 .results__valid{
   display: flex;

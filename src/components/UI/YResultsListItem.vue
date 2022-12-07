@@ -10,8 +10,8 @@
   <div class="line"></div>
   <div class="date">{{ formattedDate }}</div>
   <div class="line"></div>
-  <div class="valid">Valid</div>
-<!--  <div class="invalid" v-if="valid==='false'">Invalid</div>-->
+  <div class="valid" v-if="valid">Valid</div>
+  <div class="invalid" v-else>Invalid</div>
   <div class="dashboard__button">
     <img src="@/assets/img/dash.svg" alt="">
 <!--    <div class="title">Дашборд</div>-->
@@ -34,13 +34,16 @@ export default {
     },
     date: {
       default: '32/13/893'
+    },
+    valid: {
+      default: true
     }
   },
   computed: {
     formattedDate() {
       let date = new Date(this.date)
       const day = date.getDate()
-      const month = date.getMonth()
+      const month = date.getMonth() + 1
       const year = date.getFullYear()
 
       return `${day}/${month}/${year}`
