@@ -3,7 +3,13 @@
     <header class="header">
       <y-left-arrow-button @click="$emit('close')" />
       <h1 class="heading">Новый блок</h1>
-      <y-input type="time"/>
+
+      <y-modal class="time-picker">Время на прохождение -
+        <y-input v-model="block.hours" placeholder="чч" class="time-picker__input"/>:
+        <y-input v-model="block.minutes" placeholder="мм" class="time-picker__input"/>:
+        <y-input v-model="block.seconds" placeholder="сс" class="time-picker__input"/>
+      </y-modal>
+
       <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
 
     </header>
@@ -42,6 +48,9 @@ export default {
       window: 'main',
       block: {
         name: null,
+        hours: null,
+        minutes: null,
+        seconds: null
       },
       tests: []
     }
@@ -68,8 +77,18 @@ export default {
       }
     },
     saveBlock() {
-      console.log('asfsadf')
-      const body = this.block
+      const body = {}
+
+      body.name = this.block.name
+
+      let time = 0
+
+      time += this.block.hours * 60 * 60 * 1000
+      time += this.block.minutes * 60 * 1000
+      time += this.block.seconds * 1000
+
+      body.time = time
+
       const tests = this.tests.filter(el => el.active)
 
       body.tests = []
@@ -102,10 +121,21 @@ export default {
 }
 .header {
   display: grid;
-  grid-template-columns: auto 1fr 10rem min-content;
+  grid-template-columns: auto 1fr auto min-content;
   grid-gap: 2rem;
   justify-content: start;
   align-items: center;
+}
 
+.time-picker {
+  font-size: 1.2rem;
+  padding: .2rem;
+  display: grid;
+  grid-template-columns: auto repeat(3, 2.3rem min-content);
+  align-items: center;
+  grid-gap: .1rem;
+}
+.time-picker__input {
+  padding: .1rem;
 }
 </style>
