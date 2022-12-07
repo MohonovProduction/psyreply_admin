@@ -20,10 +20,9 @@
       <div class="line"></div>
       <div class="passage">
         <p>Время прохождения: </p>
-        <p class="passage__user" :class="{ 'passage__user_bad': !block.approved }">00:14
-        :50</p><span
-        class="slash"> /
-      </span><p class="passage__test">{{ formattedTime }}</p>
+        <p class="passage__user" :class="{ 'passage__user_bad': !block.approved }">no data</p>
+        <span class="slash"> /
+      </span><p class="passage__test">{{ time }}</p>
       </div>
     </div>
     <hr>
@@ -57,11 +56,24 @@ export default {
   created() {
     this.metrics = JSON.parse(this.block.data)
     this.approved = this.block.approved
+
+    if (this.block.time_on_pass > 0) {
+      const hours = Math.floor(this.block.time_on_pass / (60 * 60 * 1000))
+      this.block.time_on_pass -= hours * 60 * 60 * 1000
+      const minutes = Math.floor(this.block.time_on_pass / (60 * 1000))
+      this.block.time_on_pass -= minutes * 60 * 1000
+      const seconds = Math.floor(this.block.time_on_pass / 1000)
+
+      this.time = `${hours}:${minutes}:${seconds}`
+    } else {
+      this.time = 'нет временных рамок'
+    }
   },
   data() {
     return {
       metrics: [],
-      approved: null
+      approved: null,
+      time: null
     }
   },
   methods: {
@@ -94,9 +106,6 @@ export default {
 
       return `${day}/${month}/${year}`
     },
-    formattedTime() {
-      return `${this.block.time_on_pass} ms`
-    }
   }
 }
 </script>

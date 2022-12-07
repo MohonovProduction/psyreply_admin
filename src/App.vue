@@ -1,9 +1,9 @@
 <template>
   <router-view/>
-  <transition>
+  <transition name="popup">
     <y-popup-error />
   </transition>
-  <transition>
+  <transition name="popup">
     <y-popup />
   </transition>
 </template>
@@ -59,13 +59,15 @@ export default {
   position: relative;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.15s ease;
+.popup-enter-active,
+.popup-leave-active {
+  transform: translateY(0);
+  transition: opacity 0.15s ease, translate .15s ease-out;
 }
 
-.v-enter-from,
-.v-leave-to {
+.popup-enter-from,
+.popup-leave-to {
   opacity: 0;
+  transform: translateY(-2rem);
 }
 </style>
