@@ -1,7 +1,9 @@
 <template>
   <router-view/>
   <y-popup-error />
-  <y-popup />
+  <transition>
+    <y-popup />
+  </transition>
 </template>
 
 <script>
@@ -53,5 +55,15 @@ export default {
 
 #app {
   position: relative;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

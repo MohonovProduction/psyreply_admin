@@ -1,7 +1,7 @@
 <template>
   <div class="tabel__item">
     <h2 class="item__metric">Метрика {{ id }}</h2>
-    <h3 class="item__status">Текущее</h3>
+    <h3 class="item__status">{{ oldValue }}</h3>
     <y-input @input="changeValue" :value="value" type="text"/>
   </div>
 </template>
@@ -10,6 +10,14 @@
 export default {
   name: "YResultsTabelItem",
   props: ['id', 'value'],
+  data() {
+    return {
+      oldValue: null
+    }
+  },
+  created() {
+    this.oldValue = this.value
+  },
   methods: {
     changeValue(e) {
       this.$emit('update:modelValue', e.target.value)

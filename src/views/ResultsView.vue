@@ -29,8 +29,9 @@
           <y-results-list-item
             v-for="result in results"
             :name="result.block_title"
-            :user_id="result.user_id"
-            :username="result.username"
+            :id="result.user.jetBotId"
+            :username="result.user.login"
+            :valid="result.approved"
             :date="result.createdAt"
             @edit="openEditWindow(result)"
           />
@@ -145,7 +146,10 @@ export default {
           .then(res => {
             if (res.ok) {
               res.json().then(r => {
-                this.blocks = r
+                r.forEach(el => {
+                  el.active = false
+                  this.blocks.push(el)
+                })
               })
             } else {
               this.$store.commit('openErrorPopup', 'Не удалось загрузить блоки компании')
@@ -163,7 +167,7 @@ export default {
         el.active = el.id === n.id;
       })
 
-      const select = this.companies.filter(el => el.active)
+      const select = this.blocks.filter(el => el.active)
       this.filters.block_id = select[0].id
 
       update(this)
