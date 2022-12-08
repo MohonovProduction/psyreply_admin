@@ -31,7 +31,6 @@ export default {
     }
   },
   created() {
-    const now = new Date()
     this.picker.day = '01'
     this.picker.month = '01'
     this.picker.year = 2077

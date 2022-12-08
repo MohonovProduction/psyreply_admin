@@ -7,7 +7,7 @@
       <y-modal v-if="window === 'main'" class="main__modal">
         <header class="header">
           <div class="header__select">
-            <div v-if="blocks.length === 0" class="heading header__heading">Результаты</div>
+            <div v-if="blocks.length <= 1" class="heading header__heading">Результаты</div>
             <y-select
               v-else
               font-size="2"
