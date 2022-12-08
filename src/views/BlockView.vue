@@ -104,6 +104,12 @@ export default {
     },
     close() {
       this.window = 'main'
+
+      this.companies.map(el => el.active = false)
+      this.companies.map(el => {
+        el.active = el.id === null;
+      })
+      this.filter = null
       update(this)
     },
   }
