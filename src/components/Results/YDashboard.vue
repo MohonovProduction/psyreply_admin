@@ -58,11 +58,14 @@ export default {
     this.approved = this.block.approved
 
     if (this.block.block.time > 0) {
-      const hours = Math.floor(this.block.block.time / (60 * 60 * 1000))
+      let hours = Math.floor(this.block.block.time / (60 * 60 * 1000))
+      hours = (hours < 10) ? `0${hours}` : hours
       this.block.block.time -= hours * 60 * 60 * 1000
-      const minutes = Math.floor(this.block.block.time / (60 * 1000))
+      let minutes = Math.floor(this.block.block.time / (60 * 1000))
+      minutes = (minutes < 10) ? `0${minutes}` : minutes
       this.block.block.time -= minutes * 60 * 1000
-      const seconds = Math.floor(this.block.block.time / 1000)
+      let seconds = Math.floor(this.block.block.time / 1000)
+      seconds = (seconds < 10) ? `0${seconds}` : seconds
 
       this.time = `${hours}:${minutes}:${seconds}`
     } else {
