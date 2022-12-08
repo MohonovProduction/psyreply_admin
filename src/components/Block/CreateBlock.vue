@@ -5,9 +5,9 @@
       <h1 class="heading">Новый блок</h1>
 
       <y-modal class="time-picker">Время на прохождение -
-        <y-input v-model="block.hours" placeholder="чч" class="time-picker__input"/>:
-        <y-input v-model="block.minutes" placeholder="мм" class="time-picker__input"/>:
-        <y-input v-model="block.seconds" placeholder="сс" class="time-picker__input"/>
+        <y-input max="99" min="0" type="number" v-model="block.hours" placeholder="чч" class="time-picker__input"/>:
+        <y-input max="59" min="0" type="number" v-model="block.minutes" placeholder="мм" class="time-picker__input"/>:
+        <y-input max="59" min="0" type="number" v-model="block.seconds" placeholder="сс" class="time-picker__input"/>
       </y-modal>
 
       <y-button @click="window = 'createTest'" :plus="true">Добавить тест</y-button>
@@ -131,7 +131,7 @@ export default {
   font-size: 1.2rem;
   padding: .2rem;
   display: grid;
-  grid-template-columns: auto repeat(3, 2.3rem min-content);
+  grid-template-columns: auto repeat(3, 3.3rem min-content);
   align-items: center;
   grid-gap: .1rem;
 }

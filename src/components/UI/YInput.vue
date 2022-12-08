@@ -1,5 +1,16 @@
 <template>
   <input
+    v-if="type === 'number'"
+    :max="max"
+    :min="min"
+    @input="$emit('update:modelValue', $event.target.value)"
+    class="input"
+    :type="type"
+    :placeholder="placeholder"
+    :value="modelValue"
+  >
+  <input
+    v-else
     @input="$emit('update:modelValue', $event.target.value)"
     class="input"
     :type="type"
@@ -19,6 +30,12 @@ export default {
     type: {
       type: String,
       default: 'text'
+    },
+    max: {
+      default: 0
+    },
+    min: {
+      default: 0
     },
     modelValue: [String, Number]
   },
@@ -44,6 +61,9 @@ export default {
 }
 .input:active {
   background: hsla(0, 0%, 100%, 0.17);
+}
+.input:invalid {
+  background-color: hsla(0, 83%, 41%, 0.89);
 }
 
 ::placeholder {

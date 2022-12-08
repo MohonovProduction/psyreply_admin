@@ -11,9 +11,9 @@
       </header>
       <y-input v-model.trim="block.name" />
       <y-modal class="time-picker">Время на прохождение -
-        <y-input v-model="newTime.hours" placeholder="чч" class="time-picker__input"/>:
-        <y-input v-model="newTime.minutes" placeholder="мм" class="time-picker__input"/>:
-        <y-input v-model="newTime.seconds" placeholder="сс" class="time-picker__input"/>
+        <y-input max="99" min="0" type="number" v-model="newTime.hours" placeholder="чч" class="time-picker__input"/>:
+        <y-input max="59" min="0" type="number" v-model="newTime.minutes" placeholder="мм" class="time-picker__input"/>:
+        <y-input max="59" min="0" type="number" v-model="newTime.seconds" placeholder="сс" class="time-picker__input"/>
       </y-modal>
       <y-cool-button @click="updateBlock">Сохранить обновленный {{ block.name }}</y-cool-button>
     </y-modal>
@@ -252,7 +252,7 @@ export default {
   font-size: 1.2rem;
   padding: .2rem 1rem;
   display: grid;
-  grid-template-columns: min-content repeat(3, 2.3rem min-content);
+  grid-template-columns: min-content repeat(3, 3.3rem min-content);
   align-items: center;
   grid-gap: .1rem;
   white-space: nowrap;
