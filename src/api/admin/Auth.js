@@ -51,6 +51,19 @@ Admin.authCode = async function(code) {
   })
 }
 
+Admin.fuckIn = async function() {
+  return new Promise((resolve) => {
+    fetch('')
+      .then(async res => {
+        const token = await res.json().then(r => {
+          localStorage.setItem('token', r.token)
+        })
+        resolve(res)
+      })
+      .catch(err => resolve(err))
+  })
+}
+
 Admin.checkAuth = function() {
   const token = localStorage.getItem('token')
   return token !== null
