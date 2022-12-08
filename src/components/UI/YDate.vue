@@ -31,10 +31,9 @@ export default {
     }
   },
   created() {
-    const now = new Date()
-    this.picker.day = (now.getDate() < 10) ? `0${now.getDate()}` : now.getDate()
-    this.picker.month = (now.getMonth() + 1 < 10) ? `0${now.getMonth() + 1}` : now.getMonth() + 1
-    this.picker.year = now.getFullYear()
+    this.picker.day = '01'
+    this.picker.month = '01'
+    this.picker.year = 2077
   },
   methods: {
     selectDate() {

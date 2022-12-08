@@ -20,10 +20,9 @@
       <div class="line"></div>
       <div class="passage">
         <p>Время прохождения: </p>
-        <p class="passage__user" :class="{ 'passage__user_bad': !block.approved }">00:14
-        :50</p><span
-        class="slash"> /
-      </span><p class="passage__test">{{ formattedTime }}</p>
+        <p class="passage__user" :class="{ 'passage__user_bad': !block.approved }">{{ timeOnPass }}</p>
+        <span class="slash"> /
+      </span><p class="passage__test">{{ time }}</p>
       </div>
     </div>
     <hr>
@@ -57,11 +56,48 @@ export default {
   created() {
     this.metrics = JSON.parse(this.block.data)
     this.approved = this.block.approved
+
+    if (this.block.block.time > 0) {
+      let hours = Math.floor(this.block.block.time / (60 * 60 * 1000))
+      hours = (hours < 10) ? `0${hours}` : hours
+      this.block.block.time -= hours * 60 * 60 * 1000
+      let minutes = Math.floor(this.block.block.time / (60 * 1000))
+      minutes = (minutes < 10) ? `0${minutes}` : minutes
+      this.block.block.time -= minutes * 60 * 1000
+      let seconds = Math.floor(this.block.block.time / 1000)
+      seconds = (seconds < 10) ? `0${seconds}` : seconds
+
+      this.time = `${hours}:${minutes}:${seconds}`
+    } else {
+      this.time = 'нет временных рамок'
+    }
+    // this.time = this.block.time_on_pass
+
+    if (this.block.time_on_pass > 0) {
+      let hours = Math.floor(this.block.time_on_pass / (60 * 60 * 1000))
+      hours = (hours < 10) ? `0${hours}` : hours
+      this.block.time_on_pass -= hours * 60 * 60 * 1000
+      let minutes = Math.floor(this.block.time_on_pass / (60 * 1000))
+      this.block.time_on_pass -= minutes * 60 * 1000
+      let seconds = Math.floor(this.block.time_on_pass / 1000)
+      seconds = (seconds < 10) ? `0${seconds}` : seconds
+      this.block.time_on_pass -= seconds * 1000
+      const ms = this.block.time_on_pass / 1000
+      if (ms >= 5000) {
+        seconds += 1
+      }
+      minutes = (minutes < 10) ? `0${minutes}` : minutes
+      this.timeOnPass = `${hours}:${minutes}:${seconds}`
+    } else {
+      this.timeOnPass = 0
+    }
   },
   data() {
     return {
       metrics: [],
-      approved: null
+      approved: null,
+      time: null,
+      timeOnPass: null,
     }
   },
   methods: {
@@ -94,9 +130,6 @@ export default {
 
       return `${day}/${month}/${year}`
     },
-    formattedTime() {
-      return `${this.block.time_on_pass} ms`
-    }
   }
 }
 </script>
