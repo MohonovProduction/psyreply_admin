@@ -71,17 +71,20 @@ export default {
     // this.time = this.block.time_on_pass
 
     if (this.block.time_on_pass > 0) {
-      const hours = Math.floor(this.block.time_on_pass / (60 * 60 * 1000))
+      let hours = Math.floor(this.block.time_on_pass / (60 * 60 * 1000))
+      hours = (hours < 10) ? `0${hours}` : hours
       this.block.time_on_pass -= hours * 60 * 60 * 1000
-      const minutes = Math.floor(this.block.time_on_pass / (60 * 1000))
+      let minutes = Math.floor(this.block.time_on_pass / (60 * 1000))
       this.block.time_on_pass -= minutes * 60 * 1000
-      const seconds = Math.floor(this.block.time_on_pass / 1000)
+      let seconds = Math.floor(this.block.time_on_pass / 1000)
+      seconds = (seconds < 10) ? `0${seconds}` : seconds
       this.block.time_on_pass -= seconds * 1000
-      let ms = this.block.time_on_pass / 1000
-      if (ms < 1000) {
-        ms = `0${ms*1000}`
+      const ms = this.block.time_on_pass / 1000
+      if (ms >= 5000) {
+        seconds += 1
       }
-      this.timeOnPass = `${hours}:${minutes}:${seconds}.${ms}`
+      minutes = (minutes < 10) ? `0${minutes}` : minutes
+      this.timeOnPass = `${hours}:${minutes}:${seconds}`
     } else {
       this.timeOnPass = 0
     }
