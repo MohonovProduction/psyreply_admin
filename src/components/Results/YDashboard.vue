@@ -57,7 +57,7 @@ export default {
     this.metrics = JSON.parse(this.block.data)
     this.approved = this.block.approved
 
-    if (this.block.block.time > 0) {
+    if (!!this.block.block) {
       let hours = Math.floor(this.block.block.time / (60 * 60 * 1000))
       hours = (hours < 10) ? `0${hours}` : hours
       this.block.block.time -= hours * 60 * 60 * 1000
@@ -71,7 +71,6 @@ export default {
     } else {
       this.time = 'нет временных рамок'
     }
-    // this.time = this.block.time_on_pass
 
     if (this.block.time_on_pass > 0) {
       let hours = Math.floor(this.block.time_on_pass / (60 * 60 * 1000))
