@@ -9,7 +9,7 @@
     <y-button @click="$emit('remove')" class="question__del">X</y-button>
 
     <label>
-      Монеты <y-input @input="giveData" v-model="question.coins" />
+      Монеты <y-input @input="giveData" v-model.number="question.coins" />
     </label>
 
     <add-answers

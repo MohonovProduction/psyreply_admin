@@ -170,7 +170,7 @@ export default {
     },
     selectLabel(type, id) {
       if (this.questions.length > 0 && type === 'type') {
-        this.$store.commit('openErrorPopup', 'Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново')
+        this.$store.commit('openErrorPopup', 'Вы не можете изменят тип теста, если вопросы уже созданы с другим типом. Пожалуйста, начните составлять тест заново'  )
         return
       }
       this.test[type] = id
@@ -181,7 +181,7 @@ export default {
       if (this.test.type !== 2) {
         question = {
           title: null,
-          picture: null,
+          picture: '',
           answers: [],
           coins: null
         }
@@ -224,7 +224,13 @@ export default {
         return this.$store.commit('openErrorPopup', 'Ошибка в формуле')
       }
 
-      body.questions = this.questions
+      const questions = JSON.parse(JSON.stringify(this.questions))
+      questions.forEach(el => {
+        el.relative_id = el.id
+        delete el.id
+      })
+
+      body.questions = questions
 
       let flag = false
       body.questions.map((el, id) => {

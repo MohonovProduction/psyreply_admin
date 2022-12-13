@@ -11,7 +11,7 @@
           <y-input @input="giveData(answer, id)" v-model="answer.title" placeholder="Введите ответ"></y-input>
           <div class="question__coins">
             <label class="label">Баллы за ответ</label>
-            <y-input @input="giveData(answer, id)" v-model="answer.value" class="question__input" />
+            <y-input @input="giveData(answer, id)" v-model.number="answer.value" class="question__input" />
           </div>
           <y-button @click="removeAnswer(id)" class="question__del">X</y-button>
         </article>

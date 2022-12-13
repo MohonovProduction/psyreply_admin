@@ -8,7 +8,7 @@
       <label class="label">Баллы “Нет”</label>
       <y-input @input="giveData" v-model="question.answers[1].value" class="question__input" />
       <label class="label">Монеты</label>
-      <y-input @input="giveData" v-model="question.coins" class="question__input" />
+      <y-input @input="giveData" v-model.number="question.coins" class="question__input" />
     </div>
     <y-button @click="$emit('remove')" class="question__del">X</y-button>
   </article>
