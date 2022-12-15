@@ -4,9 +4,9 @@
     <y-input @input="giveData" v-model="question.title" />
     <div class="question__coins">
       <label class="label">Баллы “Да”</label>
-      <y-input @input="giveData" v-model="question.answers[0].value" class="question__input" />
+      <y-input @input="giveData" v-model.number="question.answers[0].value" class="question__input" />
       <label class="label">Баллы “Нет”</label>
-      <y-input @input="giveData" v-model="question.answers[1].value" class="question__input" />
+      <y-input @input="giveData" v-model.number="question.answers[1].value" class="question__input" />
       <label class="label">Монеты</label>
       <y-input @input="giveData" v-model.number="question.coins" class="question__input" />
     </div>
